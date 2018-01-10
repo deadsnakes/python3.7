@@ -1,0 +1,13 @@
+lib@PVER@-dbg binary: package-name-doesnt-match-sonames
+lib@PVER@-dbg binary: non-dev-pkg-with-shlib-symlink
+
+# no, it's not unusual
+lib@PVER@-dbg binary: unusual-interpreter
+
+# just the gdb debug file
+lib@PVER@-dbg binary: python-script-but-no-python-dep
+
+# pointless lintian ...
+lib@PVER@-dbg binary: hardening-no-fortify-functions
+
+lib@PVER@-dbg binary: arch-dependent-file-not-in-arch-specific-directory

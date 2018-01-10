@@ -1,0 +1,37 @@
+# hg-updates.diff
+deb-setup.diff
+deb-locations.diff
+distutils-install-layout.diff
+locale-module.diff
+distutils-link.diff
+distutils-sysconfig.diff
+tkinter-import.diff
+gdbm-import.diff
+link-opt.diff
+setup-modules.diff
+platform-lsbrelease.diff
+bdist-wininst-notfound.diff
+profiled-build.diff
+langpack-gettext.diff
+disable-sem-check.diff
+lib-argparse.diff
+ctypes-arm.diff
+# link-timemodule.diff
+lto-link-flags.diff
+multiarch.diff
+lib2to3-no-pickled-grammar.diff
+ext-no-libpython-link.diff
+test-no-random-order.diff
+multiarch-extname.diff
+tempfile-minimal.diff
+disable-some-tests.diff
+ensurepip-wheels.diff
+ensurepip-disabled.diff
+mangle-fstack-protector.diff
+reproducible-buildinfo.diff
+pydoc-use-pager.diff
+pyhash.diff
+mips-r6.diff
+local-doc-references.diff
+doc-build-texinfo.patch
+temporary-changes.diff

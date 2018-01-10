@@ -1,0 +1,19 @@
+Tests: testsuite
+Depends: build-essential, locales, python3.6-dev, libpython3.6-testsuite, python3-gdbm
+# need to turn off apport
+Restrictions: needs-root
+
+Tests: testsuite-dbg
+Depends: build-essential, locales, python3.6-dev, python3.6-dbg, libpython3.6-testsuite, python3-gdbm-dbg, gdb
+# need to turn off apport
+Restrictions: needs-root
+
+Tests: failing-tests
+Depends: build-essential, locales, python3.6-dev, libpython3.6-testsuite, python3-gdbm
+# need to turn off apport
+Restrictions: needs-root allow-stderr
+
+Tests: failing-tests-dbg
+Depends: build-essential, locales, python3.6-dev, python3.6-dbg, libpython3.6-testsuite, python3-gdbm-dbg, gdb
+# need to turn off apport
+Restrictions: needs-root allow-stderr

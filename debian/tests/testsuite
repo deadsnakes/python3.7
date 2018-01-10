@@ -1,0 +1,91 @@
+#!/bin/sh
+
+set -e
+
+if [ "$(whoami)" = root ]; then
+  if [ -n "$SUDO_USER" ] && getent passwd "$SUDO_USER" > /dev/null; then
+    su_user="$SUDO_USER"
+  else
+    su_user=nobody
+  fi
+
+  if [ -e /etc/default/apport ]; then
+    # stop apport
+    service apport stop 2>/dev/null || true
+    sed -i '/^enabled=/s/=.*/=0/' /etc/default/apport 2>/dev/null
+  fi
+fi
+tmphome=$ADTTMP/home
+mkdir -p $tmphome
+if [ -n "$su_user" ]; then
+  chmod go+rx $ADTTMP
+  chown $su_user:nogroup $tmphome
+fi
+ls -la $ADTTMP
+
+tmphome=$ADTTMP/home
+mkdir -p $tmphome/.local/lib/python3.6/site-packages
+if [ -n "$su_user" ]; then
+  chmod -R go+rx $ADTTMP
+  chown -R $su_user:nogroup $tmphome
+fi
+
+# no root access needed after this point
+
+debian_dir=$(dirname $(dirname $0))
+
+export LOCPATH=$(pwd)/locales
+sh $debian_dir/locale-gen
+
+export LANG=C
+
+TESTPYTHON="python3.6 -W default -bb -E -R -m test"
+TESTOPTS="-j 1 -w -uall,-network,-urlfetch,-gui"
+TESTEXCLUSIONS="-x"
+
+# test_code_module: http://bugs.python.org/issue25109
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_code_module"
+
+# test_dbm: Fails from time to time ...
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_dbm"
+
+# test_ensurepip: not yet installed, http://bugs.debian.org/732703
+# ... and then test_venv fails too
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_ensurepip test_venv "
+
+# test_gdb: not run for the optimized build
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_gdb"
+
+# test_site: Investigate why this fails ... our package has one sitedir less
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_site"
+
+# test_zipfile: Issue 17753, requires write access to test and email.test
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_zipfile"
+
+TESTEXCLUSIONS="$TESTEXCLUSIONS test_socket"
+
+if [ "$su_user" = nobody ]; then
+  log=/dev/null
+else
+  log=testsuite.log
+fi
+
+# several tests fail with configured proxy; we don't need internet access, so
+# unset proxy variables
+EXTRAENV="env -u https_proxy -u http_proxy -u no_proxy HOME=$tmphome"
+
+script=$debian_dir/script.py
+if [ -f "$script" ]; then
+  cmd="$EXTRAENV python3.6 $script \"$log\" \"$TESTPYTHON $TESTOPTS $TESTEXCLUSIONS\""
+else
+  cmd="$EXTRAENV $TESTPYTHON $TESTOPTS $TESTEXCLUSIONS"
+fi
+
+echo "Running the python testsuite with the standard interpreter:"
+if [ "$(whoami)" = root ]; then
+  echo "su -s /bin/sh -c $cmd $su_user"
+  su -s /bin/sh -c "$cmd" $su_user
+else
+  echo "$cmd"
+  eval $cmd
+fi
