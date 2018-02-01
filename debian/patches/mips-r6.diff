@@ -2,7 +2,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -783,6 +783,26 @@ cat >> conftest.c <<EOF
+@@ -781,6 +781,26 @@ cat >> conftest.c <<EOF
          ia64-linux-gnu
  # elif defined(__m68k__) && !defined(__mcoldfire__)
          m68k-linux-gnu

@@ -2,7 +2,7 @@ Index: b/Include/pystate.h
 ===================================================================
 --- a/Include/pystate.h
 +++ b/Include/pystate.h
-@@ -325,11 +325,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_Get
+@@ -349,11 +349,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_Get
  PyAPI_FUNC(int) PyThreadState_SetAsyncExc(unsigned long, PyObject *);
  
  
@@ -27,7 +27,7 @@ Index: b/Include/pystate.h
  #  define _PyThreadState_Current _PyRuntime.gilstate.tstate_current
  #  define PyThreadState_GET() \
               ((PyThreadState*)_Py_atomic_load_relaxed(&_PyThreadState_Current))
-@@ -406,18 +419,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILS
+@@ -430,18 +443,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILS
  PyAPI_FUNC(PyObject *) _PyThread_CurrentFrames(void);
  #endif
  

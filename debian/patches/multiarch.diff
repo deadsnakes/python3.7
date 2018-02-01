@@ -33,7 +33,7 @@ Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -778,6 +778,7 @@ Modules/signalmodule.o: $(srcdir)/Module
+@@ -786,6 +786,7 @@ Modules/signalmodule.o: $(srcdir)/Module
  
  Python/dynload_shlib.o: $(srcdir)/Python/dynload_shlib.c Makefile
  	$(CC) -c $(PY_CORE_CFLAGS) \
@@ -41,7 +41,7 @@ Index: b/Makefile.pre.in
  		-DSOABI='"$(SOABI)"' \
  		-o $@ $(srcdir)/Python/dynload_shlib.c
  
-@@ -1449,7 +1450,7 @@ inclinstall:
+@@ -1459,7 +1460,7 @@ inclinstall:
  LIBPL=		@LIBPL@
  
  # pkgconfig directory

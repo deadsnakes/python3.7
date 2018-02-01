@@ -4,7 +4,7 @@ Index: b/Modules/Setup.dist
 ===================================================================
 --- a/Modules/Setup.dist
 +++ b/Modules/Setup.dist
-@@ -180,7 +180,7 @@ _symtable symtablemodule.c
+@@ -177,7 +177,7 @@ _symtable symtablemodule.c
  #_weakref _weakref.c	# basic weak reference support
  #_testcapi _testcapimodule.c    # Python C API test module
  #_random _randommodule.c	# Random number generator
@@ -13,7 +13,7 @@ Index: b/Modules/Setup.dist
  #_pickle _pickle.c	# pickle accelerator
  #_datetime _datetimemodule.c	# datetime accelerator
  #_bisect _bisectmodule.c	# Bisection algorithms
-@@ -210,10 +210,7 @@ _symtable symtablemodule.c
+@@ -207,10 +207,7 @@ _symtable symtablemodule.c
  
  # Socket module helper for SSL support; you must comment out the other
  # socket line above, and possibly edit the SSL variable:
@@ -25,7 +25,7 @@ Index: b/Modules/Setup.dist
  
  # The crypt module is now disabled by default because it breaks builds
  # on many systems (where -lcrypt is needed), e.g. Linux (I believe).
-@@ -246,6 +243,7 @@ _symtable symtablemodule.c
+@@ -243,6 +240,7 @@ _symtable symtablemodule.c
  
  #_md5 md5module.c
  
@@ -33,7 +33,7 @@ Index: b/Modules/Setup.dist
  
  # The _sha module implements the SHA checksum algorithms.
  # (NIST's Secure Hash Algorithms.)
-@@ -333,6 +331,7 @@ _symtable symtablemodule.c
+@@ -330,6 +328,7 @@ _symtable symtablemodule.c
  # Fred Drake's interface to the Python parser
  #parser parsermodule.c
  
@@ -41,7 +41,7 @@ Index: b/Modules/Setup.dist
  
  # Andrew Kuchling's zlib module.
  # This require zlib 1.1.3 (or later).
-@@ -350,7 +349,7 @@ _symtable symtablemodule.c
+@@ -347,7 +346,7 @@ _symtable symtablemodule.c
  #
  # More information on Expat can be found at www.libexpat.org.
  #

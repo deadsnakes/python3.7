@@ -215,10 +215,10 @@ Index: b/Lib/test/test_site.py
 ===================================================================
 --- a/Lib/test/test_site.py
 +++ b/Lib/test/test_site.py
-@@ -275,10 +275,10 @@ class HelperFunctionsTests(unittest.Test
-             self.assertEqual(dirs[1], wanted)
-         elif os.sep == '/':
-             # OS X non-framework builds, Linux, FreeBSD, etc
+@@ -263,10 +263,10 @@ class HelperFunctionsTests(unittest.Test
+         dirs = site.getsitepackages()
+         if os.sep == '/':
+             # OS X, Linux, FreeBSD, etc
 -            self.assertEqual(len(dirs), 1)
 -            wanted = os.path.join('xoxo', 'lib',
 +            self.assertEqual(len(dirs), 3)

@@ -2,6 +2,328 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.0 beta 1?
+==================================
+
+*Release date: 2018-01-30*
+
+Core and Builtins
+-----------------
+
+- bpo-32703: Fix coroutine's ResourceWarning when there's an active error
+  set when it's being finalized.
+
+- bpo-32650: Pdb and other debuggers dependent on bdb.py will correctly step
+  over (next command) native coroutines. Patch by Pablo Galindo.
+
+- bpo-28685: Optimize list.sort() and sorted() by using type specialized
+  comparisons when possible.
+
+- bpo-32685: Improve suggestion when the Python 2 form of print statement is
+  either present on the same line as the header of a compound statement or
+  else terminated by a semi-colon instead of a newline. Patch by Nitish
+  Chandra.
+
+- bpo-32697: Python now explicitly preserves the definition order of
+  keyword-only parameters.  It's always preserved their order, but this
+  behavior was never guaranteed before; this behavior is now guaranteed and
+  tested.
+
+- bpo-32690: The locals() dictionary now displays in the lexical order that
+  variables were defined.  Previously, the order was reversed.
+
+- bpo-32677: Add ``.isascii()`` method to ``str``, ``bytes`` and
+  ``bytearray``. It can be used to test that string contains only ASCII
+  characters.
+
+- bpo-32670: Enforce :pep:`479` for all code.
+
+  This means that manually raising a StopIteration exception from a
+  generator is prohibited for all code, regardless of whether 'from
+  __future__ import generator_stop' was used or not.
+
+- bpo-32591: Added built-in support for tracking the origin of coroutine
+  objects; see sys.set_coroutine_origin_tracking_depth and
+  CoroutineType.cr_origin. This replaces the asyncio debug mode's use of
+  coroutine wrapping for native coroutine objects.
+
+- bpo-31368: Expose preadv and pwritev system calls in the os module. Patch
+  by Pablo Galindo
+
+- bpo-32544: ``hasattr(obj, name)`` and ``getattr(obj, name, default)`` are
+  about 4 times faster than before when ``name`` is not found and ``obj``
+  doesn't override ``__getattr__`` or ``__getattribute__``.
+
+- bpo-26163: Improved frozenset() hash to create more distinct hash values
+  when faced with datasets containing many similar values.
+
+- bpo-32550: Remove the STORE_ANNOTATION bytecode.
+
+- bpo-20104: Expose posix_spawn as a low level API in the os module.
+
+- bpo-24340: Fixed estimation of the code stack size.
+
+- bpo-32436: Implement :pep:`567` Context Variables.
+
+- bpo-18533: ``repr()`` on a dict containing its own ``values()`` or
+  ``items()`` no longer raises ``RecursionError``; OrderedDict similarly.
+  Instead, use ``...``, as for other recursive structures.  Patch by Ben
+  North.
+
+- bpo-20891: Py_Initialize() now creates the GIL. The GIL is no longer
+  created "on demand" to fix a race condition when PyGILState_Ensure() is
+  called in a non- Python thread.
+
+- bpo-32028: Leading whitespace is now correctly ignored when generating
+  suggestions for converting Py2 print statements to Py3 builtin print
+  function calls. Patch by Sanyam Khurana.
+
+- bpo-31356: Add a new contextmanager to the gc module that temporarily
+  disables the GC and restores the previous state. The implementation is
+  done in C to assure atomicity and speed.
+
+- bpo-31179: Make dict.copy() up to 5.5 times faster.
+
+- bpo-31113: Get rid of recursion in the compiler for normal control flow.
+
+Library
+-------
+
+- bpo-25988: Deprecate exposing the contents of collections.abc in the
+  regular collections module.
+
+- bpo-31429: The default cipher suite selection of the ssl module now uses a
+  blacklist approach rather than a hard-coded whitelist. Python no longer
+  re-enables ciphers that have been blocked by OpenSSL security update.
+  Default cipher suite selection can be configured on compile time.
+
+- bpo-30306: contextlib.contextmanager now releases the arguments passed to
+  the underlying generator as soon as the context manager is entered.
+  Previously it would keep them alive for as long as the context manager was
+  alive, even when not being used as a function decorator. Patch by Martin
+  Teichmann.
+
+- bpo-21417: Added support for setting the compression level for
+  zipfile.ZipFile.
+
+- bpo-32251: Implement asyncio.BufferedProtocol (provisional API).
+
+- bpo-32513: In dataclasses, allow easier overriding of dunder methods
+  without specifying decorator parameters.
+
+- bpo-32660: :mod:`termios` makes available ``FIONREAD``, ``FIONCLEX``,
+  ``FIOCLEX``, ``FIOASYNC`` and ``FIONBIO`` also under Solaris/derivatives.
+
+- bpo-27931: Fix email address header parsing error when the username is an
+  empty quoted string. Patch by Xiang Zhang.
+
+- bpo-32659: Under Solaris and derivatives, :class:`os.stat_result` provides
+  a st_fstype attribute.
+
+- bpo-32662: Implement Server.start_serving(), Server.serve_forever(), and
+  Server.is_serving() methods.  Add 'start_serving' keyword parameter to
+  loop.create_server() and loop.create_unix_server().
+
+- bpo-32391: Implement :meth:`asyncio.StreamWriter.wait_closed` and
+  :meth:`asyncio.StreamWriter.is_closing` methods
+
+- bpo-32643: Make Task._step, Task._wakeup and Future._schedule_callbacks
+  methods private.
+
+- bpo-32630: Refactor decimal module to use contextvars to store decimal
+  context.
+
+- bpo-32622: Add :meth:`asyncio.AbstractEventLoop.sendfile` method.
+
+- bpo-32304: distutils' upload command no longer corrupts tar files ending
+  with a CR byte, and no longer tries to convert CR to CRLF in any of the
+  upload text fields.
+
+- bpo-32502: uuid.uuid1 no longer raises an exception if a 64-bit hardware
+  address is encountered.
+
+- bpo-32596: ``concurrent.futures`` imports ``ThreadPoolExecutor`` and
+  ``ProcessPoolExecutor`` lazily (using :pep:`562`). It makes ``import
+  asyncio`` about 15% faster because asyncio uses only
+  ``ThreadPoolExecutor`` by default.
+
+- bpo-31801: Add ``_ignore_`` to ``Enum`` so temporary variables can be used
+  during class construction without being turned into members.
+
+- bpo-32576: Use queue.SimpleQueue() in places where it can be invoked from
+  a weakref callback.
+
+- bpo-32574: Fix memory leak in asyncio.Queue, when the queue has limited
+  size and it is full, the cancelation of queue.put() can cause a memory
+  leak. Patch by: José Melero.
+
+- bpo-32521: The nis module is now compatible with new libnsl and headers
+  location.
+
+- bpo-32467: collections.abc.ValuesView now inherits from
+  collections.abc.Collection.
+
+- bpo-32473: Improve ABCMeta._dump_registry() output readability
+
+- bpo-32102: New argument ``capture_output`` for subprocess.run
+
+- bpo-32521: glibc has removed Sun RPC. Use replacement libtirpc headers and
+  library in nis module.
+
+- bpo-32493: UUID module fixes build for FreeBSD/OpenBSD
+
+- bpo-32503: Pickling with protocol 4 no longer creates too small frames.
+
+- bpo-29237: Create enum for pstats sorting options
+
+- bpo-32454: Add close(fd) function to the socket module.
+
+- bpo-25942: The subprocess module is now more graceful when handling a
+  Ctrl-C KeyboardInterrupt during subprocess.call, subprocess.run, or a
+  Popen context manager.  It now waits a short amount of time for the child
+  (presumed to have also gotten the SIGINT) to exit, before continuing the
+  KeyboardInterrupt exception handling.  This still includes a SIGKILL in
+  the call() and run() APIs, but at least the child had a chance first.
+
+- bpo-32433: The hmac module now has hmac.digest(), which provides an
+  optimized HMAC digest.
+
+- bpo-28134: Sockets now auto-detect family, type and protocol from file
+  descriptor by default.
+
+- bpo-32404: Fix bug where :meth:`datetime.datetime.fromtimestamp` did not
+  call __new__ in :class:`datetime.datetime` subclasses.
+
+- bpo-32403: Improved speed of :class:`datetime.date` and
+  :class:`datetime.datetime` alternate constructors.
+
+- bpo-32228: Ensure that ``truncate()`` preserves the file position (as
+  reported by ``tell()``) after writes longer than the buffer size.
+
+- bpo-32410: Implement ``loop.sock_sendfile`` for asyncio event loop.
+
+- bpo-22908: Added seek and tell to the ZipExtFile class. This only works if
+  the file object used to open the zipfile is seekable.
+
+- bpo-32373: Add socket.getblocking() method.
+
+- bpo-32248: Add :mod:`importlib.resources` and
+  :class:`importlib.abc.ResourceReader` as the unified API for reading
+  resources contained within packages.  Loaders wishing to support resource
+  reading must implement the :meth:`get_resource_reader()` method.  File-
+  based and zipimport-based loaders both implement these APIs.
+  :class:`importlib.abc.ResourceLoader` is deprecated in favor of these new
+  APIs.
+
+- bpo-32320: collections.namedtuple() now supports default values.
+
+- bpo-29302: Add contextlib.AsyncExitStack. Patch by Alexander Mohr and Ilya
+  Kulakov.
+
+- bpo-31961: The *args* argument of subprocess.Popen can now be a
+  :term:`path-like object`. If *args* is given as a sequence, it's first
+  element can now be a :term:`path-like object` as well.
+
+- bpo-31900: The :func:`locale.localeconv` function now sets temporarily the
+  ``LC_CTYPE`` locale to the ``LC_NUMERIC`` locale to decode
+  ``decimal_point`` and ``thousands_sep`` byte strings if they are non-ASCII
+  or longer than 1 byte, and the ``LC_NUMERIC`` locale is different than the
+  ``LC_CTYPE`` locale. This temporary change affects other threads.
+
+  Same change for the :meth:`str.format` method when formatting a number
+  (:class:`int`, :class:`float`, :class:`float` and subclasses) with the
+  ``n`` type (ex: ``'{:n}'.format(1234)``).
+
+- bpo-31853: Use super().method instead of socket.method in SSLSocket.  They
+  were there most likely for legacy reasons.
+
+- bpo-31399: The ssl module now uses OpenSSL's X509_VERIFY_PARAM_set1_host()
+  and X509_VERIFY_PARAM_set1_ip() API to verify hostname and IP addresses.
+  Subject common name fallback can be disabled with
+  SSLContext.hostname_checks_common_name.
+
+- bpo-14976: Add a queue.SimpleQueue class, an unbounded FIFO queue with a
+  reentrant C implementation of put().
+
+Documentation
+-------------
+
+- bpo-32724: Add references to some commands in the documentation of Pdb.
+  Patch by Stéphane Wirtel
+
+- bpo-32649: Complete the C API documentation, profiling and tracing part
+  with the newly added per-opcode events.
+
+- bpo-17799: Explain real behaviour of sys.settrace and sys.setprofile and
+  their C-API counterparts regarding which type of events are received in
+  each function. Patch by Pablo Galindo Salgado.
+
+Tests
+-----
+
+- bpo-32721: Fix test_hashlib to not fail if the _md5 module is not built.
+
+- bpo-28414: Add test cases for IDNA 2003 and 2008 host names. IDNA 2003
+  internationalized host names are working since bpo-31399 has landed. IDNA
+  2008 are still broken.
+
+- bpo-32604: Add a new "_xxsubinterpreters" extension module that exposes
+  the existing subinterpreter C-API and a new cross-interpreter data sharing
+  mechanism. The module is primarily intended for more thorough testing of
+  the existing subinterpreter support.
+
+- bpo-32602: Add test certs and test for ECDSA cert and EC/RSA dual mode.
+
+- bpo-32549: On Travis CI, Python now Compiles and uses a local copy of
+  OpenSSL 1.1.0g for testing.
+
+Build
+-----
+
+- bpo-32635: Fix segfault of the crypt module when libxcrypt is provided
+  instead of libcrypt at the system.
+
+- bpo-32598: Use autoconf to detect OpenSSL libs, headers and supported
+  features. The ax_check_openssl M4 macro uses pkg-config to locate OpenSSL
+  and falls back to manual search.
+
+- bpo-32593: Drop support of FreeBSD 9 and older.
+
+- bpo-29708: If the :envvar:`SOURCE_DATE_EPOCH` environment variable is set,
+  :mod:`py_compile` will always create hash-based ``.pyc`` files.
+
+Windows
+-------
+
+- bpo-32588: Create standalone _distutils_findvs module and add missing
+  _queue module to installer.
+
+- bpo-29911: Ensure separate Modify and Uninstall buttons are displayed.
+
+- bpo-32507: Use app-local UCRT install rather than the proper update for
+  old versions of Windows.
+
+macOS
+-----
+
+- bpo-32726: Provide an additional, more modern macOS installer variant that
+  supports macOS 10.9+ systems in 64-bit mode only.  Upgrade the supplied
+  third-party libraries to OpenSSL 1.1.0g and to SQLite 3.22.0.  The 10.9+
+  installer now links with and supplies its own copy of Tcl/Tk 8.6.
+
+- bpo-28440: No longer add /Library/Python/3.x/site-packages to sys.path for
+  macOS framework builds to avoid future conflicts.
+
+C API
+-----
+
+- bpo-32681: Fix uninitialized variable 'res' in the C implementation of
+  os.dup2. Patch by Stéphane Wirtel
+
+- bpo-10381: Add C API access to the ``datetime.timezone`` constructor and
+  ``datetime.timzone.UTC`` singleton.
+
+
 What's New in Python 3.7.0 alpha 4?
 ===================================
 
@@ -68,16 +390,16 @@ Core and Builtins
 
 - bpo-29240: Add a new UTF-8 mode: implementation of the :pep:`540`.
 
-- bpo-32226: PEP 560: Add support for __mro_entries__ and __class_getitem__.
-  Implemented by Ivan Levkivskyi.
+- bpo-32226: :pep:`560`: Add support for ``__mro_entries__`` and
+  ``__class_getitem__``. Implemented by Ivan Levkivskyi.
 
-- bpo-32225: PEP 562: Add support for module ``__getattr__`` and
+- bpo-32225: :pep:`562`: Add support for module ``__getattr__`` and
   ``__dir__``. Implemented by Ivan Levkivskyi.
 
 - bpo-31901: The `atexit` module now has its callback stored per
   interpreter.
 
-- bpo-31650: Implement PEP 552 (Deterministic pycs). Python now supports
+- bpo-31650: Implement :pep:`552` (Deterministic pycs). Python now supports
   invalidating bytecode cache files bashed on a source content hash rather
   than source last-modified time.
 
@@ -154,8 +476,7 @@ Library
 
 - bpo-32327: Convert asyncio functions that were documented as coroutines to
   coroutines. Affected functions: loop.sock_sendall, loop.sock_recv,
-  loop.sock_accept, loop.run_in_executor, loop.getaddrinfo,
-  loop.getnameinfo.
+  loop.sock_accept, loop.getaddrinfo, loop.getnameinfo.
 
 - bpo-32323: :func:`urllib.parse.urlsplit()` does not convert zone-id
   (scope) to lower case for scoped IPv6 addresses in hostnames now.
@@ -241,9 +562,9 @@ Library
 - bpo-26439: Fix ctypes.util.find_library() for AIX by implementing
   ctypes._aix.find_library() Patch by: Michael Felt
 
-- bpo-31993: The picklers no longer allocate temporary memory when dumping
-  large ``bytes`` and ``str`` objects into a file object. Instead the data
-  is directly streamed into the underlying file object.
+- bpo-31993: The pickler now uses less memory when serializing large bytes
+  and str objects into a file.  Pickles created with protocol 4 will require
+  less memory for unpickling large bytes and str objects.
 
 - bpo-27456: Ensure TCP_NODELAY is set on Linux. Tests by Victor Stinner.
 

@@ -1,3 +1,10 @@
+python3.7 (3.7.0~b1-1) unstable; urgency=medium
+
+  * Python 3.7.0 beta 1 release.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 01 Feb 2018 08:36:28 +0100
+
 python3.7 (3.7.0~a4-1) unstable; urgency=medium
 
   * Python 3.7.0 alpha 4 release.

@@ -4,8 +4,8 @@ Index: b/Tools/scripts/run_tests.py
 ===================================================================
 --- a/Tools/scripts/run_tests.py
 +++ b/Tools/scripts/run_tests.py
-@@ -34,7 +34,6 @@ def main(regrtest_args):
-     args.extend(['-W', 'error::BytesWarning'])
+@@ -31,7 +31,6 @@ def main(regrtest_args):
+     args.extend(test.support.args_from_interpreter_flags())
  
      args.extend(['-m', 'test',    # Run the test suite
 -                 '-r',            # Randomize test order

@@ -17,7 +17,7 @@ Index: b/setup.py
          self.compiler.set_executables(**args)
  
          build_ext.build_extensions(self)
-@@ -527,12 +529,7 @@ class PyBuildExt(build_ext):
+@@ -537,12 +539,7 @@ class PyBuildExt(build_ext):
              os.unlink(tmpfile)
  
      def detect_modules(self):

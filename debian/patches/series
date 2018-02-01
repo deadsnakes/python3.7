@@ -33,5 +33,5 @@ pydoc-use-pager.diff
 pyhash.diff
 mips-r6.diff
 local-doc-references.diff
-doc-build-texinfo.patch
+doc-build-texinfo.diff
 temporary-changes.diff

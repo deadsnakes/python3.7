@@ -11,7 +11,7 @@ Index: b/Makefile.pre.in
  LDCXXSHARED=	@LDCXXSHARED@
  DESTSHARED=	$(BINLIBDEST)/lib-dynload
  
-@@ -569,7 +569,7 @@ clinic: check-clean-src $(BUILDPYTHON) $
+@@ -577,7 +577,7 @@ clinic: check-clean-src $(BUILDPYTHON) $
  
  # Build the interpreter
  $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
