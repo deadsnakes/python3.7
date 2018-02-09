@@ -1,10 +1,15 @@
-Description: Add the option to build Texinfo-format documentation.
-Author: Benjamin Moody <benjamin@physionet.org>
-Bug-Debian: https://bugs.debian.org/881959
-Last-Update: 2017-11-27
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: doc-build-texinfo
 
---- python3.7-3.7.0~a2.orig/Doc/Makefile
-+++ python3.7-3.7.0~a2/Doc/Makefile
+---
+ Doc/Makefile | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Doc/Makefile b/Doc/Makefile
+index 307d1e0..7b67d84 100644
+--- a/Doc/Makefile
++++ b/Doc/Makefile
 @@ -27,6 +27,7 @@ help:
  	@echo "  htmlview   to open the index page built by the html target in your browser"
  	@echo "  htmlhelp   to make HTML files and a HTML help project"

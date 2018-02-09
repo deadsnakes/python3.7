@@ -1,7 +1,14 @@
-# DP: suggest installation of python-tk package on failing _tkinter import
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: tkinter-import
 
-Index: b/Lib/tkinter/__init__.py
-===================================================================
+# DP: suggest installation of python-tk package on failing _tkinter import
+---
+ Lib/tkinter/__init__.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Lib/tkinter/__init__.py b/Lib/tkinter/__init__.py
+index deea791..36e67bb 100644
 --- a/Lib/tkinter/__init__.py
 +++ b/Lib/tkinter/__init__.py
 @@ -33,7 +33,10 @@ tk.mainloop()

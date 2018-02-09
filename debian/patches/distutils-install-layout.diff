@@ -1,57 +1,23 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: distutils-install-layout
+
 # DP: distutils: Add an option --install-layout=deb, which
 # DP: - installs into $prefix/dist-packages instead of $prefix/site-packages.
 # DP: - doesn't encode the python version into the egg name.
+---
+ Lib/distutils/command/install.py          | 43 ++++++++++++++++++++++++++++++-
+ Lib/distutils/command/install_egg_info.py | 30 +++++++++++++++++----
+ Lib/distutils/sysconfig.py                |  7 +++++
+ Lib/distutils/tests/test_bdist_dumb.py    |  2 +-
+ Lib/distutils/tests/test_install.py       |  4 +--
+ Lib/pydoc.py                              |  1 +
+ Lib/site.py                               | 23 ++++++++++++++---
+ Lib/test/test_site.py                     |  6 ++---
+ 8 files changed, 101 insertions(+), 15 deletions(-)
 
-Index: b/Lib/distutils/command/install_egg_info.py
-===================================================================
---- a/Lib/distutils/command/install_egg_info.py
-+++ b/Lib/distutils/command/install_egg_info.py
-@@ -14,18 +14,38 @@ class install_egg_info(Command):
-     description = "Install package's PKG-INFO metadata as an .egg-info file"
-     user_options = [
-         ('install-dir=', 'd', "directory to install to"),
-+        ('install-layout', None, "custom installation layout"),
-     ]
- 
-     def initialize_options(self):
-         self.install_dir = None
-+        self.install_layout = None
-+        self.prefix_option = None
- 
-     def finalize_options(self):
-         self.set_undefined_options('install_lib',('install_dir','install_dir'))
--        basename = "%s-%s-py%d.%d.egg-info" % (
--            to_filename(safe_name(self.distribution.get_name())),
--            to_filename(safe_version(self.distribution.get_version())),
--            *sys.version_info[:2]
--        )
-+        self.set_undefined_options('install',('install_layout','install_layout'))
-+        self.set_undefined_options('install',('prefix_option','prefix_option'))
-+        if self.install_layout:
-+            if not self.install_layout.lower() in ['deb', 'unix']:
-+                raise DistutilsOptionError(
-+                    "unknown value for --install-layout")
-+            no_pyver = (self.install_layout.lower() == 'deb')
-+        elif self.prefix_option:
-+            no_pyver = False
-+        else:
-+            no_pyver = True
-+        if no_pyver:
-+            basename = "%s-%s.egg-info" % (
-+                to_filename(safe_name(self.distribution.get_name())),
-+                to_filename(safe_version(self.distribution.get_version()))
-+                )
-+        else:
-+            basename = "%s-%s-py%d.%d.egg-info" % (
-+                to_filename(safe_name(self.distribution.get_name())),
-+                to_filename(safe_version(self.distribution.get_version())),
-+                *sys.version_info[:2]
-+            )
-         self.target = os.path.join(self.install_dir, basename)
-         self.outputs = [self.target]
- 
-Index: b/Lib/distutils/command/install.py
-===================================================================
+diff --git a/Lib/distutils/command/install.py b/Lib/distutils/command/install.py
+index 0258d3d..47dc00a 100644
 --- a/Lib/distutils/command/install.py
 +++ b/Lib/distutils/command/install.py
 @@ -35,6 +35,20 @@ INSTALL_SCHEMES = {
@@ -139,11 +105,59 @@ Index: b/Lib/distutils/command/install.py
  
      def finalize_other(self):
          """Finalizes options for non-posix platforms"""
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+diff --git a/Lib/distutils/command/install_egg_info.py b/Lib/distutils/command/install_egg_info.py
+index 0ddc736..0a71b61 100644
+--- a/Lib/distutils/command/install_egg_info.py
++++ b/Lib/distutils/command/install_egg_info.py
+@@ -14,18 +14,38 @@ class install_egg_info(Command):
+     description = "Install package's PKG-INFO metadata as an .egg-info file"
+     user_options = [
+         ('install-dir=', 'd', "directory to install to"),
++        ('install-layout', None, "custom installation layout"),
+     ]
+ 
+     def initialize_options(self):
+         self.install_dir = None
++        self.install_layout = None
++        self.prefix_option = None
+ 
+     def finalize_options(self):
+         self.set_undefined_options('install_lib',('install_dir','install_dir'))
+-        basename = "%s-%s-py%d.%d.egg-info" % (
+-            to_filename(safe_name(self.distribution.get_name())),
+-            to_filename(safe_version(self.distribution.get_version())),
+-            *sys.version_info[:2]
+-        )
++        self.set_undefined_options('install',('install_layout','install_layout'))
++        self.set_undefined_options('install',('prefix_option','prefix_option'))
++        if self.install_layout:
++            if not self.install_layout.lower() in ['deb', 'unix']:
++                raise DistutilsOptionError(
++                    "unknown value for --install-layout")
++            no_pyver = (self.install_layout.lower() == 'deb')
++        elif self.prefix_option:
++            no_pyver = False
++        else:
++            no_pyver = True
++        if no_pyver:
++            basename = "%s-%s.egg-info" % (
++                to_filename(safe_name(self.distribution.get_name())),
++                to_filename(safe_version(self.distribution.get_version()))
++                )
++        else:
++            basename = "%s-%s-py%d.%d.egg-info" % (
++                to_filename(safe_name(self.distribution.get_name())),
++                to_filename(safe_version(self.distribution.get_version())),
++                *sys.version_info[:2]
++            )
+         self.target = os.path.join(self.install_dir, basename)
+         self.outputs = [self.target]
+ 
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index e07a6c8..1007527 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -122,6 +122,7 @@ def get_python_lib(plat_specific=0, stan
+@@ -122,6 +122,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
      If 'prefix' is supplied, use it instead of sys.base_prefix or
      sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
      """
@@ -151,7 +165,7 @@ Index: b/Lib/distutils/sysconfig.py
      if prefix is None:
          if standard_lib:
              prefix = plat_specific and BASE_EXEC_PREFIX or BASE_PREFIX
-@@ -133,6 +134,12 @@ def get_python_lib(plat_specific=0, stan
+@@ -133,6 +134,12 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
                                   "lib", "python" + get_python_version())
          if standard_lib:
              return libpython
@@ -164,8 +178,55 @@ Index: b/Lib/distutils/sysconfig.py
          else:
              return os.path.join(libpython, "site-packages")
      elif os.name == "nt":
-Index: b/Lib/site.py
-===================================================================
+diff --git a/Lib/distutils/tests/test_bdist_dumb.py b/Lib/distutils/tests/test_bdist_dumb.py
+index c8ccdc2..eeca5f9 100644
+--- a/Lib/distutils/tests/test_bdist_dumb.py
++++ b/Lib/distutils/tests/test_bdist_dumb.py
+@@ -85,7 +85,7 @@ class BuildDumbTestCase(support.TempdirManager,
+             fp.close()
+ 
+         contents = sorted(os.path.basename(fn) for fn in contents)
+-        wanted = ['foo-0.1-py%s.%s.egg-info' % sys.version_info[:2], 'foo.py']
++        wanted = ['foo-0.1.egg-info', 'foo.py']
+         if not sys.dont_write_bytecode:
+             wanted.append('foo.%s.pyc' % sys.implementation.cache_tag)
+         self.assertEqual(contents, sorted(wanted))
+diff --git a/Lib/distutils/tests/test_install.py b/Lib/distutils/tests/test_install.py
+index 287ab19..00e3f94 100644
+--- a/Lib/distutils/tests/test_install.py
++++ b/Lib/distutils/tests/test_install.py
+@@ -193,7 +193,7 @@ class InstallTestCase(support.TempdirManager,
+         found = [os.path.basename(line) for line in content.splitlines()]
+         expected = ['hello.py', 'hello.%s.pyc' % sys.implementation.cache_tag,
+                     'sayhi',
+-                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
++                    'UNKNOWN-0.0.0.egg-info']
+         self.assertEqual(found, expected)
+ 
+     def test_record_extensions(self):
+@@ -226,7 +226,7 @@ class InstallTestCase(support.TempdirManager,
+ 
+         found = [os.path.basename(line) for line in content.splitlines()]
+         expected = [_make_ext_name('xx'),
+-                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
++                    'UNKNOWN-0.0.0.egg-info']
+         self.assertEqual(found, expected)
+ 
+     def test_debug_mode(self):
+diff --git a/Lib/pydoc.py b/Lib/pydoc.py
+index 675583c..d19e90d 100644
+--- a/Lib/pydoc.py
++++ b/Lib/pydoc.py
+@@ -420,6 +420,7 @@ class Doc:
+                                  'marshal', 'posix', 'signal', 'sys',
+                                  '_thread', 'zipimport') or
+              (file.startswith(basedir) and
++              not file.startswith(os.path.join(basedir, 'dist-packages')) and
+               not file.startswith(os.path.join(basedir, 'site-packages')))) and
+             object.__name__ not in ('xml.etree', 'test.pydoc_mod')):
+             if docloc.startswith(("http://", "https://")):
+diff --git a/Lib/site.py b/Lib/site.py
+index 950e703..1a29060 100644
 --- a/Lib/site.py
 +++ b/Lib/site.py
 @@ -7,12 +7,18 @@
@@ -211,11 +272,11 @@ Index: b/Lib/site.py
          else:
              sitepackages.append(prefix)
              sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
-Index: b/Lib/test/test_site.py
-===================================================================
+diff --git a/Lib/test/test_site.py b/Lib/test/test_site.py
+index b6648d6..390ca83 100644
 --- a/Lib/test/test_site.py
 +++ b/Lib/test/test_site.py
-@@ -263,10 +263,10 @@ class HelperFunctionsTests(unittest.Test
+@@ -263,10 +263,10 @@ class HelperFunctionsTests(unittest.TestCase):
          dirs = site.getsitepackages()
          if os.sep == '/':
              # OS X, Linux, FreeBSD, etc
@@ -229,50 +290,3 @@ Index: b/Lib/test/test_site.py
              self.assertEqual(dirs[0], wanted)
          else:
              # other platforms
-Index: b/Lib/distutils/tests/test_bdist_dumb.py
-===================================================================
---- a/Lib/distutils/tests/test_bdist_dumb.py
-+++ b/Lib/distutils/tests/test_bdist_dumb.py
-@@ -85,7 +85,7 @@ class BuildDumbTestCase(support.TempdirM
-             fp.close()
- 
-         contents = sorted(os.path.basename(fn) for fn in contents)
--        wanted = ['foo-0.1-py%s.%s.egg-info' % sys.version_info[:2], 'foo.py']
-+        wanted = ['foo-0.1.egg-info', 'foo.py']
-         if not sys.dont_write_bytecode:
-             wanted.append('foo.%s.pyc' % sys.implementation.cache_tag)
-         self.assertEqual(contents, sorted(wanted))
-Index: b/Lib/distutils/tests/test_install.py
-===================================================================
---- a/Lib/distutils/tests/test_install.py
-+++ b/Lib/distutils/tests/test_install.py
-@@ -193,7 +193,7 @@ class InstallTestCase(support.TempdirMan
-         found = [os.path.basename(line) for line in content.splitlines()]
-         expected = ['hello.py', 'hello.%s.pyc' % sys.implementation.cache_tag,
-                     'sayhi',
--                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
-+                    'UNKNOWN-0.0.0.egg-info']
-         self.assertEqual(found, expected)
- 
-     def test_record_extensions(self):
-@@ -226,7 +226,7 @@ class InstallTestCase(support.TempdirMan
- 
-         found = [os.path.basename(line) for line in content.splitlines()]
-         expected = [_make_ext_name('xx'),
--                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
-+                    'UNKNOWN-0.0.0.egg-info']
-         self.assertEqual(found, expected)
- 
-     def test_debug_mode(self):
-Index: b/Lib/pydoc.py
-===================================================================
---- a/Lib/pydoc.py
-+++ b/Lib/pydoc.py
-@@ -420,6 +420,7 @@ class Doc:
-                                  'marshal', 'posix', 'signal', 'sys',
-                                  '_thread', 'zipimport') or
-              (file.startswith(basedir) and
-+              not file.startswith(os.path.join(basedir, 'dist-packages')) and
-               not file.startswith(os.path.join(basedir, 'site-packages')))) and
-             object.__name__ not in ('xml.etree', 'test.pydoc_mod')):
-             if docloc.startswith(("http://", "https://")):

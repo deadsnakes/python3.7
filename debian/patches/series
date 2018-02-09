@@ -1,4 +1,3 @@
-# hg-updates.diff
 deb-setup.diff
 deb-locations.diff
 distutils-install-layout.diff
@@ -16,7 +15,6 @@ langpack-gettext.diff
 disable-sem-check.diff
 lib-argparse.diff
 ctypes-arm.diff
-# link-timemodule.diff
 lto-link-flags.diff
 multiarch.diff
 lib2to3-no-pickled-grammar.diff

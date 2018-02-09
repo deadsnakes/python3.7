@@ -1,7 +1,14 @@
-# DP: Call the linker with -O1 -Bsymbolic-functions
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: link-opt
 
-Index: b/configure.ac
-===================================================================
+# DP: Call the linker with -O1 -Bsymbolic-functions
+---
+ configure.ac | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 525e572..c5e41e9 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -2511,8 +2511,8 @@ then

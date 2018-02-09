@@ -1,5 +1,14 @@
-Index: b/Lib/ctypes/util.py
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: ctypes-arm
+
 ===================================================================
+---
+ Lib/ctypes/util.py | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/Lib/ctypes/util.py b/Lib/ctypes/util.py
+index 5e8b31a..a493bd3 100644
 --- a/Lib/ctypes/util.py
 +++ b/Lib/ctypes/util.py
 @@ -256,16 +256,27 @@ elif os.name == "posix":

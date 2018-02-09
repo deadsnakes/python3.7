@@ -1,8 +1,31 @@
-Index: b/Include/pystate.h
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: temporary-changes
+
 ===================================================================
+---
+ Include/internal/pystate.h |  2 ++
+ Include/pystate.h          | 25 +++++++++++++------------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/Include/internal/pystate.h b/Include/internal/pystate.h
+index 2b60b25..4f04c10 100644
+--- a/Include/internal/pystate.h
++++ b/Include/internal/pystate.h
+@@ -7,6 +7,8 @@ extern "C" {
+ #include "pystate.h"
+ #include "pyatomic.h"
+ #include "pythread.h"
++#include "pyerrors.h"
++#include "pylifecycle.h"
+ 
+ #include "internal/mem.h"
+ #include "internal/ceval.h"
+diff --git a/Include/pystate.h b/Include/pystate.h
+index a19c1ed..2e421a3 100644
 --- a/Include/pystate.h
 +++ b/Include/pystate.h
-@@ -349,11 +349,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_Get
+@@ -349,11 +349,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_GetDict(void);
  PyAPI_FUNC(int) PyThreadState_SetAsyncExc(unsigned long, PyObject *);
  
  
@@ -27,7 +50,7 @@ Index: b/Include/pystate.h
  #  define _PyThreadState_Current _PyRuntime.gilstate.tstate_current
  #  define PyThreadState_GET() \
               ((PyThreadState*)_Py_atomic_load_relaxed(&_PyThreadState_Current))
-@@ -430,18 +443,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILS
+@@ -430,18 +443,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILState_GetInterpreterStateUnsafe(void);
  PyAPI_FUNC(PyObject *) _PyThread_CurrentFrames(void);
  #endif
  
@@ -46,16 +69,3 @@ Index: b/Include/pystate.h
  #ifdef __cplusplus
  }
  #endif
-Index: b/Include/internal/pystate.h
-===================================================================
---- a/Include/internal/pystate.h
-+++ b/Include/internal/pystate.h
-@@ -7,6 +7,8 @@ extern "C" {
- #include "pystate.h"
- #include "pyatomic.h"
- #include "pythread.h"
-+#include "pyerrors.h"
-+#include "pylifecycle.h"
- 
- #include "internal/mem.h"
- #include "internal/ceval.h"

@@ -1,8 +1,15 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: mangle-fstack-protector
+
 # DP: When using GCC versions older than 4.9, automagically mangle
 # DP: -fstack-protector-strong to -fstack-protector
+---
+ Lib/distutils/sysconfig.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index 0f793ba..04b4f04 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
 @@ -13,6 +13,7 @@ import _imp

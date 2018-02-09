@@ -1,7 +1,15 @@
-# DP: Disable ensurepip for the system installation, only enable it for virtual environments.
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: ensurepip-disabled
 
-Index: b/Lib/ensurepip/__init__.py
-===================================================================
+# DP: Disable ensurepip for the system installation, only enable it for virtual environments.
+---
+ Lib/ensurepip/__init__.py | 33 +++++++++++++++++++++++++++++++++
+ Lib/venv/__init__.py      | 23 ++++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/Lib/ensurepip/__init__.py b/Lib/ensurepip/__init__.py
+index 6509c6b..267ae51 100644
 --- a/Lib/ensurepip/__init__.py
 +++ b/Lib/ensurepip/__init__.py
 @@ -8,6 +8,34 @@ import tempfile
@@ -39,7 +47,7 @@ Index: b/Lib/ensurepip/__init__.py
  
  _PROJECTS = [
      "setuptools",
-@@ -71,6 +99,11 @@ def _bootstrap(*, root=None, upgrade=Fal
+@@ -71,6 +99,11 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
  
      Note that calling this function will alter both sys.path and os.environ.
      """
@@ -51,8 +59,8 @@ Index: b/Lib/ensurepip/__init__.py
      if altinstall and default_pip:
          raise ValueError("Cannot use altinstall and default_pip together")
  
-Index: b/Lib/venv/__init__.py
-===================================================================
+diff --git a/Lib/venv/__init__.py b/Lib/venv/__init__.py
+index 716129d..bd83da6 100644
 --- a/Lib/venv/__init__.py
 +++ b/Lib/venv/__init__.py
 @@ -242,7 +242,28 @@ class EnvBuilder:

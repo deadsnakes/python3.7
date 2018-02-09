@@ -1,13 +1,20 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: langpack-gettext
+
 # DP: Description: support alternative gettext tree in
 # DP: /usr/share/locale-langpack; if a file is present in both trees,
 # DP: prefer the newer one
 # DP: Upstream status: Ubuntu-Specific
+---
+ Lib/gettext.py | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Index: b/Lib/gettext.py
-===================================================================
+diff --git a/Lib/gettext.py b/Lib/gettext.py
+index 4c3b80b..5ead9d4 100644
 --- a/Lib/gettext.py
 +++ b/Lib/gettext.py
-@@ -499,11 +499,26 @@ def find(domain, localedir=None, languag
+@@ -499,11 +499,26 @@ def find(domain, localedir=None, languages=None, all=False):
          if lang == 'C':
              break
          mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)

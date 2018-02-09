@@ -1,9 +1,16 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: locale-module
+
 # DP:   * Lib/locale.py:
 # DP:     - Don't map 'utf8', 'utf-8' to 'utf', which is not a known encoding
 # DP:       for glibc.
+---
+ Lib/locale.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Index: b/Lib/locale.py
-===================================================================
+diff --git a/Lib/locale.py b/Lib/locale.py
+index 18079e7..fb669c6 100644
 --- a/Lib/locale.py
 +++ b/Lib/locale.py
 @@ -1357,8 +1357,8 @@ locale_alias = {

@@ -1,9 +1,16 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: distutils-sysconfig
+
 # DP: Get CONFIGURE_CFLAGS, CONFIGURE_CPPFLAGS, CONFIGURE_LDFLAGS from
 # DP: the python build, when CFLAGS, CPPFLAGS, LDSHARED) are not set
 # DP: in the environment.
+---
+ Lib/distutils/sysconfig.py | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index 1007527..d62a415 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
 @@ -177,9 +177,11 @@ def customize_compiler(compiler):

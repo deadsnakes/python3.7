@@ -1,5 +1,30 @@
-Index: b/Lib/sysconfig.py
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: multiarch
+
 ===================================================================
+---
+ Lib/distutils/sysconfig.py | 3 +++
+ Lib/sysconfig.py           | 6 ++++++
+ Makefile.pre.in            | 3 ++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index d62a415..0f793ba 100644
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -99,6 +99,9 @@ def get_python_inc(plat_specific=0, prefix=None):
+                 incdir = os.path.join(get_config_var('srcdir'), 'Include')
+                 return os.path.normpath(incdir)
+         python_dir = 'python' + get_python_version() + build_flags
++        if not python_build and plat_specific:
++            import sysconfig
++            return sysconfig.get_path('platinclude')
+         return os.path.join(prefix, "include", python_dir)
+     elif os.name == "nt":
+         return os.path.join(prefix, "include")
+diff --git a/Lib/sysconfig.py b/Lib/sysconfig.py
+index 9ee4d31..1ae5088 100644
 --- a/Lib/sysconfig.py
 +++ b/Lib/sysconfig.py
 @@ -551,6 +551,12 @@ def get_config_vars(*args):
@@ -15,25 +40,11 @@ Index: b/Lib/sysconfig.py
          # Always convert srcdir to an absolute path
          srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)
          if os.name == 'posix':
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
---- a/Lib/distutils/sysconfig.py
-+++ b/Lib/distutils/sysconfig.py
-@@ -99,6 +99,9 @@ def get_python_inc(plat_specific=0, pref
-                 incdir = os.path.join(get_config_var('srcdir'), 'Include')
-                 return os.path.normpath(incdir)
-         python_dir = 'python' + get_python_version() + build_flags
-+        if not python_build and plat_specific:
-+            import sysconfig
-+            return sysconfig.get_path('platinclude')
-         return os.path.join(prefix, "include", python_dir)
-     elif os.name == "nt":
-         return os.path.join(prefix, "include")
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index e241127..60941f1 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -786,6 +786,7 @@ Modules/signalmodule.o: $(srcdir)/Module
+@@ -786,6 +786,7 @@ Modules/signalmodule.o: $(srcdir)/Modules/signalmodule.c $(srcdir)/Modules/posix
  
  Python/dynload_shlib.o: $(srcdir)/Python/dynload_shlib.c Makefile
  	$(CC) -c $(PY_CORE_CFLAGS) \

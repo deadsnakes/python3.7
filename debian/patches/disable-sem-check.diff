@@ -1,7 +1,14 @@
-# DP: Assume working semaphores, don't rely on running kernel for the check.
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: disable-sem-check
 
-Index: b/configure.ac
-===================================================================
+# DP: Assume working semaphores, don't rely on running kernel for the check.
+---
+ configure.ac | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c5e41e9..6f43f19 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -4446,8 +4446,13 @@ int main(void) {

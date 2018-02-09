@@ -1,5 +1,14 @@
-Index: b/Lib/ensurepip/__init__.py
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: ensurepip-wheels
+
 ===================================================================
+---
+ Lib/ensurepip/__init__.py | 66 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 20 deletions(-)
+
+diff --git a/Lib/ensurepip/__init__.py b/Lib/ensurepip/__init__.py
+index d69e09f..6509c6b 100644
 --- a/Lib/ensurepip/__init__.py
 +++ b/Lib/ensurepip/__init__.py
 @@ -1,3 +1,4 @@
@@ -36,7 +45,7 @@ Index: b/Lib/ensurepip/__init__.py
  
  def _disable_pip_configuration_settings():
      # We deliberately ignore all pip environment variables
-@@ -88,20 +89,44 @@ def _bootstrap(*, root=None, upgrade=Fal
+@@ -88,20 +89,44 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
          # omit pip and easy_install
          os.environ["ENSUREPIP_OPTIONS"] = "install"
  
@@ -91,7 +100,7 @@ Index: b/Lib/ensurepip/__init__.py
  
          # Construct the arguments to be passed to the pip command
          args = ["install", "--no-index", "--find-links", tmpdir]
-@@ -114,7 +139,7 @@ def _bootstrap(*, root=None, upgrade=Fal
+@@ -114,7 +139,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
          if verbosity:
              args += ["-" + "v" * verbosity]
  

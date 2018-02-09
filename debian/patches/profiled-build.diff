@@ -1,7 +1,14 @@
-# DP: Ignore errors in the profile task.
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: profiled-build
 
-Index: b/Makefile.pre.in
-===================================================================
+# DP: Ignore errors in the profile task.
+---
+ Makefile.pre.in | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index f58b715..926173b 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
 @@ -500,6 +500,16 @@ build_all_generate_profile:

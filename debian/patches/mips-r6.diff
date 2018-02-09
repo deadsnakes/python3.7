@@ -1,5 +1,14 @@
-Index: b/configure.ac
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: mips-r6
+
 ===================================================================
+---
+ configure.ac | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 6f43f19..35a1e49 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -781,6 +781,26 @@ cat >> conftest.c <<EOF
