@@ -33,3 +33,4 @@ mips-r6.diff
 local-doc-references.diff
 doc-build-texinfo.diff
 temporary-changes.diff
+0036-Disable-broken-dbm.ndbm-tests.patch
