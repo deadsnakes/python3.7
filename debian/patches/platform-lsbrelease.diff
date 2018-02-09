@@ -38,7 +38,7 @@ index dc981ec..6d647f7 100755
 +    # check for the Debian/Ubuntu /etc/lsb-release file first, needed so
 +    # that the distribution doesn't get identified as Debian.
 +    try:
-+        with open("/etc/lsb-release", "r") as etclsbrel:
++        with open(os.path.join(_UNIXCONFDIR, "lsb-release"), "r") as etclsbrel:
 +            for line in etclsbrel:
 +                m = _distributor_id_file_re.search(line)
 +                if m:
