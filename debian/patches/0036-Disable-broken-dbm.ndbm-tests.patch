@@ -1,0 +1,24 @@
+From: Anthony Sottile <asottile@umich.edu>
+Date: Fri, 9 Feb 2018 14:24:01 -0800
+Subject: Disable broken dbm.ndbm tests
+
+---
+ Lib/test/test_dbm.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Lib/test/test_dbm.py b/Lib/test/test_dbm.py
+index f0a428d..bab439f 100644
+--- a/Lib/test/test_dbm.py
++++ b/Lib/test/test_dbm.py
+@@ -109,6 +109,11 @@ class AnyDBMTestCase:
+         f.close()
+ 
+     def read_helper(self, f):
++        if (
++                ndbm.library == 'Berkeley DB' and
++                self.module.__name__ == 'dbm.ndbm'
++        ):
++            self.skipTest('See https://bugs.python.org/issue28700')
+         keys = self.keys_helper(f)
+         for key in self._dict:
+             self.assertEqual(self._dict[key], f[key.encode("ascii")])
