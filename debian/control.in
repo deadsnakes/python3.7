@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 9), @bd_dpkgdev@
   zlib1g-dev, libbz2-dev, liblzma-dev,
   libgdbm-dev, libdb-dev,
   tk-dev, blt-dev (>= 2.4z), libssl-dev,
-  libexpat1-dev, libmpdec-dev (>= 2.4),
+  libexpat1-dev,
   libbluetooth-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
   locales [!armel !avr32 !hppa !ia64 !mipsel],
   libsqlite3-dev, libffi-dev (>= 3.0.5) [!or1k !avr32],
@@ -57,7 +57,7 @@ Multi-Arch: same
 Priority: @PRIO@
 Pre-Depends: ${misc:Pre-Depends}
 Depends: lib@PVER@-minimal (= ${binary:Version}), mime-support, ${shlibs:Depends}, ${misc:Depends}
-Breaks: @PVER@-tk (<< 3.6.4~rc1-2), libmpdec2 (<< 2.4.2)
+Breaks: @PVER@-tk (<< 3.6.4~rc1-2),
 Description: Interactive high-level object-oriented language (standard library, version @VER@)
  Python is a high-level, interactive, object-oriented language. Its @VER@ version
  includes an extensive class library with lots of goodies for
