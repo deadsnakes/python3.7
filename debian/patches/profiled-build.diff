@@ -1,0 +1,30 @@
+From: Matthias Klose <doko@debian.org>
+Date: Fri, 9 Feb 2018 14:24:32 -0800
+Subject: profiled-build
+
+# DP: Ignore errors in the profile task.
+---
+ Makefile.pre.in | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index f58b715..926173b 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -500,6 +500,16 @@ build_all_generate_profile:
+ run_profile_task:
+ 	@ # FIXME: can't run for a cross build
+ 	$(LLVM_PROF_FILE) $(RUNSHARED) ./$(BUILDPYTHON) $(PROFILE_TASK) || true
++	task="$(PROFILE_TASK)"; \
++	case "$$task" in \
++	*-s\ *) \
++	  $(LLVM_PROF_FILE) $(RUNSHARED) ./$(BUILDPYTHON) $$task; \
++	  while [ -f $(srcdir)/build/pynexttest ]; do \
++	    $(LLVM_PROF_FILE) $(RUNSHARED) ./$(BUILDPYTHON) $$task; \
++	  done;; \
++	*) \
++	  $(LLVM_PROF_FILE) $(RUNSHARED) ./$(BUILDPYTHON) $$task; \
++	esac
+ 
+ build_all_merge_profile:
+ 	$(LLVM_PROF_MERGER)
