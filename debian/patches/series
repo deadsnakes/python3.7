@@ -10,7 +10,6 @@ link-opt.diff
 setup-modules.diff
 platform-lsbrelease.diff
 bdist-wininst-notfound.diff
-profiled-build.diff
 langpack-gettext.diff
 disable-sem-check.diff
 lib-argparse.diff
@@ -32,4 +31,4 @@ local-doc-references.diff
 doc-build-texinfo.diff
 temporary-changes.diff
 0036-Disable-broken-dbm.ndbm-tests.patch
-0035-Use-the-readline-module-instead-of-select.patch
+0034-Use-the-readline-module-instead-of-select.patch
