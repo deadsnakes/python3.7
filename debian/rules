@@ -137,9 +137,7 @@ endif
 ifneq (,$(filter $(distrelease),sid experimental))
   bd_gcc =
 endif
-ifeq (,$(filter $(distrelease),lenny etch squeeze wheezy lucid maverick natty oneiric precise quantal raring saucy trusty))
-  bd_dpkgdev = dpkg-dev (>= 1.17.11),
-endif
+bd_dpkgdev = dpkg-dev (>= 1.17.5),
 
 CC=$(DEB_HOST_GNU_TYPE)-gcc
 CXX=$(DEB_HOST_GNU_TYPE)-g++
