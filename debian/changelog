@@ -1,3 +1,17 @@
+python3.7 (3.7.0~b1-1+trusty1) trusty; urgency=medium
+
+  * Removed apport support.
+  * Fix test_platform by adjusting debian patch.
+  * Add proper python-{distutils,gdbm,lib2to3,tk} support.
+  * Disable broken dbm.ndbm tests.
+  * Use bundled wheels for ensurepip.
+  * Use readline instead of select for test_import.
+  * Allow an older dpkg-dev for trusty.
+  * Build with bundled libmpdec.
+  * Bump version for deadsnakes trusty.
+
+ -- Anthony Sottile <asottile@umich.edu>  Sat, 10 Feb 2018 14:40:38 -0800
+
 python3.7 (3.7.0~b1-1) unstable; urgency=medium
 
   * Python 3.7.0 beta 1 release.
