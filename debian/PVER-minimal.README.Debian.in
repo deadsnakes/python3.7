@@ -9,6 +9,7 @@ are:
 
   __builtin__		builtin
   __future__		module
+  _abc			extension
   _ast			extension
   _bisect		extension
   _blake2		extension
@@ -32,6 +33,7 @@ are:
   _operator		extension
   _pickle		extension
   _posixsubprocess	extension
+  _py_abc		module
   _random		extension
   _sha1			extension
   _sha3			extension
