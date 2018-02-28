@@ -1,3 +1,9 @@
+python3.7 (3.7.0~b2-1+trusty2) trusty; urgency=medium
+
+  * Fix faulty merge present in 3.7.0~b2-1+trusty1.
+
+ -- Anthony Sottile <asottile@umich.edu>  Tue, 27 Feb 2018 23:25:31 -0800
+
 python3.7 (3.7.0~b2-1+trusty1) trusty; urgency=medium
 
   * Python 3.7.0 beta 2 release.
