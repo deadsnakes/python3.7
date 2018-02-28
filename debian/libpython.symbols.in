@@ -1355,6 +1355,9 @@
  _PyImport_SetModuleString@Base @SVER@
  _PyIncrementalNewlineDecoder_decode@Base @SVER@
  _PyInterpreterState_Enable@Base @SVER@
+ _PyInterpreterState_IDDecref@Base 3.7.0~b2
+ _PyInterpreterState_IDIncref@Base 3.7.0~b2
+ _PyInterpreterState_IDInitref@Base 3.7.0~b2
  _PyInterpreterState_LookUpID@Base @SVER@
  _PyList_DebugMallocStats@Base @SVER@
  _PyList_Extend@Base @SVER@
@@ -1891,6 +1894,7 @@
  (arch=amd64 i386 hurd-i386 kfreebsd-i386)_Py_set_387controlword@Base @SVER@
  _Py_set_blocking@Base @SVER@
  _Py_set_inheritable@Base @SVER@
+ _Py_set_inheritable_async_safe@Base 3.7.0~b2
  _Py_startswith__doc__@Base @SVER@
  _Py_stat@Base @SVER@
  _Py_strhex@Base @SVER@
