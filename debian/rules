@@ -77,7 +77,7 @@ distribution := $(shell lsb_release -is)
 distrelease  := $(shell lsb_release -cs)
 
 VER=3.7
-SVER=3.7.0~a1
+SVER=3.7.0~b2
 NVER=3.8
 PVER=python$(VER)
 EXT_VER=$(subst .,,$(VER))
