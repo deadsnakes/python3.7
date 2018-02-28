@@ -2,6 +2,256 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.0 beta 2?
+==================================
+
+*Release date: 2018-02-27*
+
+Security
+--------
+
+- bpo-28414: The ssl module now allows users to perform their own IDN
+  en/decoding when using SNI.
+
+Core and Builtins
+-----------------
+
+- bpo-32889: Update Valgrind suppression list to account for the rename of
+  ``Py_ADDRESS_IN_RANG`` to ``address_in_range``.
+
+- bpo-31356: Remove the new API added in bpo-31356 (gc.ensure_disabled()
+  context manager).
+
+- bpo-32305: For namespace packages, ensure that both ``__file__`` and
+  ``__spec__.origin`` are set to None.
+
+- bpo-32303: Make sure ``__spec__.loader`` matches ``__loader__`` for
+  namespace packages.
+
+- bpo-32711: Fix the warning messages for Python/ast_unparse.c. Patch by
+  Stéphane Wirtel
+
+- bpo-32583: Fix possible crashing in builtin Unicode decoders caused by
+  write out-of- bound errors when using customized decode error handlers.
+
+Library
+-------
+
+- bpo-32960: For dataclasses, disallow inheriting frozen from non-frozen
+  classes, and also disallow inheriting non-frozen from frozen classes. This
+  restriction will be relaxed at a future date.
+
+- bpo-32713: Fixed tarfile.itn handling of out-of-bounds float values. Patch
+  by Joffrey Fuhrer.
+
+- bpo-32951: Direct instantiation of SSLSocket and SSLObject objects is now
+  prohibited. The constructors were never documented, tested, or designed as
+  public constructors. Users were suppose to use ssl.wrap_socket() or
+  SSLContext.
+
+- bpo-32929: Remove the tri-state parameter "hash", and add the boolean
+  "unsafe_hash". If unsafe_hash is True, add a __hash__ function, but if a
+  __hash__ exists, raise TypeError.  If unsafe_hash is False, add a __hash__
+  based on the values of eq= and frozen=.  The unsafe_hash=False behavior is
+  the same as the old hash=None behavior.  unsafe_hash=False is the default,
+  just as hash=None used to be.
+
+- bpo-32947: Add OP_ENABLE_MIDDLEBOX_COMPAT and test workaround for TLSv1.3
+  for future compatibility with OpenSSL 1.1.1.
+
+- bpo-30622: The ssl module now detects missing NPN support in LibreSSL.
+
+- bpo-32922: dbm.open() now encodes filename with the filesystem encoding
+  rather than default encoding.
+
+- bpo-32859: In ``os.dup2``, don't check every call whether the ``dup3``
+  syscall exists or not.
+
+- bpo-32556: nt._getfinalpathname, nt._getvolumepathname and
+  nt._getdiskusage now correctly convert from bytes.
+
+- bpo-25988: Emit a :exc:`DeprecationWarning` when using or importing an ABC
+  directly from :mod:`collections` rather than from :mod:`collections.abc`.
+
+- bpo-21060: Rewrite confusing message from setup.py upload from "No dist
+  file created in earlier command" to the more helpful "Must create and
+  upload files in one command".
+
+- bpo-32852: Make sure sys.argv remains as a list when running trace.
+
+- bpo-31333: ``_abc`` module is added.  It is a speedup module with C
+  implementations for various functions and methods in ``abc``.  Creating an
+  ABC subclass and calling ``isinstance`` or ``issubclass`` with an ABC
+  subclass are up to 1.5x faster. In addition, this makes Python start-up up
+  to 10% faster.
+
+  Note that the new implementation hides internal registry and caches,
+  previously accessible via private attributes ``_abc_registry``,
+  ``_abc_cache``, and ``_abc_negative_cache``.  There are three debugging
+  helper methods that can be used instead ``_dump_registry``,
+  ``_abc_registry_clear``, and ``_abc_caches_clear``.
+
+- bpo-32841: Fixed `asyncio.Condition` issue which silently ignored
+  cancellation after notifying and cancelling a conditional lock. Patch by
+  Bar Harel.
+
+- bpo-32819: ssl.match_hostname() has been simplified and no longer depends
+  on re and ipaddress module for wildcard and IP addresses. Error reporting
+  for invalid wildcards has been improved.
+
+- bpo-32394: socket: Remove
+  TCP_FASTOPEN,TCP_KEEPCNT,TCP_KEEPIDLE,TCP_KEEPINTVL flags on older version
+  Windows during run-time.
+
+- bpo-31787: Fixed refleaks of ``__init__()`` methods in various modules.
+  (Contributed by Oren Milman)
+
+- bpo-30157: Fixed guessing quote and delimiter in csv.Sniffer.sniff() when
+  only the last field is quoted.  Patch by Jake Davis.
+
+- bpo-32792: collections.ChainMap() preserves the order of the underlying
+  mappings.
+
+- bpo-32775: :func:`fnmatch.translate()` no longer produces patterns which
+  contain set operations. Sets starting with '[' or containing '--', '&&',
+  '~~' or '||' will be interpreted differently in regular expressions in
+  future versions. Currently they emit warnings. fnmatch.translate() now
+  avoids producing patterns containing such sets by accident.
+
+- bpo-32622: Implement native fast sendfile for Windows proactor event loop.
+
+- bpo-32777: Fix a rare but potential pre-exec child process deadlock in
+  subprocess on POSIX systems when marking file descriptors inheritable on
+  exec in the child process.  This bug appears to have been introduced in
+  3.4.
+
+- bpo-32647: The ctypes module used to depend on indirect linking for
+  dlopen. The shared extension is now explicitly linked against libdl on
+  platforms with dl.
+
+- bpo-32741: Implement ``asyncio.TimerHandle.when()`` method.
+
+- bpo-32691: Use mod_spec.parent when running modules with pdb
+
+- bpo-32734: Fixed ``asyncio.Lock()`` safety issue which allowed acquiring
+  and locking the same lock multiple times, without it being free. Patch by
+  Bar Harel.
+
+- bpo-32727: Do not include name field in SMTP envelope from address. Patch
+  by Stéphane Wirtel
+
+- bpo-31453: Add TLSVersion constants and SSLContext.maximum_version /
+  minimum_version attributes. The new API wraps OpenSSL 1.1 https://www.open
+  ssl.org/docs/man1.1.0/ssl/SSL_CTX_set_min_proto_version.html feature.
+
+- bpo-24334: Internal implementation details of ssl module were cleaned up.
+  The SSLSocket has one less layer of indirection. Owner and session
+  information are now handled by the SSLSocket and SSLObject constructor.
+  Channel binding implementation has been simplified.
+
+- bpo-31848: Fix the error handling in Aifc_read.initfp() when the SSND
+  chunk is not found. Patch by Zackery Spytz.
+
+- bpo-32585: Add Ttk spinbox widget to tkinter.ttk.  Patch by Alan D Moore.
+
+- bpo-32221: Various functions returning tuple containig IPv6 addresses now
+  omit ``%scope`` part since the same information is already encoded in
+  *scopeid* tuple item. Especially this speeds up :func:`socket.recvfrom`
+  when it receives multicast packet since useless resolving of network
+  interface name is omitted.
+
+- bpo-30693: The TarFile class now recurses directories in a reproducible
+  way.
+
+- bpo-30693: The ZipFile class now recurses directories in a reproducible
+  way.
+
+Documentation
+-------------
+
+- bpo-28124: The ssl module function ssl.wrap_socket() has been de-
+  emphasized and deprecated in favor of the more secure and efficient
+  SSLContext.wrap_socket() method.
+
+- bpo-17232: Clarify docs for -O and -OO.  Patch by Terry Reedy.
+
+- bpo-32436: Add documentation for the contextvars module (PEP 567).
+
+- bpo-32800: Update link to w3c doc for xml default namespaces.
+
+- bpo-11015: Update :mod:`test.support` documentation.
+
+- bpo-8722: Document :meth:`__getattr__` behavior when property :meth:`get`
+  method raises :exc:`AttributeError`.
+
+- bpo-32614: Modify RE examples in documentation to use raw strings to
+  prevent :exc:`DeprecationWarning` and add text to REGEX HOWTO to highlight
+  the deprecation.
+
+- bpo-31972: Improve docstrings for `pathlib.PurePath` subclasses.
+
+Tests
+-----
+
+- bpo-31809: Add tests to verify connection with secp ECDH curves.
+
+Build
+-----
+
+- bpo-32898: Fix the python debug build when using COUNT_ALLOCS.
+
+Windows
+-------
+
+- bpo-32901: Update Tcl and Tk versions to 8.6.8
+
+- bpo-31966: Fixed WindowsConsoleIO.write() for writing empty data.
+
+- bpo-32409: Ensures activate.bat can handle Unicode contents.
+
+- bpo-32457: Improves handling of denormalized executable path when
+  launching Python.
+
+- bpo-32370: Use the correct encoding for ipconfig output in the uuid
+  module. Patch by Segev Finer.
+
+- bpo-29248: Fix :func:`os.readlink` on Windows, which was mistakenly
+  treating the ``PrintNameOffset`` field of the reparse data buffer as a
+  number of characters instead of bytes. Patch by Craig Holmquist and SSE4.
+
+macOS
+-----
+
+- bpo-32901: Update macOS 10.9+ installer to Tcl/Tk 8.6.8.
+
+IDLE
+----
+
+- bpo-32916: Change ``str`` to ``code`` in pyparse.
+
+- bpo-32905: Remove unused code in pyparse module.
+
+- bpo-32874: Add tests for pyparse.
+
+- bpo-32837: Using the system and place-dependent default encoding for
+  open() is a bad idea for IDLE's system and location-independent files.
+
+- bpo-32826: Add "encoding=utf-8" to open() in IDLE's test_help_about. GUI
+  test test_file_buttons() only looks at initial ascii-only lines, but
+  failed on systems where open() defaults to 'ascii' because readline()
+  internally reads and decodes far enough ahead to encounter a non-ascii
+  character in CREDITS.txt.
+
+- bpo-32765: Update configdialog General tab docstring to add new widgets to
+  the widget list.
+
+Tools/Demos
+-----------
+
+- bpo-32222: Fix pygettext not extracting docstrings for functions with type
+  annotated arguments. Patch by Toby Harradine.
+
+
 What's New in Python 3.7.0 beta 1?
 ==================================
 
@@ -77,10 +327,6 @@ Core and Builtins
 - bpo-32028: Leading whitespace is now correctly ignored when generating
   suggestions for converting Py2 print statements to Py3 builtin print
   function calls. Patch by Sanyam Khurana.
-
-- bpo-31356: Add a new contextmanager to the gc module that temporarily
-  disables the GC and restores the previous state. The implementation is
-  done in C to assure atomicity and speed.
 
 - bpo-31179: Make dict.copy() up to 5.5 times faster.
 
@@ -220,9 +466,10 @@ Library
 - bpo-29302: Add contextlib.AsyncExitStack. Patch by Alexander Mohr and Ilya
   Kulakov.
 
-- bpo-31961: The *args* argument of subprocess.Popen can now be a
-  :term:`path-like object`. If *args* is given as a sequence, it's first
-  element can now be a :term:`path-like object` as well.
+- bpo-31961: *Removed in Python 3.7.0b2.* The *args* argument of
+  subprocess.Popen can now be a :term:`path-like object`. If *args* is given
+  as a sequence, it's first element can now be a :term:`path-like object` as
+  well.
 
 - bpo-31900: The :func:`locale.localeconv` function now sets temporarily the
   ``LC_CTYPE`` locale to the ``LC_NUMERIC`` locale to decode
