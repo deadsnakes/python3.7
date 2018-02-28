@@ -183,22 +183,16 @@ class Lock(_ContextManagerMixin):
 
         fut = self._loop.create_future()
         self._waiters.append(fut)
-
-        # Finally block should be called before the CancelledError
-        # handling as we don't want CancelledError to call
-        # _wake_up_first() and attempt to wake up itself.
         try:
-            try:
-                await fut
-            finally:
-                self._waiters.remove(fut)
+            await fut
+            self._locked = True
+            return True
         except futures.CancelledError:
             if not self._locked:
                 self._wake_up_first()
             raise
-
-        self._locked = True
-        return True
+        finally:
+            self._waiters.remove(fut)
 
     def release(self):
         """Release a lock.
@@ -218,17 +212,11 @@ class Lock(_ContextManagerMixin):
             raise RuntimeError('Lock is not acquired.')
 
     def _wake_up_first(self):
-        """Wake up the first waiter if it isn't done."""
-        try:
-            fut = next(iter(self._waiters))
-        except StopIteration:
-            return
-
-        # .done() necessarily means that a waiter will wake up later on and
-        # either take the lock, or, if it was cancelled and lock wasn't
-        # taken already, will hit this again and wake up a new waiter.
-        if not fut.done():
-            fut.set_result(True)
+        """Wake up the first waiter who isn't cancelled."""
+        for fut in self._waiters:
+            if not fut.done():
+                fut.set_result(True)
+                break
 
 
 class Event:
@@ -358,16 +346,12 @@ class Condition(_ContextManagerMixin):
 
         finally:
             # Must reacquire lock even if wait is cancelled
-            cancelled = False
             while True:
                 try:
                     await self.acquire()
                     break
                 except futures.CancelledError:
-                    cancelled = True
-
-            if cancelled:
-                raise futures.CancelledError
+                    pass
 
     async def wait_for(self, predicate):
         """Wait until a predicate becomes true.

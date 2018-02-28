@@ -369,9 +369,9 @@ ABC hierarchy::
     An abstract base class for a :term:`loader`.
     See :pep:`302` for the exact definition for a loader.
 
-    Loaders that wish to support resource reading should implement a
-    ``get_resource_reader(fullname)`` method as specified by
-    :class:`importlib.abc.ResourceReader`.
+    For loaders that wish to support resource reading, they should
+    implement a ``get_resource_reader(fullname)`` method as specified
+    by :class:`importlib.abc.ResourceReader`.
 
     .. versionchanged:: 3.7
        Introduced the optional ``get_resource_reader()`` method.
@@ -813,25 +813,8 @@ Resources are roughly akin to files inside directories, though it's important
 to keep in mind that this is just a metaphor.  Resources and packages **do
 not** have to exist as physical files and directories on the file system.
 
-.. note::
-
-   This module provides functionality similar to `pkg_resources
-   <https://setuptools.readthedocs.io/en/latest/pkg_resources.html>`_ `Basic
-   Resource Access
-   <http://setuptools.readthedocs.io/en/latest/pkg_resources.html#basic-resource-access>`_
-   without the performance overhead of that package.  This makes reading
-   resources included in packages easier, with more stable and consistent
-   semantics.
-
-   The standalone backport of this module provides more information
-   on `using importlib.resources
-   <http://importlib-resources.readthedocs.io/en/latest/using.html>`_ and
-   `migrating from pkg_resources to importlib.resources
-   <http://importlib-resources.readthedocs.io/en/latest/migration.html>`_.
-
-Loaders that wish to support resource reading should implement a
-``get_resource_reader(fullname)`` method as specified by
-:class:`importlib.abc.ResourceReader`.
+Loaders can support resources by implementing the :class:`ResourceReader`
+abstract base class.
 
 The following types are defined.
 
@@ -1308,7 +1291,7 @@ find and load modules.
    Name of the place from which the module is loaded, e.g. "builtin" for
    built-in modules and the filename for modules loaded from source.
    Normally "origin" should be set, but it may be ``None`` (the default)
-   which indicates it is unspecified (e.g. for namespace packages).
+   which indicates it is unspecified.
 
    .. attribute:: submodule_search_locations
 

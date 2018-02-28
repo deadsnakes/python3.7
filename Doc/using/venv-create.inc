@@ -9,8 +9,7 @@ with a ``home`` key pointing to the Python installation from which the command
 was run.  It also creates a ``bin`` (or ``Scripts`` on Windows) subdirectory
 containing a copy of the ``python`` binary (or binaries, in the case of
 Windows).  It also creates an (initially empty) ``lib/pythonX.Y/site-packages``
-subdirectory (on Windows, this is ``Lib\site-packages``). If an existing
-directory is specified, it will be re-used.
+subdirectory (on Windows, this is ``Lib\site-packages``).
 
 .. deprecated:: 3.6
    ``pyvenv`` was the recommended tool for creating virtual environments for
@@ -72,7 +71,9 @@ The command, if run with ``-h``, will show the available options::
 
 .. versionchanged:: 3.4
    In earlier versions, if the target directory already existed, an error was
-   raised, unless the ``--clear`` or ``--upgrade`` option was provided.
+   raised, unless the ``--clear`` or ``--upgrade`` option was provided. Now,
+   if an existing directory is specified, its contents are removed and
+   the directory is processed as if it had been newly created.
 
 The created ``pyvenv.cfg`` file also includes the
 ``include-system-site-packages`` key, set to ``true`` if ``venv`` is

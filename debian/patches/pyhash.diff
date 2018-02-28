@@ -8,7 +8,7 @@ Subject: pyhash
  1 file changed, 14 insertions(+), 8 deletions(-)
 
 diff --git a/Python/pyhash.c b/Python/pyhash.c
-index 9e6e594..a9b4c37 100644
+index a0850d0..202dc6b 100644
 --- a/Python/pyhash.c
 +++ b/Python/pyhash.c
 @@ -327,13 +327,14 @@ static PyHash_FuncDef PyHash_Func = {fnv, "fnv", 8 * SIZEOF_PY_HASH_T,

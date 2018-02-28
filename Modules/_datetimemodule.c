@@ -3420,7 +3420,7 @@ Inconsistent:
     PyErr_SetString(PyExc_ValueError, "fromutc: tz.dst() gave"
                     "inconsistent results; cannot convert");
 
-    /* fall through to failure */
+    /* fall thru to failure */
 Fail:
     Py_XDECREF(off);
     Py_XDECREF(dst);

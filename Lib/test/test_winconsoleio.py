@@ -121,10 +121,6 @@ class WindowsConsoleIOTests(unittest.TestCase):
             else:
                 self.assertNotIsInstance(f, ConIO)
 
-    def test_write_empty_data(self):
-        with ConIO('CONOUT$', 'w') as f:
-            self.assertEqual(f.write(b''), 0)
-
     def assertStdinRoundTrip(self, text):
         stdin = open('CONIN$', 'r')
         old_stdin = sys.stdin

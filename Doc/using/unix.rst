@@ -41,11 +41,9 @@ On FreeBSD and OpenBSD
 
 * FreeBSD users, to add the package use::
 
-     pkg install python3
-
-* OpenBSD users, to add the package use::
-
      pkg_add -r python
+
+* OpenBSD users use::
 
      pkg_add ftp://ftp.openbsd.org/pub/OpenBSD/4.2/packages/<insert your architecture here>/python-<version>.tgz
 

@@ -45,8 +45,8 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ssl__SSLSocket_getpeercert__doc__,
-"getpeercert($self, der=False, /)\n"
+PyDoc_STRVAR(_ssl__SSLSocket_peer_certificate__doc__,
+"peer_certificate($self, der=False, /)\n"
 "--\n"
 "\n"
 "Returns the certificate for the peer.\n"
@@ -59,23 +59,23 @@ PyDoc_STRVAR(_ssl__SSLSocket_getpeercert__doc__,
 "peer certificate, or None if no certificate was provided.  This will\n"
 "return the certificate even if it wasn\'t validated.");
 
-#define _SSL__SSLSOCKET_GETPEERCERT_METHODDEF    \
-    {"getpeercert", (PyCFunction)_ssl__SSLSocket_getpeercert, METH_FASTCALL, _ssl__SSLSocket_getpeercert__doc__},
+#define _SSL__SSLSOCKET_PEER_CERTIFICATE_METHODDEF    \
+    {"peer_certificate", (PyCFunction)_ssl__SSLSocket_peer_certificate, METH_FASTCALL, _ssl__SSLSocket_peer_certificate__doc__},
 
 static PyObject *
-_ssl__SSLSocket_getpeercert_impl(PySSLSocket *self, int binary_mode);
+_ssl__SSLSocket_peer_certificate_impl(PySSLSocket *self, int binary_mode);
 
 static PyObject *
-_ssl__SSLSocket_getpeercert(PySSLSocket *self, PyObject *const *args, Py_ssize_t nargs)
+_ssl__SSLSocket_peer_certificate(PySSLSocket *self, PyObject *const *args, Py_ssize_t nargs)
 {
     PyObject *return_value = NULL;
     int binary_mode = 0;
 
-    if (!_PyArg_ParseStack(args, nargs, "|p:getpeercert",
+    if (!_PyArg_ParseStack(args, nargs, "|p:peer_certificate",
         &binary_mode)) {
         goto exit;
     }
-    return_value = _ssl__SSLSocket_getpeercert_impl(self, binary_mode);
+    return_value = _ssl__SSLSocket_peer_certificate_impl(self, binary_mode);
 
 exit:
     return return_value;
@@ -132,7 +132,7 @@ _ssl__SSLSocket_version(PySSLSocket *self, PyObject *Py_UNUSED(ignored))
     return _ssl__SSLSocket_version_impl(self);
 }
 
-#if (HAVE_NPN)
+#if (defined(OPENSSL_NPN_NEGOTIATED) && !defined(OPENSSL_NO_NEXTPROTONEG))
 
 PyDoc_STRVAR(_ssl__SSLSocket_selected_npn_protocol__doc__,
 "selected_npn_protocol($self, /)\n"
@@ -151,9 +151,9 @@ _ssl__SSLSocket_selected_npn_protocol(PySSLSocket *self, PyObject *Py_UNUSED(ign
     return _ssl__SSLSocket_selected_npn_protocol_impl(self);
 }
 
-#endif /* (HAVE_NPN) */
+#endif /* (defined(OPENSSL_NPN_NEGOTIATED) && !defined(OPENSSL_NO_NEXTPROTONEG)) */
 
-#if (HAVE_ALPN)
+#if defined(HAVE_ALPN)
 
 PyDoc_STRVAR(_ssl__SSLSocket_selected_alpn_protocol__doc__,
 "selected_alpn_protocol($self, /)\n"
@@ -172,7 +172,7 @@ _ssl__SSLSocket_selected_alpn_protocol(PySSLSocket *self, PyObject *Py_UNUSED(ig
     return _ssl__SSLSocket_selected_alpn_protocol_impl(self);
 }
 
-#endif /* (HAVE_ALPN) */
+#endif /* defined(HAVE_ALPN) */
 
 PyDoc_STRVAR(_ssl__SSLSocket_compression__doc__,
 "compression($self, /)\n"
@@ -293,7 +293,9 @@ PyDoc_STRVAR(_ssl__SSLSocket_shutdown__doc__,
 "shutdown($self, /)\n"
 "--\n"
 "\n"
-"Does the SSL shutdown handshake with the remote end.");
+"Does the SSL shutdown handshake with the remote end.\n"
+"\n"
+"Returns the underlying socket object.");
 
 #define _SSL__SSLSOCKET_SHUTDOWN_METHODDEF    \
     {"shutdown", (PyCFunction)_ssl__SSLSocket_shutdown, METH_NOARGS, _ssl__SSLSocket_shutdown__doc__},
@@ -307,39 +309,24 @@ _ssl__SSLSocket_shutdown(PySSLSocket *self, PyObject *Py_UNUSED(ignored))
     return _ssl__SSLSocket_shutdown_impl(self);
 }
 
-PyDoc_STRVAR(_ssl__SSLSocket_get_channel_binding__doc__,
-"get_channel_binding($self, /, cb_type=\'tls-unique\')\n"
+PyDoc_STRVAR(_ssl__SSLSocket_tls_unique_cb__doc__,
+"tls_unique_cb($self, /)\n"
 "--\n"
 "\n"
-"Get channel binding data for current connection.\n"
+"Returns the \'tls-unique\' channel binding data, as defined by RFC 5929.\n"
 "\n"
-"Raise ValueError if the requested `cb_type` is not supported.  Return bytes\n"
-"of the data or None if the data is not available (e.g. before the handshake).\n"
-"Only \'tls-unique\' channel binding data from RFC 5929 is supported.");
+"If the TLS handshake is not yet complete, None is returned.");
 
-#define _SSL__SSLSOCKET_GET_CHANNEL_BINDING_METHODDEF    \
-    {"get_channel_binding", (PyCFunction)_ssl__SSLSocket_get_channel_binding, METH_FASTCALL|METH_KEYWORDS, _ssl__SSLSocket_get_channel_binding__doc__},
+#define _SSL__SSLSOCKET_TLS_UNIQUE_CB_METHODDEF    \
+    {"tls_unique_cb", (PyCFunction)_ssl__SSLSocket_tls_unique_cb, METH_NOARGS, _ssl__SSLSocket_tls_unique_cb__doc__},
 
 static PyObject *
-_ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
-                                         const char *cb_type);
+_ssl__SSLSocket_tls_unique_cb_impl(PySSLSocket *self);
 
 static PyObject *
-_ssl__SSLSocket_get_channel_binding(PySSLSocket *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+_ssl__SSLSocket_tls_unique_cb(PySSLSocket *self, PyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
-    static const char * const _keywords[] = {"cb_type", NULL};
-    static _PyArg_Parser _parser = {"|s:get_channel_binding", _keywords, 0};
-    const char *cb_type = "tls-unique";
-
-    if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
-        &cb_type)) {
-        goto exit;
-    }
-    return_value = _ssl__SSLSocket_get_channel_binding_impl(self, cb_type);
-
-exit:
-    return return_value;
+    return _ssl__SSLSocket_tls_unique_cb_impl(self);
 }
 
 static PyObject *
@@ -551,8 +538,7 @@ PyDoc_STRVAR(_ssl__SSLContext_load_dh_params__doc__,
     {"load_dh_params", (PyCFunction)_ssl__SSLContext_load_dh_params, METH_O, _ssl__SSLContext_load_dh_params__doc__},
 
 PyDoc_STRVAR(_ssl__SSLContext__wrap_socket__doc__,
-"_wrap_socket($self, /, sock, server_side, server_hostname=None, *,\n"
-"             owner=None, session=None)\n"
+"_wrap_socket($self, /, sock, server_side, server_hostname=None)\n"
 "--\n"
 "\n");
 
@@ -561,26 +547,23 @@ PyDoc_STRVAR(_ssl__SSLContext__wrap_socket__doc__,
 
 static PyObject *
 _ssl__SSLContext__wrap_socket_impl(PySSLContext *self, PyObject *sock,
-                                   int server_side, PyObject *hostname_obj,
-                                   PyObject *owner, PyObject *session);
+                                   int server_side, PyObject *hostname_obj);
 
 static PyObject *
 _ssl__SSLContext__wrap_socket(PySSLContext *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
-    static const char * const _keywords[] = {"sock", "server_side", "server_hostname", "owner", "session", NULL};
-    static _PyArg_Parser _parser = {"O!i|O$OO:_wrap_socket", _keywords, 0};
+    static const char * const _keywords[] = {"sock", "server_side", "server_hostname", NULL};
+    static _PyArg_Parser _parser = {"O!i|O:_wrap_socket", _keywords, 0};
     PyObject *sock;
     int server_side;
     PyObject *hostname_obj = Py_None;
-    PyObject *owner = Py_None;
-    PyObject *session = Py_None;
 
     if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
-        PySocketModule.Sock_Type, &sock, &server_side, &hostname_obj, &owner, &session)) {
+        PySocketModule.Sock_Type, &sock, &server_side, &hostname_obj)) {
         goto exit;
     }
-    return_value = _ssl__SSLContext__wrap_socket_impl(self, sock, server_side, hostname_obj, owner, session);
+    return_value = _ssl__SSLContext__wrap_socket_impl(self, sock, server_side, hostname_obj);
 
 exit:
     return return_value;
@@ -588,7 +571,7 @@ exit:
 
 PyDoc_STRVAR(_ssl__SSLContext__wrap_bio__doc__,
 "_wrap_bio($self, /, incoming, outgoing, server_side,\n"
-"          server_hostname=None, *, owner=None, session=None)\n"
+"          server_hostname=None)\n"
 "--\n"
 "\n");
 
@@ -598,27 +581,24 @@ PyDoc_STRVAR(_ssl__SSLContext__wrap_bio__doc__,
 static PyObject *
 _ssl__SSLContext__wrap_bio_impl(PySSLContext *self, PySSLMemoryBIO *incoming,
                                 PySSLMemoryBIO *outgoing, int server_side,
-                                PyObject *hostname_obj, PyObject *owner,
-                                PyObject *session);
+                                PyObject *hostname_obj);
 
 static PyObject *
 _ssl__SSLContext__wrap_bio(PySSLContext *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
-    static const char * const _keywords[] = {"incoming", "outgoing", "server_side", "server_hostname", "owner", "session", NULL};
-    static _PyArg_Parser _parser = {"O!O!i|O$OO:_wrap_bio", _keywords, 0};
+    static const char * const _keywords[] = {"incoming", "outgoing", "server_side", "server_hostname", NULL};
+    static _PyArg_Parser _parser = {"O!O!i|O:_wrap_bio", _keywords, 0};
     PySSLMemoryBIO *incoming;
     PySSLMemoryBIO *outgoing;
     int server_side;
     PyObject *hostname_obj = Py_None;
-    PyObject *owner = Py_None;
-    PyObject *session = Py_None;
 
     if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
-        &PySSLMemoryBIO_Type, &incoming, &PySSLMemoryBIO_Type, &outgoing, &server_side, &hostname_obj, &owner, &session)) {
+        &PySSLMemoryBIO_Type, &incoming, &PySSLMemoryBIO_Type, &outgoing, &server_side, &hostname_obj)) {
         goto exit;
     }
-    return_value = _ssl__SSLContext__wrap_bio_impl(self, incoming, outgoing, server_side, hostname_obj, owner, session);
+    return_value = _ssl__SSLContext__wrap_bio_impl(self, incoming, outgoing, server_side, hostname_obj);
 
 exit:
     return return_value;
@@ -669,6 +649,19 @@ PyDoc_STRVAR(_ssl__SSLContext_set_ecdh_curve__doc__,
     {"set_ecdh_curve", (PyCFunction)_ssl__SSLContext_set_ecdh_curve, METH_O, _ssl__SSLContext_set_ecdh_curve__doc__},
 
 #endif /* !defined(OPENSSL_NO_ECDH) */
+
+PyDoc_STRVAR(_ssl__SSLContext_set_servername_callback__doc__,
+"set_servername_callback($self, method, /)\n"
+"--\n"
+"\n"
+"Set a callback that will be called when a server name is provided by the SSL/TLS client in the SNI extension.\n"
+"\n"
+"If the argument is None then the callback is disabled. The method is called\n"
+"with the SSLSocket, the server name as a string, and the SSLContext object.\n"
+"See RFC 6066 for details of the SNI extension.");
+
+#define _SSL__SSLCONTEXT_SET_SERVERNAME_CALLBACK_METHODDEF    \
+    {"set_servername_callback", (PyCFunction)_ssl__SSLContext_set_servername_callback, METH_O, _ssl__SSLContext_set_servername_callback__doc__},
 
 PyDoc_STRVAR(_ssl__SSLContext_cert_store_stats__doc__,
 "cert_store_stats($self, /)\n"
@@ -1175,4 +1168,4 @@ exit:
 #ifndef _SSL_ENUM_CRLS_METHODDEF
     #define _SSL_ENUM_CRLS_METHODDEF
 #endif /* !defined(_SSL_ENUM_CRLS_METHODDEF) */
-/*[clinic end generated code: output=e2417fee28666f7c input=a9049054013a1b77]*/
+/*[clinic end generated code: output=3d42305ed0ad162a input=a9049054013a1b77]*/

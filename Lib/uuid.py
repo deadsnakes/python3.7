@@ -468,7 +468,7 @@ def _netstat_getnode():
 
 def _ipconfig_getnode():
     """Get the hardware address on Windows by running ipconfig.exe."""
-    import os, re, subprocess
+    import os, re
     first_local_mac = None
     dirs = ['', r'c:\windows\system32', r'c:\winnt\system32']
     try:
@@ -480,13 +480,11 @@ def _ipconfig_getnode():
         pass
     for dir in dirs:
         try:
-            proc = subprocess.Popen([os.path.join(dir, 'ipconfig'), '/all'],
-                                    stdout=subprocess.PIPE,
-                                    encoding="oem")
+            pipe = os.popen(os.path.join(dir, 'ipconfig') + ' /all')
         except OSError:
             continue
-        with proc:
-            for line in proc.stdout:
+        with pipe:
+            for line in pipe:
                 value = line.split(':')[-1].strip().lower()
                 if re.match('([0-9a-f][0-9a-f]-){5}[0-9a-f][0-9a-f]', value):
                     mac = int(value.replace('-', ''), 16)

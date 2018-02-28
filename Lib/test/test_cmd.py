@@ -51,7 +51,7 @@ class samplecmdclass(cmd.Cmd):
 
     Test for the function completedefault():
     >>> mycmd.completedefault()
-    This is the completedefault method
+    This is the completedefault methode
     >>> mycmd.completenames("a")
     ['add']
 
@@ -140,7 +140,7 @@ class samplecmdclass(cmd.Cmd):
         print("Hello from postloop")
 
     def completedefault(self, *ignored):
-        print("This is the completedefault method")
+        print("This is the completedefault methode")
 
     def complete_command(self):
         print("complete command")

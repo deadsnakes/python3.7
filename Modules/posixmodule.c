@@ -3720,26 +3720,29 @@ os__getfullpathname_impl(PyObject *module, path_t *path)
 /*[clinic input]
 os._getfinalpathname
 
-    path: path_t
+    path: unicode
     /
 
 A helper function for samepath on windows.
 [clinic start generated code]*/
 
 static PyObject *
-os__getfinalpathname_impl(PyObject *module, path_t *path)
-/*[clinic end generated code: output=621a3c79bc29ebfa input=2b6b6c7cbad5fb84]*/
+os__getfinalpathname_impl(PyObject *module, PyObject *path)
+/*[clinic end generated code: output=9bd78d0e52782e75 input=71d5e89334891bf4]*/
 {
     HANDLE hFile;
     int buf_size;
     wchar_t *target_path;
     int result_length;
     PyObject *result;
-    const char *err = NULL;
+    const wchar_t *path_wchar;
 
-    Py_BEGIN_ALLOW_THREADS
+    path_wchar = _PyUnicode_AsUnicode(path);
+    if (path_wchar == NULL)
+        return NULL;
+
     hFile = CreateFileW(
-        path->wide,
+        path_wchar,
         0, /* desired access */
         0, /* share mode */
         NULL, /* security attributes */
@@ -3748,54 +3751,32 @@ os__getfinalpathname_impl(PyObject *module, path_t *path)
         FILE_FLAG_BACKUP_SEMANTICS,
         NULL);
 
-    if (hFile == INVALID_HANDLE_VALUE) {
-        err = "CreateFileW";
-        goto done1;
-    }
+    if(hFile == INVALID_HANDLE_VALUE)
+        return win32_error_object("CreateFileW", path);
 
     /* We have a good handle to the target, use it to determine the
        target path name. */
     buf_size = GetFinalPathNameByHandleW(hFile, 0, 0, VOLUME_NAME_NT);
 
-    if (!buf_size) {
-        err = "GetFinalPathNameByHandle";
-        goto done1;
-    }
-done1:
-    Py_END_ALLOW_THREADS
-    if (err)
-        return win32_error_object(err, path->object);
+    if(!buf_size)
+        return win32_error_object("GetFinalPathNameByHandle", path);
 
     target_path = PyMem_New(wchar_t, buf_size+1);
     if(!target_path)
         return PyErr_NoMemory();
 
-    Py_BEGIN_ALLOW_THREADS
     result_length = GetFinalPathNameByHandleW(hFile, target_path,
                                               buf_size, VOLUME_NAME_DOS);
-    if (!result_length) {
-        err = "GetFinalPathNameByHandle";
-        goto done2;
-    }
+    if(!result_length)
+        return win32_error_object("GetFinalPathNamyByHandle", path);
 
-    if (!CloseHandle(hFile)) {
-        err = "CloseHandle";
-        goto done2;
-    }
-done2:
-    Py_END_ALLOW_THREADS
-    if (err) {
-        PyMem_Free(target_path);
-        return win32_error_object(err, path->object);
-    }
+    if(!CloseHandle(hFile))
+        return win32_error_object("CloseHandle", path);
 
     target_path[result_length] = 0;
     result = PyUnicode_FromWideChar(target_path, result_length);
     PyMem_Free(target_path);
-    if (path->narrow)
-        Py_SETREF(result, PyUnicode_EncodeFSDefault(result));
     return result;
-
 }
 
 /*[clinic input]
@@ -3830,22 +3811,28 @@ os__isdir_impl(PyObject *module, path_t *path)
 /*[clinic input]
 os._getvolumepathname
 
-    path: path_t
+    path: unicode
 
 A helper function for ismount on Win32.
 [clinic start generated code]*/
 
 static PyObject *
-os__getvolumepathname_impl(PyObject *module, path_t *path)
-/*[clinic end generated code: output=804c63fd13a1330b input=722b40565fa21552]*/
+os__getvolumepathname_impl(PyObject *module, PyObject *path)
+/*[clinic end generated code: output=cbdcbd1059ceef4c input=7eacadc40acbda6b]*/
 {
     PyObject *result;
+    const wchar_t *path_wchar;
     wchar_t *mountpath=NULL;
     size_t buflen;
     BOOL ret;
 
+    path_wchar = PyUnicode_AsUnicodeAndSize(path, &buflen);
+    if (path_wchar == NULL)
+        return NULL;
+    buflen += 1;
+
     /* Volume path should be shorter than entire path */
-    buflen = Py_MAX(path->length, MAX_PATH);
+    buflen = Py_MAX(buflen, MAX_PATH);
 
     if (buflen > PY_DWORD_MAX) {
         PyErr_SetString(PyExc_OverflowError, "path too long");
@@ -3857,17 +3844,15 @@ os__getvolumepathname_impl(PyObject *module, path_t *path)
         return PyErr_NoMemory();
 
     Py_BEGIN_ALLOW_THREADS
-    ret = GetVolumePathNameW(path->wide, mountpath,
+    ret = GetVolumePathNameW(path_wchar, mountpath,
                              Py_SAFE_DOWNCAST(buflen, size_t, DWORD));
     Py_END_ALLOW_THREADS
 
     if (!ret) {
-        result = win32_error_object("_getvolumepathname", path->object);
+        result = win32_error_object("_getvolumepathname", path);
         goto exit;
     }
     result = PyUnicode_FromWideChar(mountpath, wcslen(mountpath));
-    if (path->narrow)
-        Py_SETREF(result, PyUnicode_EncodeFSDefault(result));
 
 exit:
     PyMem_Free(mountpath);
@@ -6117,7 +6102,7 @@ error:
 #ifdef HAVE_STROPTS_H
 #include <stropts.h>
 #endif
-#endif /* defined(HAVE_OPENPTY) || defined(HAVE_FORKPTY) || defined(HAVE_DEV_PTMX) */
+#endif /* defined(HAVE_OPENPTY) || defined(HAVE_FORKPTY) || defined(HAVE_DEV_PTMX */
 
 
 #if defined(HAVE_OPENPTY) || defined(HAVE__GETPTY) || defined(HAVE_DEV_PTMX)
@@ -7454,11 +7439,11 @@ win_readlink(PyObject *self, PyObject *args, PyObject *kwargs)
                 "not a symbolic link");
         return NULL;
     }
-    print_name = (wchar_t *)((char*)rdb->SymbolicLinkReparseBuffer.PathBuffer +
-                 rdb->SymbolicLinkReparseBuffer.PrintNameOffset);
+    print_name = rdb->SymbolicLinkReparseBuffer.PathBuffer +
+                 rdb->SymbolicLinkReparseBuffer.PrintNameOffset;
 
     result = PyUnicode_FromWideChar(print_name,
-                    rdb->SymbolicLinkReparseBuffer.PrintNameLength / sizeof(wchar_t));
+                    rdb->SymbolicLinkReparseBuffer.PrintNameLength/2);
     return result;
 }
 
@@ -8031,7 +8016,7 @@ os_dup2_impl(PyObject *module, int fd, int fd2, int inheritable)
 #if defined(HAVE_DUP3) && \
     !(defined(HAVE_FCNTL_H) && defined(F_DUP2FD_CLOEXEC))
     /* dup3() is available on Linux 2.6.27+ and glibc 2.9 */
-    static int dup3_works = -1;
+    int dup3_works = -1;
 #endif
 
     if (fd < 0 || fd2 < 0) {
@@ -9859,20 +9844,20 @@ os_statvfs_impl(PyObject *module, path_t *path)
 /*[clinic input]
 os._getdiskusage
 
-    path: path_t
+    path: Py_UNICODE
 
 Return disk usage statistics about the given path as a (total, free) tuple.
 [clinic start generated code]*/
 
 static PyObject *
-os__getdiskusage_impl(PyObject *module, path_t *path)
-/*[clinic end generated code: output=3bd3991f5e5c5dfb input=6af8d1b7781cc042]*/
+os__getdiskusage_impl(PyObject *module, Py_UNICODE *path)
+/*[clinic end generated code: output=76d6adcd86b1db0b input=6458133aed893c78]*/
 {
     BOOL retval;
     ULARGE_INTEGER _, total, free;
 
     Py_BEGIN_ALLOW_THREADS
-    retval = GetDiskFreeSpaceExW(path->wide, &_, &total, &free);
+    retval = GetDiskFreeSpaceExW(path, &_, &total, &free);
     Py_END_ALLOW_THREADS
     if (retval == 0)
         return PyErr_SetFromWindowsErr(0);

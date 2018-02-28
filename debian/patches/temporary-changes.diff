@@ -9,7 +9,7 @@ Subject: temporary-changes
  2 files changed, 15 insertions(+), 12 deletions(-)
 
 diff --git a/Include/internal/pystate.h b/Include/internal/pystate.h
-index da642c6..6310fac 100644
+index 2b60b25..4f04c10 100644
 --- a/Include/internal/pystate.h
 +++ b/Include/internal/pystate.h
 @@ -7,6 +7,8 @@ extern "C" {
@@ -22,10 +22,10 @@ index da642c6..6310fac 100644
  #include "internal/mem.h"
  #include "internal/ceval.h"
 diff --git a/Include/pystate.h b/Include/pystate.h
-index 29d7148..b432847 100644
+index a19c1ed..2e421a3 100644
 --- a/Include/pystate.h
 +++ b/Include/pystate.h
-@@ -353,11 +353,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_GetDict(void);
+@@ -349,11 +349,24 @@ PyAPI_FUNC(PyObject *) PyThreadState_GetDict(void);
  PyAPI_FUNC(int) PyThreadState_SetAsyncExc(unsigned long, PyObject *);
  
  
@@ -50,7 +50,7 @@ index 29d7148..b432847 100644
  #  define _PyThreadState_Current _PyRuntime.gilstate.tstate_current
  #  define PyThreadState_GET() \
               ((PyThreadState*)_Py_atomic_load_relaxed(&_PyThreadState_Current))
-@@ -434,18 +447,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILState_GetInterpreterStateUnsafe(void);
+@@ -430,18 +443,6 @@ PyAPI_FUNC(PyInterpreterState *) _PyGILState_GetInterpreterStateUnsafe(void);
  PyAPI_FUNC(PyObject *) _PyThread_CurrentFrames(void);
  #endif
  

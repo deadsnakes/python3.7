@@ -3,7 +3,6 @@
 
 import sys
 import unittest
-from test import support
 
 class PropertyBase(Exception):
     pass
@@ -173,16 +172,6 @@ class PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.spam.__doc__, 'Eggs')
         sub.__class__.spam.__doc__ = 'Spam'
         self.assertEqual(sub.__class__.spam.__doc__, 'Spam')
-
-    @support.refcount_test
-    def test_refleaks_in___init__(self):
-        gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
-        fake_prop = property('fget', 'fset', 'fdel', 'doc')
-        refs_before = gettotalrefcount()
-        for i in range(100):
-            fake_prop.__init__('fget', 'fset', 'fdel', 'doc')
-        self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
-
 
 # Issue 5890: subclasses of property do not preserve method __doc__ strings
 class PropertySub(property):
