@@ -25,10 +25,10 @@ index cbc58e7..ff43393 100644
              try:
                  g.dump(gp)
 diff --git a/Lib/lib2to3/tests/test_parser.py b/Lib/lib2to3/tests/test_parser.py
-index 0cbba26..01d80c8 100644
+index 74653ea..daef98c 100644
 --- a/Lib/lib2to3/tests/test_parser.py
 +++ b/Lib/lib2to3/tests/test_parser.py
-@@ -40,83 +40,6 @@ class TestDriver(support.TestCase):
+@@ -38,83 +38,6 @@ class TestDriver(support.TestCase):
          self.assertEqual(t.children[1].children[0].type, syms.print_stmt)
  
  

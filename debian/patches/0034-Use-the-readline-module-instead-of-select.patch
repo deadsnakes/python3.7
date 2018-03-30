@@ -8,7 +8,7 @@ The select module is built into the interpreter instead of being a .so file
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/Lib/test/test_import/__init__.py b/Lib/test/test_import/__init__.py
-index ceea79f..64958eb 100644
+index 049ee57..73e2b40 100644
 --- a/Lib/test/test_import/__init__.py
 +++ b/Lib/test/test_import/__init__.py
 @@ -91,12 +91,12 @@ class ImportTests(unittest.TestCase):
