@@ -8,7 +8,7 @@ Subject: ctypes-arm
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/Lib/ctypes/util.py b/Lib/ctypes/util.py
-index 5e8b31a..a493bd3 100644
+index 97973bc..00189c7 100644
 --- a/Lib/ctypes/util.py
 +++ b/Lib/ctypes/util.py
 @@ -256,16 +256,27 @@ elif os.name == "posix":

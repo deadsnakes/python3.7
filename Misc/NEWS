@@ -2,6 +2,185 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.0 beta 4?
+==================================
+
+*Release date: 2018-05-02*
+
+Core and Builtins
+-----------------
+
+- bpo-33363: Raise a SyntaxError for ``async with`` and ``async for``
+  statements outside of async functions.
+
+- bpo-33128: Fix a bug that causes PathFinder to appear twice on
+  sys.meta_path. Patch by Pablo Galindo Salgado.
+
+- bpo-33312: Fixed clang ubsan (undefined behavior sanitizer) warnings in
+  dictobject.c by adjusting how the internal struct _dictkeysobject shared
+  keys structure is declared.
+
+- bpo-33231: Fix potential memory leak in ``normalizestring()``.
+
+- bpo-33205: Change dict growth function from
+  ``round_up_to_power_2(used*2+hashtable_size/2)`` to
+  ``round_up_to_power_2(used*3)``.  Previously, dict is shrinked only when
+  ``used == 0``. Now dict has more chance to be shrinked.
+
+- bpo-29922: Improved error messages in 'async with' when ``__aenter__()``
+  or ``__aexit__()`` return non-awaitable object.
+
+- bpo-33199: Fix ``ma_version_tag`` in dict implementation is uninitialized
+  when copying from key-sharing dict.
+
+Library
+-------
+
+- bpo-33281: Fix ctypes.util.find_library regression on macOS.
+
+- bpo-33383: Fixed crash in the get() method of the :mod:`dbm.ndbm` database
+  object when it is called with a single argument.
+
+- bpo-33329: Fix multiprocessing regression on newer glibcs
+
+- bpo-991266: Fix quoting of the ``Comment`` attribute of
+  :class:`http.cookies.SimpleCookie`.
+
+- bpo-33131: Upgrade bundled version of pip to 10.0.1.
+
+- bpo-33308: Fixed a crash in the :mod:`parser` module when converting an ST
+  object to a tree of tuples or lists with ``line_info=False`` and
+  ``col_info=True``.
+
+- bpo-33266: lib2to3 now recognizes ``rf'...'`` strings.
+
+- bpo-11594: Ensure line-endings are respected when using lib2to3.
+
+- bpo-33254: Have :func:`importlib.resources.contents` and
+  :meth:`importlib.abc.ResourceReader.contents` return an :term:`iterable`
+  instead of an :term:`iterator`.
+
+- bpo-33256: Fix display of ``<module>`` call in the html produced by
+  ``cgitb.html()``. Patch by Stéphane Blondon.
+
+- bpo-33185: Fixed regression when running pydoc with the :option:`-m`
+  switch. (The regression was introduced in 3.7.0b3 by the resolution of
+  :issue:`33053`)
+
+  This fix also changed pydoc to add ``os.getcwd()`` to :data:`sys.path`
+  when necessary, rather than adding ``"."``.
+
+- bpo-33169: Delete entries of ``None`` in :data:`sys.path_importer_cache`
+  when :meth:`importlib.machinery.invalidate_caches` is called.
+
+- bpo-33217: Deprecate looking up non-Enum objects in Enum classes and Enum
+  members (will raise :exc:`TypeError` in 3.8+).
+
+- bpo-33203: ``random.Random.choice()`` now raises ``IndexError`` for empty
+  sequences consistently even when called from subclasses without a
+  ``getrandbits()`` implementation.
+
+- bpo-33224: Update difflib.mdiff() for PEP 479.  Convert an uncaught
+  StopIteration in a generator into a return-statement.
+
+- bpo-33209: End framing at the end of C implementation of
+  :func:`pickle.Pickler.dump`.
+
+- bpo-20104: Improved error handling and fixed a reference leak in
+  :func:`os.posix_spawn()`.
+
+- bpo-33175: In dataclasses, Field.__set_name__ now looks up the
+  __set_name__ special method on the class, not the instance, of the default
+  value.
+
+- bpo-33097: Raise RuntimeError when ``executor.submit`` is called during
+  interpreter shutdown.
+
+- bpo-31908: Fix output of cover files for ``trace`` module command-line
+  tool. Previously emitted cover files only when ``--missing`` option was
+  used. Patch by Michael Selik.
+
+Documentation
+-------------
+
+- bpo-33378: Add Korean language switcher for https://docs.python.org/3/
+
+- bpo-33276: Clarify that the ``__path__`` attribute on modules cannot be
+  just any value.
+
+- bpo-33201: Modernize documentation for writing C extension types.
+
+- bpo-33195: Deprecate ``Py_UNICODE`` usage in ``c-api/arg`` document.
+  ``Py_UNICODE`` related APIs are deprecated since Python 3.3, but it is
+  missed in the document.
+
+- bpo-8243: Add a note about curses.addch and curses.addstr exception
+  behavior when writing outside a window, or pad.
+
+- bpo-32337: Update documentation related with ``dict`` order.
+
+Tests
+-----
+
+- bpo-33358: Fix ``test_embed.test_pre_initialization_sys_options()`` when
+  the interpreter is built with ``--enable-shared``.
+
+Build
+-----
+
+- bpo-33394: Enable the verbose build for extension modules, when GNU make
+  is passed macros on the command line.
+
+- bpo-33393: Update config.guess and config.sub files.
+
+- bpo-33377: Add new triplets for mips r6 and riscv variants (used in
+  extension suffixes).
+
+- bpo-32232: By default, modules configured in `Modules/Setup` are no longer
+  built with `-DPy_BUILD_CORE`. Instead, modules that specifically need that
+  preprocessor definition include it in their individual entries.
+
+- bpo-33182: The embedding tests can once again be built with clang 6.0
+
+Windows
+-------
+
+- bpo-33184: Update Windows installer to use OpenSSL 1.1.0h.
+
+macOS
+-----
+
+- bpo-33184: Update macOS installer build to use OpenSSL 1.1.0h.
+
+IDLE
+----
+
+- bpo-21474: Update word/identifier definition from ascii to unicode. In
+  text and entry boxes, this affects selection by double-click, movement
+  left/right by control-left/right, and deletion left/right by control-
+  BACKSPACE/DEL.
+
+- bpo-33204: IDLE: consistently color invalid string prefixes. A 'u' string
+  prefix cannot be paired with either 'r' or 'f'. Consistently color as much
+  of the prefix, starting at the right, as is valid. Revise and extend
+  colorizer test.
+
+Tools/Demos
+-----------
+
+- bpo-33189: :program:`pygettext.py` now recognizes only literal strings as
+  docstrings and translatable strings, and rejects bytes literals and
+  f-string expressions.
+
+- bpo-31920: Fixed handling directories as arguments in the ``pygettext``
+  script. Based on patch by Oleg Krasnikov.
+
+- bpo-29673: Fix pystackv and pystack gdbinit macros.
+
+- bpo-31583: Fix 2to3 for using with --add-suffix option but without
+  --output-dir option for relative path to files in current directory.
+
+
 What's New in Python 3.7.0 beta 3?
 ==================================
 

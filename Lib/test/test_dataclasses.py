@@ -8,7 +8,7 @@ import pickle
 import inspect
 import unittest
 from unittest.mock import Mock
-from typing import ClassVar, Any, List, Union, Tuple, Dict, Generic, TypeVar
+from typing import ClassVar, Any, List, Union, Tuple, Dict, Generic, TypeVar, Optional
 from collections import deque, OrderedDict, namedtuple
 from functools import total_ordering
 
@@ -1690,6 +1690,23 @@ class TestCase(unittest.TestCase):
         c = Alias(10, 1.0)
         self.assertEqual(c.new_method(), 1.0)
 
+    def test_generic_dynamic(self):
+        T = TypeVar('T')
+
+        @dataclass
+        class Parent(Generic[T]):
+            x: T
+        Child = make_dataclass('Child', [('y', T), ('z', Optional[T], None)],
+                               bases=(Parent[int], Generic[T]), namespace={'other': 42})
+        self.assertIs(Child[int](1, 2).z, None)
+        self.assertEqual(Child[int](1, 2, 3).z, 3)
+        self.assertEqual(Child[int](1, 2, 3).other, 42)
+        # Check that type aliases work correctly.
+        Alias = Child[T]
+        self.assertEqual(Alias[int](1, 2).x, 1)
+        # Check MRO resolution.
+        self.assertEqual(Child.__mro__, (Child, Parent, Generic, object))
+
     def test_helper_replace(self):
         @dataclass(frozen=True)
         class C:
@@ -2174,33 +2191,6 @@ class TestRepr(unittest.TestCase):
         self.assertEqual(repr(C(0)), 'x')
 
 
-class TestFrozen(unittest.TestCase):
-    def test_overwriting_frozen(self):
-        # frozen uses __setattr__ and __delattr__.
-        with self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __setattr__'):
-            @dataclass(frozen=True)
-            class C:
-                x: int
-                def __setattr__(self):
-                    pass
-
-        with self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __delattr__'):
-            @dataclass(frozen=True)
-            class C:
-                x: int
-                def __delattr__(self):
-                    pass
-
-        @dataclass(frozen=False)
-        class C:
-            x: int
-            def __setattr__(self, name, value):
-                self.__dict__['x'] = value * 2
-        self.assertEqual(C(10).x, 20)
-
-
 class TestEq(unittest.TestCase):
     def test_no_eq(self):
         # Test a class with no __eq__ and eq=False.
@@ -2655,6 +2645,44 @@ class TestFrozen(unittest.TestCase):
         self.assertEqual(s.y, 10)
         self.assertEqual(s.cached, True)
 
+    def test_overwriting_frozen(self):
+        # frozen uses __setattr__ and __delattr__.
+        with self.assertRaisesRegex(TypeError,
+                                    'Cannot overwrite attribute __setattr__'):
+            @dataclass(frozen=True)
+            class C:
+                x: int
+                def __setattr__(self):
+                    pass
+
+        with self.assertRaisesRegex(TypeError,
+                                    'Cannot overwrite attribute __delattr__'):
+            @dataclass(frozen=True)
+            class C:
+                x: int
+                def __delattr__(self):
+                    pass
+
+        @dataclass(frozen=False)
+        class C:
+            x: int
+            def __setattr__(self, name, value):
+                self.__dict__['x'] = value * 2
+        self.assertEqual(C(10).x, 20)
+
+    def test_frozen_hash(self):
+        @dataclass(frozen=True)
+        class C:
+            x: Any
+
+        # If x is immutable, we can compute the hash.  No exception is
+        # raised.
+        hash(C(3))
+
+        # If x is mutable, computing the hash is an error.
+        with self.assertRaisesRegex(TypeError, 'unhashable type'):
+            hash(C({}))
+
 
 class TestSlots(unittest.TestCase):
     def test_simple(self):
@@ -2705,7 +2733,7 @@ class TestDescriptors(unittest.TestCase):
         # Create a descriptor.
         class D:
             def __set_name__(self, owner, name):
-                self.name = name
+                self.name = name + 'x'
             def __get__(self, instance, owner):
                 if instance is not None:
                     return 1
@@ -2716,7 +2744,7 @@ class TestDescriptors(unittest.TestCase):
         @dataclass
         class C:
             c: int=D()
-        self.assertEqual(C.c.name, 'c')
+        self.assertEqual(C.c.name, 'cx')
 
         # Now test with a default value and init=False, which is the
         #  only time this is really meaningful.  If not using
@@ -2724,7 +2752,7 @@ class TestDescriptors(unittest.TestCase):
         @dataclass
         class C:
             c: int=field(default=D(), init=False)
-        self.assertEqual(C.c.name, 'c')
+        self.assertEqual(C.c.name, 'cx')
         self.assertEqual(C().c, 1)
 
     def test_non_descriptor(self):
@@ -2733,12 +2761,41 @@ class TestDescriptors(unittest.TestCase):
 
         class D:
             def __set_name__(self, owner, name):
-                self.name = name
+                self.name = name + 'x'
 
         @dataclass
         class C:
             c: int=field(default=D(), init=False)
-        self.assertEqual(C.c.name, 'c')
+        self.assertEqual(C.c.name, 'cx')
+
+    def test_lookup_on_instance(self):
+        # See bpo-33175.
+        class D:
+            pass
+
+        d = D()
+        # Create an attribute on the instance, not type.
+        d.__set_name__ = Mock()
+
+        # Make sure d.__set_name__ is not called.
+        @dataclass
+        class C:
+            i: int=field(default=d, init=False)
+
+        self.assertEqual(d.__set_name__.call_count, 0)
+
+    def test_lookup_on_class(self):
+        # See bpo-33175.
+        class D:
+            pass
+        D.__set_name__ = Mock()
+
+        # Make sure D.__set_name__ is called.
+        @dataclass
+        class C:
+            i: int=field(default=D(), init=False)
+
+        self.assertEqual(D.__set_name__.call_count, 1)
 
 
 if __name__ == '__main__':

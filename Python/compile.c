@@ -2339,6 +2339,10 @@ compiler_async_for(struct compiler *c, stmt_ty s)
     basicblock *try, *except, *end, *after_try, *try_cleanup,
                *after_loop_else;
 
+    if (c->u->u_scope_type != COMPILER_SCOPE_ASYNC_FUNCTION) {
+        return compiler_error(c, "'async for' outside async function");
+    }
+
     PyObject *stop_aiter_error = _PyUnicode_FromId(&PyId_StopAsyncIteration);
     if (stop_aiter_error == NULL) {
         return 0;
@@ -2742,8 +2746,7 @@ compiler_import_as(struct compiler *c, identifier name, identifier asname)
             attr = PyUnicode_Substring(name, pos, (dot != -1) ? dot : len);
             if (!attr)
                 return 0;
-            ADDOP_O(c, IMPORT_FROM, attr, names);
-            Py_DECREF(attr);
+            ADDOP_N(c, IMPORT_FROM, attr, names);
             if (dot == -1) {
                 break;
             }
@@ -3207,8 +3210,7 @@ compiler_nameop(struct compiler *c, identifier name, expr_context_ty ctx)
                             "param invalid for local variable");
             return 0;
         }
-        ADDOP_O(c, op, mangled, varnames);
-        Py_DECREF(mangled);
+        ADDOP_N(c, op, mangled, varnames);
         return 1;
     case OP_GLOBAL:
         switch (ctx) {
@@ -4206,6 +4208,9 @@ compiler_async_with(struct compiler *c, stmt_ty s, int pos)
     withitem_ty item = asdl_seq_GET(s->v.AsyncWith.items, pos);
 
     assert(s->kind == AsyncWith_kind);
+    if (c->u->u_scope_type != COMPILER_SCOPE_ASYNC_FUNCTION) {
+        return compiler_error(c, "'async with' outside async function");
+    }
 
     block = compiler_new_block(c);
     finally = compiler_new_block(c);

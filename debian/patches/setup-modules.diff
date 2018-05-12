@@ -8,7 +8,7 @@ Subject: setup-modules
  1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/Modules/Setup.dist b/Modules/Setup.dist
-index a833774..d83c2f8 100644
+index da2404a..4e2539b 100644
 --- a/Modules/Setup.dist
 +++ b/Modules/Setup.dist
 @@ -178,7 +178,7 @@ _symtable symtablemodule.c

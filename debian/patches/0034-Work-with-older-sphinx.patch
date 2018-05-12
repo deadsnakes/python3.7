@@ -1,0 +1,29 @@
+From: Anthony Sottile <asottile@umich.edu>
+Date: Sat, 12 May 2018 12:07:43 -0700
+Subject: Work with older sphinx
+
+---
+ Doc/tools/extensions/pyspecific.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/Doc/tools/extensions/pyspecific.py b/Doc/tools/extensions/pyspecific.py
+index 92506e7..0861759 100644
+--- a/Doc/tools/extensions/pyspecific.py
++++ b/Doc/tools/extensions/pyspecific.py
+@@ -23,7 +23,6 @@ from docutils import nodes, utils
+ from sphinx import addnodes
+ from sphinx.builders import Builder
+ from sphinx.locale import translators
+-from sphinx.util import status_iterator
+ from sphinx.util.nodes import split_explicit_title
+ from sphinx.writers.html import HTMLTranslator
+ from sphinx.writers.text import TextWriter, TextTranslator
+@@ -310,7 +309,7 @@ class PydocTopicsBuilder(Builder):
+ 
+     def write(self, *ignored):
+         writer = TextWriter(self)
+-        for label in status_iterator(pydoc_topic_labels,
++        for label in self.status_iterator(pydoc_topic_labels,
+                                      'building topics... ',
+                                      length=len(pydoc_topic_labels)):
+             if label not in self.env.domaindata['std']['labels']:
