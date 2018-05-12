@@ -561,7 +561,7 @@ importlib
 ---------
 
 The :class:`importlib.abc.ResourceReader` ABC was introduced to
-support the loading of resource from packages.
+support the loading of resources from packages.
 
 locale
 ------
@@ -592,6 +592,14 @@ on Unix.  (Contributed by Serhiy Storchaka in :issue:`25996`.)
 New function :func:`~os.register_at_fork` allows registering Python callbacks
 to be executed on a process fork.  (Contributed by Antoine Pitrou in
 :issue:`16500`.)
+
+Exposed the system calls *preadv*, *preadv2*, *pwritev* and *pwritev2* through
+the new functions :func:`~os.preadv` and :func:`~os.pwritev`. (Contributed by
+Pablo Galindo in :issue:`31368`.)
+
+Exposed the system call *posix_spawn* through the new function
+:func:`~os.posix_spawn`. (Contributed by Pablo Galindo, Serhiy Storchaka and
+Gregory P. Smith in :issue:`20104`.)
 
 pdb
 ---
@@ -1041,6 +1049,12 @@ Deprecated
   :meth:`ssl.SSLContext.wrap_socket` instead.
   (Contributed by Christian Heimes in :issue:`28124`.)
 
+- In Python 3.8, attempting to check for non-Enum objects in :class:`Enum`
+  classes will raise a :exc:`TypeError` (e.g. ``1 in Color``); similarly,
+  attempting to check for non-Flag objects in a :class:`Flag` member will
+  raise :exc:`TypeError` (e.g. ``1 in Perm.RW``); currently, both operations
+  return :const:`False` instead.
+
 
 Windows Only
 ------------
@@ -1144,10 +1158,13 @@ Changes in Python behavior
   parentheses can be omitted only on calls.
   (Contributed by Serhiy Storchaka in :issue:`32012` and :issue:`32023`.)
 
-* When using the ``-m`` switch, the starting directory is now added to sys.path,
-  rather than the current working directory. Any programs that are found to be
-  relying on the previous behaviour will need to be updated to manipulate
-  :data:`sys.path` appropriately.
+* When using the :option:`-m` switch, the initial working directory is now added
+  to :data:`sys.path`, rather than an empty string (which dynamically denoted
+  the current working directory at the time of each import). Any programs that
+  are checking for the empty string, or otherwise relying on the previous
+  behaviour, will need to be updated accordingly (e.g. by also checking for
+  ``os.getcwd()`` or ``os.path.dirname(__main__.__file__)``, depending on why
+  the code was checking for the empty string in the first place).
 
 
 Changes in the Python API
@@ -1273,6 +1290,11 @@ Changes in the Python API
   redirection, you will have to pass ``close_fds=False`` to preserve the
   previous behaviour, or use
   :attr:`STARTUPINFO.lpAttributeList <subprocess.STARTUPINFO.lpAttributeList>`.
+
+* :meth:`importlib.machinery.PathFinder.invalidate_caches` -- which implicitly
+  affects :func:`importlib.invalidate_caches` -- now deletes entries
+  in :data:`sys.path_importer_cache` which are set to ``None``.
+  (Contributed by Brett Cannon in :issue:`33169`.)
 
 
 Changes in the C API
