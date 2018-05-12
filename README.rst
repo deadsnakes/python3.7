@@ -1,4 +1,4 @@
-This is Python version 3.7.0 beta 3
+This is Python version 3.7.0 beta 4
 ===================================
 
 .. image:: https://travis-ci.org/python/cpython.svg?branch=master
@@ -92,15 +92,16 @@ below.
 Profile Guided Optimization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PGO takes advantage of recent versions of the GCC or Clang compilers.  If ran,
-``make profile-opt`` will do several steps.
+PGO takes advantage of recent versions of the GCC or Clang compilers.  If used,
+either via ``configure --enable-optimizations`` above or by manually running
+``make profile-opt`` regardless of configure flags it will do several steps.
 
 First, the entire Python directory is cleaned of temporary files that may have
 resulted in a previous compilation.
 
 Then, an instrumented version of the interpreter is built, using suitable
-compiler flags for each flavour. Note that this is just an intermediary step
-and the binary resulted after this step is not good for real life workloads, as
+compiler flags for each flavour. Note that this is just an intermediary step.
+The binary resulting from this step is not good for real life workloads as
 it has profiling instructions embedded inside.
 
 After this instrumented version of the interpreter is built, the Makefile will
@@ -172,9 +173,10 @@ something is wrong.
 By default, tests are prevented from overusing resources like disk space and
 memory.  To enable these tests, run ``make testall``.
 
-If any tests fail, you can re-run the failing test(s) in verbose mode::
+If any tests fail, you can re-run the failing test(s) in verbose mode.  For
+example, if ``test_os`` and ``test_gdb`` failed, you can run::
 
-    make test TESTOPTS="-v test_that_failed"
+    make test TESTOPTS="-v test_os test_gdb"
 
 If the failure persists and appears to be a problem with Python rather than
 your environment, you can `file a bug report <https://bugs.python.org>`_ and
