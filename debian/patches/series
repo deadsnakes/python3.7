@@ -26,7 +26,6 @@ mangle-fstack-protector.diff
 reproducible-buildinfo.diff
 pydoc-use-pager.diff
 pyhash.diff
-mips-r6.diff
 local-doc-references.diff
 doc-build-texinfo.diff
 temporary-changes.diff
