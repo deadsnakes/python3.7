@@ -1,3 +1,9 @@
+python3.7 (3.7.0~b4-1+trusty1) trusty; urgency=medium
+
+  * Python 3.7.0 beta 4 release.
+
+ -- Anthony Sottile <asottile@umich.edu>  Sat, 12 May 2018 13:30:23 -0700
+
 python3.7 (3.7.0~b3-1+trusty1) trusty; urgency=medium
 
   * Python 3.7.0 beta 3 release.
