@@ -214,7 +214,7 @@ index 287ab19..00e3f94 100644
  
      def test_debug_mode(self):
 diff --git a/Lib/pydoc.py b/Lib/pydoc.py
-index 905f664..1f03d61 100644
+index eb58821..1f271da 100644
 --- a/Lib/pydoc.py
 +++ b/Lib/pydoc.py
 @@ -420,6 +420,7 @@ class Doc:

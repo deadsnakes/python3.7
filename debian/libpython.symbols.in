@@ -1184,10 +1184,6 @@
  _PyCoreConfig_Read@Base @SVER@
  _PyCoroWrapper_Type@Base @SVER@
  _PyCoro_GetAwaitableIter@Base @SVER@
- _PyCrossInterpreterData_Lookup@Base @SVER@
- _PyCrossInterpreterData_NewObject@Base @SVER@
- _PyCrossInterpreterData_Register_Class@Base @SVER@
- _PyCrossInterpreterData_Release@Base @SVER@
  _PyDebugAllocatorStats@Base @SVER@
  _PyDictKeys_DecRef@Base @SVER@
  _PyDictView_Intersect@Base @SVER@
@@ -1426,7 +1422,6 @@
  _PyObject_CallMethodId_SizeT@Base @SVER@
  _PyObject_CallMethod_SizeT@Base @SVER@
  _PyObject_Call_Prepend@Base @SVER@
- _PyObject_CheckCrossInterpreterData@Base @SVER@
  _PyObject_DebugMallocStats@Base @SVER@
  _PyObject_DebugTypeStats@Base @SVER@
  _PyObject_Dump@Base @SVER@
@@ -1442,7 +1437,6 @@
  _PyObject_GenericSetAttrWithDict@Base @SVER@
  _PyObject_GetAttrId@Base @SVER@
  _PyObject_GetBuiltin@Base @SVER@
- _PyObject_GetCrossInterpreterData@Base @SVER@
  _PyObject_GetDictPtr@Base @SVER@
  _PyObject_GetMethod@Base @SVER@
  _PyObject_HasAttrId@Base @SVER@
