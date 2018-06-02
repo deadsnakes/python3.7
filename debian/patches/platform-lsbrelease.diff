@@ -8,7 +8,7 @@ Subject: platform-lsbrelease
  1 file changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/platform.py b/Lib/platform.py
-index dc981ec..6d647f7 100755
+index 20f9817..ee9a14a 100755
 --- a/Lib/platform.py
 +++ b/Lib/platform.py
 @@ -267,7 +267,7 @@ _release_version = re.compile(r'([^0-9]+)'
