@@ -2,6 +2,118 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.0 release candidate 1?
+===============================================
+
+*Release date: 2018-06-12*
+
+Core and Builtins
+-----------------
+
+- bpo-33803: Fix a crash in hamt.c caused by enabling GC tracking for an
+  object that hadn't all of its fields set to NULL.
+
+- bpo-33706: Fix a crash in Python initialization when parsing the command
+  line options. Thanks Christoph Gohlke for the bug report and the fix!
+
+- bpo-30654: Fixed reset of the SIGINT handler to SIG_DFL on interpreter
+  shutdown even when there was a custom handler set previously. Patch by
+  Philipp Kerling.
+
+- bpo-31849: Fix signed/unsigned comparison warning in pyhash.c.
+
+Library
+-------
+
+- bpo-30167: Prevent site.main() exception if PYTHONSTARTUP is set. Patch by
+  Steve Weber.
+
+- bpo-33812: Datetime instance d with non-None tzinfo, but with
+  d.tzinfo.utcoffset(d) returning None is now treated as naive by the
+  astimezone() method.
+
+- bpo-30805: Avoid race condition with debug logging
+
+- bpo-33694: asyncio: Fix a race condition causing data loss on
+  pause_reading()/resume_reading() when using the ProactorEventLoop.
+
+- bpo-32493: Correct test for ``uuid_enc_be`` availability in
+  ``configure.ac``. Patch by Michael Felt.
+
+- bpo-33792: Add asyncio.WindowsSelectorEventLoopPolicy and
+  asyncio.WindowsProactorEventLoopPolicy.
+
+- bpo-33778: Update ``unicodedata``'s database to Unicode version 11.0.0.
+
+- bpo-33770: improve base64 exception message for encoded inputs of invalid
+  length
+
+- bpo-33769: asyncio/start_tls: Fix error message; cancel callbacks in case
+  of an unhandled error; mark SSLTransport as closed if it is aborted.
+
+- bpo-33767: The concatenation (``+``) and repetition (``*``) sequence
+  operations now raise :exc:`TypeError` instead of :exc:`SystemError` when
+  performed on :class:`mmap.mmap` objects.  Patch by Zackery Spytz.
+
+- bpo-33734: asyncio/ssl: Fix AttributeError, increase default handshake
+  timeout
+
+- bpo-11874: Use a better regex when breaking usage into wrappable parts.
+  Avoids bogus assertion errors from custom metavar strings.
+
+- bpo-33582: Emit a deprecation warning for inspect.formatargspec
+
+Documentation
+-------------
+
+- bpo-33409: Clarified the relationship between PEP 538's
+  PYTHONCOERCECLOCALE and PEP 540's PYTHONUTF8 mode.
+
+- bpo-33736: Improve the documentation of :func:`asyncio.open_connection`,
+  :func:`asyncio.start_server` and their UNIX socket counterparts.
+
+- bpo-31432: Clarify meaning of CERT_NONE, CERT_OPTIONAL, and CERT_REQUIRED
+  flags for ssl.SSLContext.verify_mode.
+
+Build
+-----
+
+- bpo-5755: Move ``-Wstrict-prototypes`` option to ``CFLAGS_NODIST`` from
+  ``OPT``. This option emitted annoying warnings when building extension
+  modules written in C++.
+
+Windows
+-------
+
+- bpo-33720: Reduces maximum marshal recursion depth on release builds.
+
+IDLE
+----
+
+- bpo-33656: On Windows, add API call saying that tk scales for DPI. On
+  Windows 8.1+ or 10, with DPI compatibility properties of the Python binary
+  unchanged, and a monitor resolution greater than 96 DPI, this should make
+  text and lines sharper.  It should otherwise have no effect.
+
+- bpo-33768: Clicking on a context line moves that line to the top of the
+  editor window.
+
+- bpo-33763: IDLE: Use read-only text widget for code context instead of
+  label widget.
+
+- bpo-33664: Scroll IDLE editor text by lines. Previously, the mouse wheel
+  and scrollbar slider moved text by a fixed number of pixels, resulting in
+  partial lines at the top of the editor box.  The change also applies to
+  the shell and grep output windows, but not to read-only text views.
+
+- bpo-33679: Enable theme-specific color configuration for Code Context. Use
+  the Highlights tab to see the setting for built-in themes or add settings
+  to custom themes.
+
+- bpo-33642: Display up to maxlines non-blank lines for Code Context. If
+  there is no current context, show a single blank line.
+
+
 What's New in Python 3.7.0 beta 5?
 ==================================
 
@@ -142,7 +254,7 @@ Library
 - bpo-33422: Fix trailing quotation marks getting deleted when looking up
   byte/string literals on pydoc. Patch by Andrés Delfino.
 
-- bpo-28167: The function ``platform.linux_ditribution`` and
+- bpo-28167: The function ``platform.linux_distribution`` and
   ``platform.dist`` now trigger a ``DeprecationWarning`` and have been
   marked for removal in Python 3.8
 
@@ -2343,10 +2455,10 @@ IDLE
 - bpo-31459: Rename IDLE's module browser from Class Browser to Module
   Browser. The original module-level class and method browser became a
   module browser, with the addition of module-level functions, years ago.
-  Nested classes and functions were added yesterday.  For back-
-  compatibility, the virtual event <<open-class-browser>>, which appears on
-  the Keys tab of the Settings dialog, is not changed. Patch by Cheryl
-  Sabella.
+  Nested classes and functions were added yesterday.  For
+  back-compatibility, the virtual event <<open-class-browser>>, which
+  appears on the Keys tab of the Settings dialog, is not changed. Patch by
+  Cheryl Sabella.
 
 - bpo-31500: Default fonts now are scaled on HiDPI displays.
 
@@ -4253,14 +4365,14 @@ IDLE
   The main difference for users is that user configurable key bindings for
   builtin features are now handled uniformly.  Now, editing a binding in a
   keyset only affects its value in the keyset.  All bindings are defined
-  together in the system-specific default keysets in config- extensions.def.
-  All custom keysets are saved as a whole in config- extension.cfg.  All
-  take effect as soon as one clicks Apply or Ok.
+  together in the system-specific default keysets in config-extensions.def.
+  All custom keysets are saved as a whole in config-extension.cfg.  All take
+  effect as soon as one clicks Apply or Ok.
 
   The affected events are '<<force-open-completions>>', '<<expand-word>>',
   '<<force-open-calltip>>', '<<flash-paren>>', '<<format-paragraph>>',
   '<<run-module>>', '<<check-module>>', and '<<zoom-height>>'.  Any (global)
-  customizations made before 3.6.3 will not affect their keyset- specific
+  customizations made before 3.6.3 will not affect their keyset-specific
   customization after 3.6.3. and vice versa.
 
   Initial patch by Charles Wohlganger.
@@ -5597,8 +5709,8 @@ Library
   http.client.HTTPConnection requests.  The
   urllib.request.AbstractHTTPHandler class does not enforce a Content-Length
   header any more.  If a HTTP request has a file or iterable body, but no
-  Content-Length header, the library now falls back to use chunked transfer-
-  encoding.
+  Content-Length header, the library now falls back to use chunked
+  transfer-encoding.
 
 - A new version of typing.py from https://github.com/python/typing: -
   Collection (only for 3.6) (Issue #27598) - Add FrozenSet to __all__
@@ -5978,8 +6090,8 @@ Build
   Hsuan Yen.
 
 - bpo-27641: The configure script now inserts comments into the makefile to
-  prevent the pgen and _freeze_importlib executables from being cross-
-  compiled.
+  prevent the pgen and _freeze_importlib executables from being
+  cross-compiled.
 
 - bpo-26662: Set PYTHON_FOR_GEN in configure as the Python program to be
   used for file generation during the build.
@@ -8503,8 +8615,8 @@ Build
   Hsuan Yen.
 
 - bpo-27641: The configure script now inserts comments into the makefile to
-  prevent the pgen and _freeze_importlib executables from being cross-
-  compiled.
+  prevent the pgen and _freeze_importlib executables from being
+  cross-compiled.
 
 - bpo-26662: Set PYTHON_FOR_GEN in configure as the Python program to be
   used for file generation during the build.
