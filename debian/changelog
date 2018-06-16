@@ -1,3 +1,9 @@
+python3.7 (3.7.0~rc1-1+xenial1) xenial; urgency=medium
+
+  * Python 3.7.0 release candidate 1.
+
+ -- Anthony Sottile <asottile@umich.edu>  Fri, 15 Jun 2018 20:32:08 -0700
+
 python3.7 (3.7.0~b5-1+xenial1) xenial; urgency=medium
 
   * Python 3.7.0 beta 5 release.
