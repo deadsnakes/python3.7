@@ -1,5 +1,5 @@
-This is Python version 3.7.0 beta 5
-===================================
+This is Python version 3.7.0 candidate 1
+========================================
 
 .. image:: https://travis-ci.org/python/cpython.svg?branch=master
    :alt: CPython build status on Travis CI
@@ -61,6 +61,11 @@ This will install Python as python3.
 You can pass many options to the configure script; run ``./configure --help``
 to find out more.  On macOS and Cygwin, the executable is called ``python.exe``;
 elsewhere it's just ``python``.
+
+If you are running on macOS with the latest updates installed, make sure to install
+openSSL or some other SSL software along with Homebrew or another package manager.
+If issues persist, see https://devguide.python.org/setup/#macos-and-os-x for more 
+information. 
 
 On macOS, if you have configured Python with ``--enable-framework``, you
 should use ``make frameworkinstall`` to do the installation.  Note that this
