@@ -22,15 +22,15 @@ index c210667..ddaca88 100644
      {% if not embedded %}<script type="text/javascript" src="{{ pathto('_static/copybutton.js', 1) }}"></script>{% endif %}
      {% if switchers is defined and not embedded %}<script type="text/javascript" src="{{ pathto('_static/switchers.js', 1) }}"></script>{% endif %}
 diff --git a/Lib/idlelib/help.html b/Lib/idlelib/help.html
-index 33ae884..e21312c 100644
+index 5b4d093..7f74940 100644
 --- a/Lib/idlelib/help.html
 +++ b/Lib/idlelib/help.html
-@@ -34,7 +34,7 @@
-     <link rel="next" title="25.6. Other Graphical User Interface Packages" href="othergui.html" />
-     <link rel="prev" title="25.4. tkinter.scrolledtext — Scrolled Text Widget" href="tkinter.scrolledtext.html" />
-     <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+@@ -23,7 +23,7 @@
+     <link rel="copyright" title="Copyright" href="../copyright.html" />
+     <link rel="next" title="26.6. Other Graphical User Interface Packages" href="othergui.html" />
+     <link rel="prev" title="26.4. tkinter.scrolledtext — Scrolled Text Widget" href="tkinter.scrolledtext.html" />
 -    <link rel="canonical" href="https://docs.python.org/3/library/idle.html" />
 +    <link rel="canonical" href="file:///usr/share/doc/python3.7/html/library/idle.html" />
  
-     <script type="text/javascript" src="../_static/copybutton.js"></script>
+ 
  
