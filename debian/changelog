@@ -1,3 +1,9 @@
+python3.7 (3.7.0-1+bionic2) bionic; urgency=medium
+
+  * Still include distutils/{__init__.py,version.py} to match upstream
+
+ -- Anthony Sottile <asottile@umich.edu>  Thu, 28 Jun 2018 12:31:47 -0700
+
 python3.7 (3.7.0-1+bionic1) bionic; urgency=medium
 
   * Imported from Xenial package.

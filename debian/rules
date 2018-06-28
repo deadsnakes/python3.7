@@ -1028,7 +1028,10 @@ endif
 	rm -rf $(d)/usr/lib/python$(VER)/tkinter
 
 	: # distutils shipped in python3-distutils
-	rm -rf $(d)/usr/lib/python$(VER)/distutils
+	rm -rf $(d)/usr/lib/python$(VER)/distutils/*
+	: # ... except for distutils.version
+	cp Lib/distutils/{__init__,version}.py \
+		$(d)/usr/lib/python$(VER)/distutils/.
 
 	: # lib2to3 shipped in python3-lib2to3
 	rm -rf \
