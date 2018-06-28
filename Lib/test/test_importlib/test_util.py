@@ -769,7 +769,7 @@ class MagicNumberTests(unittest.TestCase):
     Test release compatibility issues relating to importlib
     """
     @unittest.skipUnless(
-        sys.version_info.releaselevel in ('final', 'release'),
+        sys.version_info.releaselevel in ('candidate', 'final'),
         'only applies to candidate or final python release levels'
     )
     def test_magic_number(self):
@@ -789,7 +789,7 @@ class MagicNumberTests(unittest.TestCase):
         in advance. Such exceptional releases will then require an
         adjustment to this test case.
         """
-        EXPECTED_MAGIC_NUMBER = 3379
+        EXPECTED_MAGIC_NUMBER = 3394
         actual = int.from_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
 
         msg = (
