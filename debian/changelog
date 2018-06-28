@@ -1,3 +1,10 @@
+python3.7 (3.7.0-1+bionic1) bionic; urgency=medium
+
+  * Imported from Xenial package.
+  * Use 2to3 / distutils / gdbm / tk from python3-stdlib-extensions.
+
+ -- Anthony Sottile <asottile@umich.edu>  Wed, 27 Jun 2018 20:36:18 -0700
+
 python3.7 (3.7.0-1+xenial1) xenial; urgency=medium
 
   * Python 3.7.0 release.
