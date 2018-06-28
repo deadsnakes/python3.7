@@ -2,6 +2,24 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.0 final?
+=================================
+
+*Release date: 2018-06-27*
+
+Library
+-------
+
+- bpo-33851: Fix :func:`ast.get_docstring` for a node that lacks a
+  docstring.
+
+C API
+-----
+
+- bpo-33932: Calling Py_Initialize() twice does nothing, instead of failing
+  with a fatal error: restore the Python 3.6 behaviour.
+
+
 What's New in Python 3.7.0 release candidate 1?
 ===============================================
 
@@ -4626,13 +4644,2061 @@ C API
   PyUnicode_AsEncodedUnicode().
 
 
-What's New in Python 3.6.1 release candidate 1?
+What's New in Python 3.6.6 final?
+=================================
+
+*Release date: 2018-06-27*
+
+There were no new changes in version 3.6.6.
+
+
+
+What's New in Python 3.6.6 release candidate 1?
 ===============================================
 
-*Release date: XXXX-XX-XX*
+*Release date: 2018-06-11*
 
 Core and Builtins
 -----------------
+
+- bpo-33786: Fix asynchronous generators to handle GeneratorExit in athrow()
+  correctly
+
+- bpo-30654: Fixed reset of the SIGINT handler to SIG_DFL on interpreter
+  shutdown even when there was a custom handler set previously. Patch by
+  Philipp Kerling.
+
+- bpo-33622: Fixed a leak when the garbage collector fails to add an object
+  with the ``__del__`` method or referenced by it into the
+  :data:`gc.garbage` list. :c:func:`PyGC_Collect` can now be called when an
+  exception is set and preserves it.
+
+- bpo-31849: Fix signed/unsigned comparison warning in pyhash.c.
+
+- bpo-33391: Fix a leak in set_symmetric_difference().
+
+- bpo-28055: Fix unaligned accesses in siphash24(). Patch by Rolf Eike Beer.
+
+- bpo-33231: Fix potential memory leak in ``normalizestring()``.
+
+- bpo-29922: Improved error messages in 'async with' when ``__aenter__()``
+  or ``__aexit__()`` return non-awaitable object.
+
+- bpo-33199: Fix ``ma_version_tag`` in dict implementation is uninitialized
+  when copying from key-sharing dict.
+
+- bpo-33041: Fixed jumping when the function contains an ``async for`` loop.
+
+- bpo-32282: Fix an unnecessary ifdef in the include of VersionHelpers.h in
+  socketmodule on Windows.
+
+- bpo-21983: Fix a crash in `ctypes.cast()` in case the type argument is a
+  ctypes structured data type. Patch by Eryk Sun and Oren Milman.
+
+Library
+-------
+
+- bpo-30167: Prevent site.main() exception if PYTHONSTARTUP is set. Patch by
+  Steve Weber.
+
+- bpo-33812: Datetime instance d with non-None tzinfo, but with
+  d.tzinfo.utcoffset(d) returning None is now treated as naive by the
+  astimezone() method.
+
+- bpo-30805: Avoid race condition with debug logging
+
+- bpo-33767: The concatenation (``+``) and repetition (``*``) sequence
+  operations now raise :exc:`TypeError` instead of :exc:`SystemError` when
+  performed on :class:`mmap.mmap` objects.  Patch by Zackery Spytz.
+
+- bpo-32684: Fix gather to propagate cancellation of itself even with
+  return_exceptions.
+
+- bpo-33674: Fix a race condition in SSLProtocol.connection_made() of
+  asyncio.sslproto: start immediately the handshake instead of using
+  call_soon(). Previously, data_received() could be called before the
+  handshake started, causing the handshake to hang or fail.
+
+- bpo-31467: Fixed bug where calling write_eof() on a
+  _SelectorSocketTransport after it's already closed raises AttributeError.
+
+- bpo-33672: Fix Task.__repr__ crash with Cython's bogus coroutines
+
+- bpo-33469: Fix RuntimeError after closing loop that used run_in_executor
+
+- bpo-11874: Use a better regex when breaking usage into wrappable parts.
+  Avoids bogus assertion errors from custom metavar strings.
+
+- bpo-30877: Fixed a bug in the Python implementation of the JSON decoder
+  that prevented the cache of parsed strings from clearing after finishing
+  the decoding. Based on patch by c-fos.
+
+- bpo-33548: tempfile._candidate_tempdir_list should consider common TEMP
+  locations
+
+- bpo-33542: Prevent ``uuid.get_node`` from using a DUID instead of a MAC on
+  Windows. Patch by Zvi Effron
+
+- bpo-26819: Fix race condition with `ReadTransport.resume_reading` in
+  Windows proactor event loop.
+
+- bpo-28556: Minor fixes in typing module: add annotations to
+  ``NamedTuple.__new__``, pass ``*args`` and ``**kwds`` in
+  ``Generic.__new__``.  Original PRs by Paulius Šarka and Chad Dombrova.
+
+- bpo-20087: Updated alias mapping with glibc 2.27 supported locales.
+
+- bpo-33422: Fix trailing quotation marks getting deleted when looking up
+  byte/string literals on pydoc. Patch by Andrés Delfino.
+
+- bpo-33197: Update error message when constructing invalid
+  inspect.Parameters Patch by Dong-hee Na.
+
+- bpo-33383: Fixed crash in the get() method of the :mod:`dbm.ndbm` database
+  object when it is called with a single argument.
+
+- bpo-33329: Fix multiprocessing regression on newer glibcs
+
+- bpo-991266: Fix quoting of the ``Comment`` attribute of
+  :class:`http.cookies.SimpleCookie`.
+
+- bpo-33131: Upgrade bundled version of pip to 10.0.1.
+
+- bpo-33308: Fixed a crash in the :mod:`parser` module when converting an ST
+  object to a tree of tuples or lists with ``line_info=False`` and
+  ``col_info=True``.
+
+- bpo-33263: Fix FD leak in `_SelectorSocketTransport`  Patch by Vlad
+  Starostin.
+
+- bpo-33256: Fix display of ``<module>`` call in the html produced by
+  ``cgitb.html()``. Patch by Stéphane Blondon.
+
+- bpo-33203: ``random.Random.choice()`` now raises ``IndexError`` for empty
+  sequences consistently even when called from subclasses without a
+  ``getrandbits()`` implementation.
+
+- bpo-33224: Update difflib.mdiff() for PEP 479.  Convert an uncaught
+  StopIteration in a generator into a return-statement.
+
+- bpo-33209: End framing at the end of C implementation of
+  :func:`pickle.Pickler.dump`.
+
+- bpo-32861: The urllib.robotparser's ``__str__`` representation now
+  includes wildcard entries and the "Crawl-delay" and "Request-rate" fields.
+  Patch by Michael Lazar.
+
+- bpo-33096: Allow ttk.Treeview.insert to insert iid that has a false
+  boolean value. Note iid=0 and iid=False would be same. Patch by Garvit
+  Khatri.
+
+- bpo-33127: The ssl module now compiles with LibreSSL 2.7.1.
+
+- bpo-33021: Release the GIL during fstat() calls, avoiding hang of all
+  threads when calling mmap.mmap(), os.urandom(), and random.seed().  Patch
+  by Nir Soffer.
+
+- bpo-27683: Fix a regression in :mod:`ipaddress` that result of
+  :meth:`hosts` is empty when the network is constructed by a tuple
+  containing an integer mask and only 1 bit left for addresses.
+
+- bpo-32844: Fix wrong redirection of a low descriptor (0 or 1) to stderr in
+  subprocess if another low descriptor is closed.
+
+- bpo-31908: Fix output of cover files for ``trace`` module command-line
+  tool. Previously emitted cover files only when ``--missing`` option was
+  used. Patch by Michael Selik.
+
+- bpo-31457: If nested log adapters are used, the inner ``process()``
+  methods are no longer omitted.
+
+- bpo-16865: Support arrays >=2GiB in :mod:`ctypes`.  Patch by Segev Finer.
+
+- bpo-31238: pydoc: the stop() method of the private ServerThread class now
+  waits until DocServer.serve_until_quit() completes and then explicitly
+  sets its docserver attribute to None to break a reference cycle.
+
+Documentation
+-------------
+
+- bpo-33503: Fix broken pypi link
+
+- bpo-33421: Add missing documentation for ``typing.AsyncContextManager``.
+
+- bpo-33378: Add Korean language switcher for https://docs.python.org/3/
+
+- bpo-33276: Clarify that the ``__path__`` attribute on modules cannot be
+  just any value.
+
+- bpo-33201: Modernize documentation for writing C extension types.
+
+- bpo-33195: Deprecate ``Py_UNICODE`` usage in ``c-api/arg`` document.
+  ``Py_UNICODE`` related APIs are deprecated since Python 3.3, but it is
+  missed in the document.
+
+- bpo-33126: Document PyBuffer_ToContiguous().
+
+- bpo-27212: Modify documentation for the :func:`islice` recipe to consume
+  initial values up to the start index.
+
+- bpo-28247: Update :mod:`zipapp` documentation to describe how to make
+  standalone applications.
+
+- bpo-18802: Documentation changes for ipaddress.  Patch by Jon Foster and
+  Berker Peksag.
+
+- bpo-27428: Update documentation to clarify that ``WindowsRegistryFinder``
+  implements ``MetaPathFinder``. (Patch by Himanshu Lakhara)
+
+- bpo-8243: Add a note about curses.addch and curses.addstr exception
+  behavior when writing outside a window, or pad.
+
+- bpo-31432: Clarify meaning of CERT_NONE, CERT_OPTIONAL, and CERT_REQUIRED
+  flags for ssl.SSLContext.verify_mode.
+
+Tests
+-----
+
+- bpo-33655: Ignore test_posix_fallocate failures on BSD platforms that
+  might be due to running on ZFS.
+
+- bpo-19417: Add test_bdb.py.
+
+Build
+-----
+
+- bpo-5755: Move ``-Wstrict-prototypes`` option to ``CFLAGS_NODIST`` from
+  ``OPT``. This option emitted annoying warnings when building extension
+  modules written in C++.
+
+- bpo-33614: Ensures module definition files for the stable ABI on Windows
+  are correctly regenerated.
+
+- bpo-33522: Enable CI builds on Visual Studio Team Services at
+  https://python.visualstudio.com/cpython
+
+- bpo-33012: Add ``-Wno-cast-function-type`` for gcc 8 for silencing
+  warnings about function casts like casting to PyCFunction in method
+  definition lists.
+
+- bpo-33394: Enable the verbose build for extension modules, when GNU make
+  is passed macros on the command line.
+
+Windows
+-------
+
+- bpo-33184: Update Windows installer to OpenSSL 1.0.2o.
+
+macOS
+-----
+
+- bpo-33184: Update macOS installer build to use OpenSSL 1.0.2o.
+
+IDLE
+----
+
+- bpo-33656: On Windows, add API call saying that tk scales for DPI. On
+  Windows 8.1+ or 10, with DPI compatibility properties of the Python binary
+  unchanged, and a monitor resolution greater than 96 DPI, this should make
+  text and lines sharper.  It should otherwise have no effect.
+
+- bpo-33768: Clicking on a context line moves that line to the top of the
+  editor window.
+
+- bpo-33763: IDLE: Use read-only text widget for code context instead of
+  label widget.
+
+- bpo-33664: Scroll IDLE editor text by lines. Previously, the mouse wheel
+  and scrollbar slider moved text by a fixed number of pixels, resulting in
+  partial lines at the top of the editor box.  The change also applies to
+  the shell and grep output windows, but not to read-only text views.
+
+- bpo-33679: Enable theme-specific color configuration for Code Context. Use
+  the Highlights tab to see the setting for built-in themes or add settings
+  to custom themes.
+
+- bpo-33642: Display up to maxlines non-blank lines for Code Context. If
+  there is no current context, show a single blank line.
+
+- bpo-33628: IDLE: Cleanup codecontext.py and its test.
+
+- bpo-33564: IDLE's code context now recognizes async as a block opener.
+
+- bpo-29706: IDLE now colors async and await as keywords in 3.6. They become
+  full keywords in 3.7.
+
+- bpo-21474: Update word/identifier definition from ascii to unicode. In
+  text and entry boxes, this affects selection by double-click, movement
+  left/right by control-left/right, and deletion left/right by
+  control-BACKSPACE/DEL.
+
+- bpo-33204: IDLE: consistently color invalid string prefixes. A 'u' string
+  prefix cannot be paired with either 'r' or 'f'. Consistently color as much
+  of the prefix, starting at the right, as is valid. Revise and extend
+  colorizer test.
+
+- bpo-32831: Add docstrings and tests for codecontext.
+
+Tools/Demos
+-----------
+
+- bpo-33189: :program:`pygettext.py` now recognizes only literal strings as
+  docstrings and translatable strings, and rejects bytes literals and
+  f-string expressions.
+
+- bpo-31920: Fixed handling directories as arguments in the ``pygettext``
+  script. Based on patch by Oleg Krasnikov.
+
+- bpo-29673: Fix pystackv and pystack gdbinit macros.
+
+- bpo-32885: Add an ``-n`` flag for ``Tools/scripts/pathfix.py`` to disbale
+  automatic backup creation (files with ``~`` suffix).
+
+- bpo-31583: Fix 2to3 for using with --add-suffix option but without
+  --output-dir option for relative path to files in current directory.
+
+C API
+-----
+
+- bpo-32374: Document that m_traverse for multi-phase initialized modules
+  can be called with m_state=NULL, and add a sanity check
+
+
+What's New in Python 3.6.5 final?
+=================================
+
+*Release date: 2018-03-28*
+
+Tests
+-----
+
+- bpo-32872: Avoid regrtest compatibility issue with namespace packages.
+
+Build
+-----
+
+- bpo-33163: Upgrade pip to 9.0.3 and setuptools to v39.0.1.
+
+
+What's New in Python 3.6.5 release candidate 1?
+===============================================
+
+*Release date: 2018-03-13*
+
+Security
+--------
+
+- bpo-33001: Minimal fix to prevent buffer overrun in os.symlink on Windows
+
+- bpo-32981: Regexes in difflib and poplib were vulnerable to catastrophic
+  backtracking. These regexes formed potential DOS vectors (REDOS). They
+  have been refactored. This resolves CVE-2018-1060 and CVE-2018-1061. Patch
+  by Jamie Davis.
+
+Core and Builtins
+-----------------
+
+- bpo-33026: Fixed jumping out of "with" block by setting f_lineno.
+
+- bpo-17288: Prevent jumps from 'return' and 'exception' trace events.
+
+- bpo-32889: Update Valgrind suppression list to account for the rename of
+  ``Py_ADDRESS_IN_RANG`` to ``address_in_range``.
+
+- bpo-32650: Pdb and other debuggers dependent on bdb.py will correctly step
+  over (next command) native coroutines. Patch by Pablo Galindo.
+
+- bpo-32685: Improve suggestion when the Python 2 form of print statement is
+  either present on the same line as the header of a compound statement or
+  else terminated by a semi-colon instead of a newline. Patch by Nitish
+  Chandra.
+
+- bpo-32583: Fix possible crashing in builtin Unicode decoders caused by
+  write out-of-bound errors when using customized decode error handlers.
+
+- bpo-26163: Improved frozenset() hash to create more distinct hash values
+  when faced with datasets containing many similar values.
+
+- bpo-27169: The ``__debug__`` constant is now optimized out at compile
+  time. This fixes also bpo-22091.
+
+- bpo-32329: ``sys.flags.hash_randomization`` is now properly set to 0 when
+  hash randomization is turned off by ``PYTHONHASHSEED=0``.
+
+- bpo-30416: The optimizer is now protected from spending much time doing
+  complex calculations and consuming much memory for creating large
+  constants in constant folding.
+
+- bpo-18533: ``repr()`` on a dict containing its own ``values()`` or
+  ``items()`` no longer raises ``RecursionError``; OrderedDict similarly.
+  Instead, use ``...``, as for other recursive structures.  Patch by Ben
+  North.
+
+- bpo-32028: Leading whitespace is now correctly ignored when generating
+  suggestions for converting Py2 print statements to Py3 builtin print
+  function calls. Patch by Sanyam Khurana.
+
+- bpo-32137: The repr of deeply nested dict now raises a RecursionError
+  instead of crashing due to a stack overflow.
+
+Library
+-------
+
+- bpo-33064: lib2to3 now properly supports trailing commas after ``*args``
+  and ``**kwargs`` in function signatures.
+
+- bpo-31804: Avoid failing in multiprocessing.Process if the standard
+  streams are closed or None at exit.
+
+- bpo-33037: Skip sending/receiving data after SSL transport closing.
+
+- bpo-30353: Fix ctypes pass-by-value for structs on 64-bit Cygwin/MinGW.
+
+- bpo-33009: Fix inspect.signature() for single-parameter partialmethods.
+
+- bpo-32969: Expose several missing constants in zlib and fix corresponding
+  documentation.
+
+- bpo-32713: Fixed tarfile.itn handling of out-of-bounds float values. Patch
+  by Joffrey Fuhrer.
+
+- bpo-30622: The ssl module now detects missing NPN support in LibreSSL.
+
+- bpo-32922: dbm.open() now encodes filename with the filesystem encoding
+  rather than default encoding.
+
+- bpo-32859: In ``os.dup2``, don't check every call whether the ``dup3``
+  syscall exists or not.
+
+- bpo-21060: Rewrite confusing message from setup.py upload from "No dist
+  file created in earlier command" to the more helpful "Must create and
+  upload files in one command".
+
+- bpo-32857: In :mod:`tkinter`, ``after_cancel(None)`` now raises a
+  :exc:`ValueError` instead of canceling the first scheduled function.
+  Patch by Cheryl Sabella.
+
+- bpo-32852: Make sure sys.argv remains as a list when running trace.
+
+- bpo-32841: Fixed `asyncio.Condition` issue which silently ignored
+  cancellation after notifying and cancelling a conditional lock. Patch by
+  Bar Harel.
+
+- bpo-31787: Fixed refleaks of ``__init__()`` methods in various modules.
+  (Contributed by Oren Milman)
+
+- bpo-30157: Fixed guessing quote and delimiter in csv.Sniffer.sniff() when
+  only the last field is quoted.  Patch by Jake Davis.
+
+- bpo-32394: socket: Remove TCP_FASTOPEN, TCP_KEEPCNT flags on older version
+  Windows during run-time.
+
+- bpo-32777: Fix a rare but potential pre-exec child process deadlock in
+  subprocess on POSIX systems when marking file descriptors inheritable on
+  exec in the child process.  This bug appears to have been introduced in
+  3.4.
+
+- bpo-32647: The ctypes module used to depend on indirect linking for
+  dlopen. The shared extension is now explicitly linked against libdl on
+  platforms with dl.
+
+- bpo-32734: Fixed ``asyncio.Lock()`` safety issue which allowed acquiring
+  and locking the same lock multiple times, without it being free. Patch by
+  Bar Harel.
+
+- bpo-32727: Do not include name field in SMTP envelope from address. Patch
+  by Stéphane Wirtel
+
+- bpo-27931: Fix email address header parsing error when the username is an
+  empty quoted string. Patch by Xiang Zhang.
+
+- bpo-32304: distutils' upload command no longer corrupts tar files ending
+  with a CR byte, and no longer tries to convert CR to CRLF in any of the
+  upload text fields.
+
+- bpo-32502: uuid.uuid1 no longer raises an exception if a 64-bit hardware
+  address is encountered.
+
+- bpo-31848: Fix the error handling in Aifc_read.initfp() when the SSND
+  chunk is not found. Patch by Zackery Spytz.
+
+- bpo-32555: On FreeBSD and Solaris, os.strerror() now always decode the
+  byte string from the current locale encoding, rather than using
+  ASCII/surrogateescape in some cases.
+
+- bpo-32521: The nis module is now compatible with new libnsl and headers
+  location.
+
+- bpo-32473: Improve ABCMeta._dump_registry() output readability
+
+- bpo-32521: glibc has removed Sun RPC. Use replacement libtirpc headers and
+  library in nis module.
+
+- bpo-32228: Ensure that ``truncate()`` preserves the file position (as
+  reported by ``tell()``) after writes longer than the buffer size.
+
+- bpo-26133: Don't unsubscribe signals in asyncio UNIX event loop on
+  interpreter shutdown.
+
+- bpo-32185: The SSL module no longer sends IP addresses in SNI TLS
+  extension on platforms with OpenSSL 1.0.2+ or inet_pton.
+
+- bpo-32323: :func:`urllib.parse.urlsplit()` does not convert zone-id
+  (scope) to lower case for scoped IPv6 addresses in hostnames now.
+
+- bpo-32302: Fix bdist_wininst of distutils for CRT v142: it binary
+  compatible with CRT v140.
+
+- bpo-32255: A single empty field is now always quoted when written into a
+  CSV file. This allows to distinguish an empty row from a row consisting of
+  a single empty field. Patch by Licht Takeuchi.
+
+- bpo-32277: Raise ``NotImplementedError`` instead of ``SystemError`` on
+  platforms where ``chmod(..., follow_symlinks=False)`` is not supported.
+  Patch by Anthony Sottile.
+
+- bpo-32199: The getnode() ip getter now uses 'ip link' instead of 'ip link
+  list'.
+
+- bpo-27456: Ensure TCP_NODELAY is set on Linux. Tests by Victor Stinner.
+
+- bpo-31900: The :func:`locale.localeconv` function now sets temporarily the
+  ``LC_CTYPE`` locale to the ``LC_NUMERIC`` locale to decode
+  ``decimal_point`` and ``thousands_sep`` byte strings if they are non-ASCII
+  or longer than 1 byte, and the ``LC_NUMERIC`` locale is different than the
+  ``LC_CTYPE`` locale. This temporary change affects other threads.
+
+  Same change for the :meth:`str.format` method when formatting a number
+  (:class:`int`, :class:`float`, :class:`float` and subclasses) with the
+  ``n`` type (ex: ``'{:n}'.format(1234)``).
+
+- bpo-31802: Importing native path module (``posixpath``, ``ntpath``) now
+  works even if the ``os`` module still is not imported.
+
+Documentation
+-------------
+
+- bpo-17232: Clarify docs for -O and -OO.  Patch by Terry Reedy.
+
+- bpo-32800: Update link to w3c doc for xml default namespaces.
+
+- bpo-8722: Document :meth:`__getattr__` behavior when property :meth:`get`
+  method raises :exc:`AttributeError`.
+
+- bpo-32614: Modify RE examples in documentation to use raw strings to
+  prevent :exc:`DeprecationWarning` and add text to REGEX HOWTO to highlight
+  the deprecation.
+
+- bpo-31972: Improve docstrings for `pathlib.PurePath` subclasses.
+
+- bpo-17799: Explain real behaviour of sys.settrace and sys.setprofile and
+  their C-API counterparts regarding which type of events are received in
+  each function. Patch by Pablo Galindo Salgado.
+
+Tests
+-----
+
+- bpo-32517: Fix failing ``test_asyncio`` on macOS 10.12.2+ due to transport
+  of ``KqueueSelector`` loop was not being closed.
+
+- bpo-32721: Fix test_hashlib to not fail if the _md5 module is not built.
+
+- bpo-32252: Fix faulthandler_suppress_crash_report() used to prevent core
+  dump files when testing crashes. getrlimit() returns zero on success.
+
+- bpo-31518: Debian Unstable has disabled TLS 1.0 and 1.1 for
+  SSLv23_METHOD(). Change TLS/SSL protocol of some tests to PROTOCOL_TLS or
+  PROTOCOL_TLSv1_2 to make them pass on Debian.
+
+Build
+-----
+
+- bpo-32635: Fix segfault of the crypt module when libxcrypt is provided
+  instead of libcrypt at the system.
+
+Windows
+-------
+
+- bpo-33016: Fix potential use of uninitialized memory in
+  nt._getfinalpathname
+
+- bpo-32903: Fix a memory leak in os.chdir() on Windows if the current
+  directory is set to a UNC path.
+
+- bpo-31966: Fixed WindowsConsoleIO.write() for writing empty data.
+
+- bpo-32409: Ensures activate.bat can handle Unicode contents.
+
+- bpo-32457: Improves handling of denormalized executable path when
+  launching Python.
+
+- bpo-32370: Use the correct encoding for ipconfig output in the uuid
+  module. Patch by Segev Finer.
+
+- bpo-29248: Fix :func:`os.readlink` on Windows, which was mistakenly
+  treating the ``PrintNameOffset`` field of the reparse data buffer as a
+  number of characters instead of bytes. Patch by Craig Holmquist and SSE4.
+
+- bpo-32588: Create standalone _distutils_findvs module.
+
+macOS
+-----
+
+- bpo-32726: Provide an additional, more modern macOS installer variant that
+  supports macOS 10.9+ systems in 64-bit mode only. Upgrade the supplied
+  third-party libraries to OpenSSL 1.0.2n, XZ 5.2.3, and SQLite 3.22.0. The
+  10.9+ installer now links with and supplies its own copy of Tcl/Tk 8.6.8.
+
+IDLE
+----
+
+- bpo-32984: Set ``__file__`` while running a startup file.  Like Python,
+  IDLE optionally runs one startup file in the Shell window before
+  presenting the first interactive input prompt.  For IDLE, ``-s`` runs a
+  file named in environmental variable  :envvar:`IDLESTARTUP` or
+  :envvar:`PYTHONSTARTUP`; ``-r file`` runs ``file``.  Python sets
+  ``__file__`` to the startup file name before running the file and unsets
+  it before the first prompt.  IDLE now does the same when run normally,
+  without the ``-n`` option.
+
+- bpo-32940: Simplify and rename StringTranslatePseudoMapping in pyparse.
+
+- bpo-32916: Change ``str`` to ``code`` in pyparse.
+
+- bpo-32905: Remove unused code in pyparse module.
+
+- bpo-32874: Add tests for pyparse.
+
+- bpo-32837: Using the system and place-dependent default encoding for
+  open() is a bad idea for IDLE's system and location-independent files.
+
+- bpo-32826: Add "encoding=utf-8" to open() in IDLE's test_help_about. GUI
+  test test_file_buttons() only looks at initial ascii-only lines, but
+  failed on systems where open() defaults to 'ascii' because readline()
+  internally reads and decodes far enough ahead to encounter a non-ascii
+  character in CREDITS.txt.
+
+- bpo-32765: Update configdialog General tab docstring to add new widgets to
+  the widget list.
+
+Tools/Demos
+-----------
+
+- bpo-24960: 2to3 and lib2to3 can now read pickled grammar files using
+  pkgutil.get_data() rather than probing the filesystem. This lets 2to3 and
+  lib2to3 work when run from a zipfile.
+
+- bpo-32222: Fix pygettext not extracting docstrings for functions with type
+  annotated arguments. Patch by Toby Harradine.
+
+C API
+-----
+
+- bpo-29084: Undocumented C API for OrderedDict has been excluded from the
+  limited C API. It was added by mistake and actually never worked in the
+  limited C API.
+
+
+What's New in Python 3.6.4 final?
+=================================
+
+*Release date: 2017-12-18*
+
+There were no new code changes in version 3.6.4 since v3.6.4rc1.
+
+
+
+What's New in Python 3.6.4 release candidate 1?
+===============================================
+
+*Release date: 2017-12-05*
+
+Core and Builtins
+-----------------
+
+- bpo-32176: co_flags.CO_NOFREE is now always set correctly by the code
+  object constructor based on freevars and cellvars, rather than needing to
+  be set correctly by the caller. This ensures it will be cleared
+  automatically when additional cell references are injected into a modified
+  code object and function.
+
+- bpo-31949: Fixed several issues in printing tracebacks
+  (PyTraceBack_Print()).
+
+  * Setting sys.tracebacklimit to 0 or less now suppresses printing tracebacks.
+  * Setting sys.tracebacklimit to None now causes using the default limit.
+  * Setting sys.tracebacklimit to an integer larger than LONG_MAX now means using
+    the limit LONG_MAX rather than the default limit.
+  * Fixed integer overflows in the case of more than 2**31 traceback items on
+    Windows.
+  * Fixed output errors handling.
+
+- bpo-30696: Fix the interactive interpreter looping endlessly when no
+  memory.
+
+- bpo-20047: Bytearray methods partition() and rpartition() now accept only
+  bytes-like objects as separator, as documented.  In particular they now
+  raise TypeError rather of returning a bogus result when an integer is
+  passed as a separator.
+
+- bpo-31852: Fix a segmentation fault caused by a combination of the async
+  soft keyword and continuation lines.
+
+- bpo-21720: BytesWarning no longer emitted when the *fromlist* argument of
+  ``__import__()`` or the ``__all__`` attribute of the module contain bytes
+  instances.
+
+- bpo-31825: Fixed OverflowError in the 'unicode-escape' codec and in
+  codecs.escape_decode() when decode an escaped non-ascii byte.
+
+- bpo-28603: Print the full context/cause chain of exceptions on interpreter
+  exit, even if an exception in the chain is unhashable or compares equal to
+  later ones. Patch by Zane Bitter.
+
+- bpo-31786: Fix timeout rounding in the select module to round correctly
+  negative timeouts between -1.0 and 0.0. The functions now block waiting
+  for events as expected. Previously, the call was incorrectly non-blocking.
+  Patch by Pablo Galindo.
+
+- bpo-31642: Restored blocking "from package import module" by setting
+  sys.modules["package.module"] to None.
+
+- bpo-31626: Fixed a bug in debug memory allocator.  There was a write to
+  freed memory after shrinking a memory block.
+
+- bpo-31619: Fixed a ValueError when convert a string with large number of
+  underscores to integer with binary base.
+
+- bpo-31592: Fixed an assertion failure in Python parser in case of a bad
+  `unicodedata.normalize()`. Patch by Oren Milman.
+
+- bpo-31588: Raise a `TypeError` with a helpful error message when class
+  creation fails due to a metaclass with a bad ``__prepare__()`` method.
+  Patch by Oren Milman.
+
+- bpo-31566: Fix an assertion failure in `_warnings.warn()` in case of a bad
+  ``__name__`` global. Patch by Oren Milman.
+
+- bpo-31505: Fix an assertion failure in `json`, in case
+  `_json.make_encoder()` received a bad `encoder()` argument. Patch by Oren
+  Milman.
+
+- bpo-31492: Fix assertion failures in case of failing to import from a
+  module with a bad ``__name__`` attribute, and in case of failing to access
+  an attribute of such a module. Patch by Oren Milman.
+
+- bpo-31490: Fix an assertion failure in `ctypes` class definition, in case
+  the class has an attribute whose name is specified in ``_anonymous_`` but
+  not in ``_fields_``. Patch by Oren Milman.
+
+- bpo-31478: Fix an assertion failure in `_random.Random.seed()` in case the
+  argument has a bad ``__abs__()`` method. Patch by Oren Milman.
+
+- bpo-31315: Fix an assertion failure in imp.create_dynamic(), when
+  spec.name is not a string. Patch by Oren Milman.
+
+- bpo-31311: Fix a crash in the ``__setstate__()`` method of
+  `ctypes._CData`, in case of a bad ``__dict__``. Patch by Oren Milman.
+
+- bpo-31293: Fix crashes in true division and multiplication of a timedelta
+  object by a float with a bad as_integer_ratio() method. Patch by Oren
+  Milman.
+
+- bpo-31285: Fix an assertion failure in `warnings.warn_explicit`, when the
+  return value of the received loader's get_source() has a bad splitlines()
+  method. Patch by Oren Milman.
+
+- bpo-30817: `PyErr_PrintEx()` clears now the ignored exception that may be
+  raised by `_PySys_SetObjectId()`, for example when no memory.
+
+Library
+-------
+
+- bpo-28556: Two minor fixes for ``typing`` module: allow shallow copying
+  instances of generic classes, improve interaction of ``__init_subclass__``
+  with generics. Original PRs by Ivan Levkivskyi.
+
+- bpo-27240: The header folding algorithm for the new email policies has
+  been rewritten, which also fixes bpo-30788, bpo-31831, and bpo-32182.  In
+  particular, RFC2231 folding is now done correctly.
+
+- bpo-32186: io.FileIO.readall() and io.FileIO.read() now release the GIL
+  when getting the file size. Fixed hang of all threads with inaccessible
+  NFS server. Patch by Nir Soffer.
+
+- bpo-12239: Make :meth:`msilib.SummaryInformation.GetProperty` return
+  ``None`` when the value of property is ``VT_EMPTY``.  Initial patch by
+  Mark Mc Mahon.
+
+- bpo-31325: Fix wrong usage of :func:`collections.namedtuple` in the
+  :meth:`RobotFileParser.parse() <urllib.robotparser.RobotFileParser.parse>`
+  method.
+
+  Initial patch by Robin Wellner.
+
+- bpo-12382: :func:`msilib.OpenDatabase` now raises a better exception
+  message when it couldn't open or create an MSI file.  Initial patch by
+  William Tisäter.
+
+- bpo-32110: ``codecs.StreamReader.read(n)`` now returns not more than *n*
+  characters/bytes for non-negative *n*. This makes it compatible with
+  ``read()`` methods of other file-like objects.
+
+- bpo-32072: Fixed issues with binary plists:
+
+  * Fixed saving bytearrays.
+  * Identical objects will be saved only once.
+  * Equal references will be load as identical objects.
+  * Added support for saving and loading recursive data structures.
+
+- bpo-32034: Make asyncio.IncompleteReadError and LimitOverrunError
+  pickleable.
+
+- bpo-32015: Fixed the looping of asyncio in the case of reconnection the
+  socket during waiting async read/write from/to the socket.
+
+- bpo-32011: Restored support of loading marshal files with the TYPE_INT64
+  code. These files can be produced in Python 2.7.
+
+- bpo-31970: Reduce performance overhead of asyncio debug mode.
+
+- bpo-9678: Fixed determining the MAC address in the uuid module:
+
+  * Using ifconfig on NetBSD and OpenBSD.
+  * Using arp on Linux, FreeBSD, NetBSD and OpenBSD.
+
+  Based on patch by Takayuki Shimizukawa.
+
+- bpo-30057: Fix potential missed signal in signal.signal().
+
+- bpo-31933: Fix Blake2 params leaf_size and node_offset on big endian
+  platforms. Patch by Jack O'Connor.
+
+- bpo-31927: Fixed compilation of the socket module on NetBSD 8.  Fixed
+  assertion failure or reading arbitrary data when parse a AF_BLUETOOTH
+  address on NetBSD and DragonFly BSD.
+
+- bpo-27666: Fixed stack corruption in curses.box() and curses.ungetmouse()
+  when the size of types chtype or mmask_t is less than the size of C long.
+  curses.box() now accepts characters as arguments.  Based on patch by Steve
+  Fink.
+
+- bpo-31897: plistlib now catches more errors when read binary plists and
+  raises InvalidFileException instead of unexpected exceptions.
+
+- bpo-25720: Fix the method for checking pad state of curses WINDOW. Patch
+  by Masayuki Yamamoto.
+
+- bpo-31893: Fixed the layout of the kqueue_event structure on OpenBSD and
+  NetBSD. Fixed the comparison of the kqueue_event objects.
+
+- bpo-31891: Fixed building the curses module on NetBSD.
+
+- bpo-28416: Instances of pickle.Pickler subclass with the persistent_id()
+  method and pickle.Unpickler subclass with the persistent_load() method no
+  longer create reference cycles.
+
+- bpo-28326: Fix multiprocessing.Process when stdout and/or stderr is closed
+  or None.
+
+- bpo-31457: If nested log adapters are used, the inner ``process()``
+  methods are no longer omitted.
+
+- bpo-31457: The ``manager`` property on LoggerAdapter objects is now
+  properly settable.
+
+- bpo-31806: Fix timeout rounding in time.sleep(), threading.Lock.acquire()
+  and socket.socket.settimeout() to round correctly negative timeouts
+  between -1.0 and 0.0. The functions now block waiting for events as
+  expected. Previously, the call was incorrectly non-blocking. Patch by
+  Pablo Galindo.
+
+- bpo-28603: traceback: Fix a TypeError that occurred during printing of
+  exception tracebacks when either the current exception or an exception in
+  its context/cause chain is unhashable. Patch by Zane Bitter.
+
+- bpo-30058: Fixed buffer overflow in select.kqueue.control().
+
+- bpo-31770: Prevent a crash when calling the ``__init__()`` method of a
+  ``sqlite3.Cursor`` object more than once. Patch by Oren Milman.
+
+- bpo-31672: ``idpattern`` in ``string.Template`` matched some non-ASCII
+  characters. Now it uses ``-i`` regular expression local flag to avoid
+  non-ASCII characters.
+
+- bpo-31764: Prevent a crash in ``sqlite3.Cursor.close()`` in case the
+  ``Cursor`` object is uninitialized. Patch by Oren Milman.
+
+- bpo-31752: Fix possible crash in timedelta constructor called with custom
+  integers.
+
+- bpo-31701: On Windows, faulthandler.enable() now ignores MSC and COM
+  exceptions.
+
+- bpo-31728: Prevent crashes in `_elementtree` due to unsafe cleanup of
+  `Element.text` and `Element.tail`. Patch by Oren Milman.
+
+- bpo-31620: an empty asyncio.Queue now doesn't leak memory when queue.get
+  pollers timeout
+
+- bpo-31632: Fix method set_protocol() of class _SSLProtocolTransport in
+  asyncio module. This method was previously modifying a wrong reference to
+  the protocol.
+
+- bpo-31675: Fixed memory leaks in Tkinter's methods splitlist() and split()
+  when pass a string larger than 2 GiB.
+
+- bpo-31673: Fixed typo in the name of Tkinter's method adderrorinfo().
+
+- bpo-30806: Fix the string representation of a netrc object.
+
+- bpo-15037: Added a workaround for getkey() in curses for ncurses 5.7 and
+  earlier.
+
+- bpo-25351: Avoid venv activate failures with undefined variables
+
+- bpo-25532: inspect.unwrap() will now only try to unwrap an object
+  sys.getrecursionlimit() times, to protect against objects which create a
+  new object on every attribute access.
+
+- bpo-30347: Stop crashes when concurrently iterate over itertools.groupby()
+  iterators.
+
+- bpo-31516: ``threading.current_thread()`` should not return a dummy thread
+  at shutdown.
+
+- bpo-31351: python -m ensurepip now exits with non-zero exit code if pip
+  bootstrapping has failed.
+
+- bpo-31482: ``random.seed()`` now works with bytes in version=1
+
+- bpo-31334: Fix ``poll.poll([timeout])`` in the ``select`` module for
+  arbitrary negative timeouts on all OSes where it can only be a
+  non-negative integer or -1. Patch by Riccardo Coccioli.
+
+- bpo-31310: multiprocessing's semaphore tracker should be launched again if
+  crashed.
+
+- bpo-31308: Make multiprocessing's forkserver process immune to Ctrl-C and
+  other user interruptions. If it crashes, restart it when necessary.
+
+Documentation
+-------------
+
+- bpo-32105: Added asyncio.BaseEventLoop.connect_accepted_socket
+  versionaddded marker.
+
+- bpo-31537: Fix incorrect usage of ``get_history_length`` in readline
+  documentation example code. Patch by Brad Smith.
+
+- bpo-30085: The operator functions without double underscores are preferred
+  for clarity. The one with underscores are only kept for
+  back-compatibility.
+
+Tests
+-----
+
+- bpo-31380: Skip test_httpservers test_undecodable_file on macOS: fails on
+  APFS.
+
+- bpo-31705: Skip test_socket.test_sha256() on Linux kernel older than 4.5.
+  The test fails with ENOKEY on kernel 3.10 (on ppc64le). A fix was merged
+  into the kernel 4.5.
+
+- bpo-31174: Fix test_tools.test_unparse: DirectoryTestCase now stores the
+  names sample to always test the same files. It prevents false alarms when
+  hunting reference leaks.
+
+- bpo-30695: Add the `set_nomemory(start, stop)` and `remove_mem_hooks()`
+  functions to the _testcapi module.
+
+Build
+-----
+
+- bpo-32059: ``detect_modules()`` in ``setup.py`` now also searches the
+  sysroot paths when cross-compiling.
+
+- bpo-31957: Fixes Windows SDK version detection when building for Windows.
+
+- bpo-31609: Fixes quotes in PCbuild/clean.bat
+
+- bpo-31934: Abort the build when building out of a not clean source tree.
+
+- bpo-31926: Fixed Argument Clinic sometimes causing compilation errors when
+  there was more than one function and/or method in a .c file with the same
+  name.
+
+- bpo-28791: Update Windows builds to use SQLite 3.21.0.
+
+- bpo-28791: Update OS X installer to use SQLite 3.21.0.
+
+- bpo-22140: Prevent double substitution of prefix in python-config.sh.
+
+- bpo-31536: Avoid wholesale rebuild after `make regen-all` if nothing
+  changed.
+
+Windows
+-------
+
+- bpo-1102: Return ``None`` when ``View.Fetch()`` returns
+  ``ERROR_NO_MORE_ITEMS`` instead of raising ``MSIError``.
+
+  Initial patch by Anthony Tuininga.
+
+- bpo-31944: Fixes Modify button in Apps and Features dialog.
+
+macOS
+-----
+
+- bpo-31392: Update macOS installer to use OpenSSL 1.0.2m
+
+IDLE
+----
+
+- bpo-32207: Improve tk event exception tracebacks in IDLE. When tk event
+  handling is driven by IDLE's run loop, a confusing and distracting
+  queue.EMPTY traceback context is no longer added to tk event exception
+  tracebacks.  The traceback is now the same as when event handling is
+  driven by user code.  Patch based on a suggestion by Serhiy Storchaka.
+
+- bpo-32164: Delete unused file idlelib/tabbedpages.py. Use of TabbedPageSet
+  in configdialog was replaced by ttk.Notebook.
+
+- bpo-32100: IDLE: Fix old and new bugs in pathbrowser; improve tests. Patch
+  mostly by Cheryl Sabella.
+
+- bpo-31858: IDLE -- Restrict shell prompt manipulaton to the shell. Editor
+  and output windows only see an empty last prompt line.  This simplifies
+  the code and fixes a minor bug when newline is inserted. Sys.ps1, if
+  present, is read on Shell start-up, but is not set or changed.
+
+- bpo-31860: The font sample in the IDLE configuration dialog is now
+  editable. Changes persist while IDLE remains open
+
+- bpo-31836: Test_code_module now passes if run after test_idle, which sets
+  ps1.
+
+  The code module uses sys.ps1 if present or sets it to '>>> ' if not.
+  Test_code_module now properly tests both behaviors.  Ditto for ps2.
+
+- bpo-28603: Fix a TypeError that caused a shell restart when printing a
+  traceback that includes an exception that is unhashable. Patch by Zane
+  Bitter.
+
+- bpo-13802: Use non-Latin characters in the IDLE's Font settings sample.
+  Even if one selects a font that defines a limited subset of the unicode
+  Basic Multilingual Plane, tcl/tk will use other fonts that define a
+  character. The expanded example give users of non-Latin characters a
+  better idea of what they might see in IDLE's shell and editors. To make
+  room for the expanded sample, frames on the Font tab are re-arranged. The
+  Font/Tabs help explains a bit about the additions.
+
+- bpo-31460: Simplify the API of IDLE's Module Browser.
+
+  Passing a widget instead of an flist with a root widget opens the option
+  of creating a browser frame that is only part of a window.  Passing a full
+  file name instead of pieces assumed to come from a .py file opens the
+  possibility of browsing python files that do not end in .py.
+
+- bpo-31649: IDLE - Make _htest, _utest parameters keyword only.
+
+- bpo-31559: Remove test order dependence in idle_test.test_browser.
+
+- bpo-31459: Rename IDLE's module browser from Class Browser to Module
+  Browser. The original module-level class and method browser became a
+  module browser, with the addition of module-level functions, years ago.
+  Nested classes and functions were added yesterday.  For
+  back-compatibility, the virtual event <<open-class-browser>>, which
+  appears on the Keys tab of the Settings dialog, is not changed. Patch by
+  Cheryl Sabella.
+
+- bpo-31500: Default fonts now are scaled on HiDPI displays.
+
+- bpo-1612262: IDLE module browser now shows nested classes and functions.
+  Original patches for code and tests by Guilherme Polo and Cheryl Sabella,
+  respectively.
+
+Tools/Demos
+-----------
+
+- bpo-30722: Make redemo work with Python 3.6 and newer versions.
+
+  In Python 3.6, flags like re.DOTALL became members of an enum.IntFlag so
+  usages like ``getattr(re, 'DOTALL')`` are invalid.
+
+  Also, remove the ``LOCALE`` option since it doesn't work with string
+  patterns in Python 3.
+
+  Patch by Christoph Sarnowski.
+
+C API
+-----
+
+- bpo-20891: Fix PyGILState_Ensure(). When PyGILState_Ensure() is called in
+  a non-Python thread before PyEval_InitThreads(), only call
+  PyEval_InitThreads() after calling PyThreadState_New() to fix a crash.
+
+- bpo-31532: Fix memory corruption due to allocator mix in getpath.c between
+  Py_GetPath() and Py_SetPath()
+
+- bpo-30697: The `PyExc_RecursionErrorInst` singleton is removed and
+  `PyErr_NormalizeException()` does not use it anymore. This singleton is
+  persistent and its members being never cleared may cause a segfault during
+  finalization of the interpreter. See also issue #22898.
+
+
+What's New in Python 3.6.3 final?
+=================================
+
+*Release date: 2017-10-03*
+
+Library
+-------
+
+- bpo-31641: Re-allow arbitrary iterables in
+  `concurrent.futures.as_completed()`. Fixes regression in 3.6.3rc1.
+
+Build
+-----
+
+- bpo-31662: Fix typos in Windows ``uploadrelease.bat`` script. Fix Windows
+  Doc build issues in ``Doc/make.bat``.
+
+- bpo-31423: Fix building the PDF documentation with newer versions of
+  Sphinx.
+
+
+What's New in Python 3.6.3 release candidate 1?
+===============================================
+
+*Release date: 2017-09-18*
+
+Security
+--------
+
+- bpo-29781: SSLObject.version() now correctly returns None when handshake
+  over BIO has not been performed yet.
+
+- bpo-30947: Upgrade libexpat embedded copy from version 2.2.1 to 2.2.3 to
+  get security fixes.
+
+Core and Builtins
+-----------------
+
+- bpo-31471: Fix an assertion failure in `subprocess.Popen()` on Windows, in
+  case the env argument has a bad keys() method. Patch by Oren Milman.
+
+- bpo-31418: Fix an assertion failure in `PyErr_WriteUnraisable()` in case
+  of an exception with a bad ``__module__`` attribute. Patch by Oren Milman.
+
+- bpo-31416: Fix assertion failures in case of a bad warnings.filters or
+  warnings.defaultaction. Patch by Oren Milman.
+
+- bpo-31411: Raise a TypeError instead of SystemError in case
+  warnings.onceregistry is not a dictionary. Patch by Oren Milman.
+
+- bpo-31373: Fix several possible instances of undefined behavior due to
+  floating-point demotions.
+
+- bpo-30465: Location information (``lineno`` and ``col_offset``) in
+  f-strings is now (mostly) correct.  This fixes tools like flake8 from
+  showing warnings on the wrong line (typically the first line of the file).
+
+- bpo-31343: Include sys/sysmacros.h for major(), minor(), and makedev().
+  GNU C libray plans to remove the functions from sys/types.h.
+
+- bpo-31291: Fix an assertion failure in `zipimport.zipimporter.get_data` on
+  Windows, when the return value of ``pathname.replace('/','\\')`` isn't a
+  string. Patch by Oren Milman.
+
+- bpo-31271: Fix an assertion failure in the write() method of
+  `io.TextIOWrapper`, when the encoder doesn't return a bytes object. Patch
+  by Oren Milman.
+
+- bpo-31243: Fix a crash in some methods of `io.TextIOWrapper`, when the
+  decoder's state is invalid. Patch by Oren Milman.
+
+- bpo-30721: ``print`` now shows correct usage hint for using Python 2
+  redirection syntax.  Patch by Sanyam Khurana.
+
+- bpo-31070: Fix a race condition in importlib _get_module_lock().
+
+- bpo-31095: Fix potential crash during GC caused by ``tp_dealloc`` which
+  doesn't call ``PyObject_GC_UnTrack()``.
+
+- bpo-31071: Avoid masking original TypeError in call with * unpacking when
+  other arguments are passed.
+
+- bpo-30978: str.format_map() now passes key lookup exceptions through.
+  Previously any exception was replaced with a KeyError exception.
+
+- bpo-30808: Use _Py_atomic API for concurrency-sensitive signal state.
+
+- bpo-30876: Relative import from unloaded package now reimports the package
+  instead of failing with SystemError.  Relative import from non-package now
+  fails with ImportError rather than SystemError.
+
+- bpo-30703: Improve signal delivery.
+
+  Avoid using Py_AddPendingCall from signal handler, to avoid calling
+  signal-unsafe functions. The tests I'm adding here fail without the rest
+  of the patch, on Linux and OS X. This means our signal delivery logic had
+  defects (some signals could be lost).
+
+- bpo-30765: Avoid blocking in pthread_mutex_lock() when
+  PyThread_acquire_lock() is asked not to block.
+
+- bpo-31161: Make sure the 'Missing parentheses' syntax error message is
+  only applied to SyntaxError, not to subclasses. Patch by Martijn Pieters.
+
+- bpo-30814: Fixed a race condition when import a submodule from a package.
+
+- bpo-30597: ``print`` now shows expected input in custom error message when
+  used as a Python 2 statement. Patch by Sanyam Khurana.
+
+Library
+-------
+
+- bpo-31499: xml.etree: Fix a crash when a parser is part of a reference
+  cycle.
+
+- bpo-28556: typing.get_type_hints now finds the right globalns for classes
+  and modules by default (when no ``globalns`` was specified by the caller).
+
+- bpo-28556: Speed improvements to the ``typing`` module.  Original PRs by
+  Ivan Levkivskyi and Mitar.
+
+- bpo-31544: The C accelerator module of ElementTree ignored exceptions
+  raised when looking up TreeBuilder target methods in XMLParser().
+
+- bpo-31234: socket.create_connection() now fixes manually a reference
+  cycle: clear the variable storing the last exception on success.
+
+- bpo-31457: LoggerAdapter objects can now be nested.
+
+- bpo-31400: Improves SSL error handling to avoid losing error numbers.
+
+- bpo-28958: ssl.SSLContext() now uses OpenSSL error information when a
+  context cannot be instantiated.
+
+- bpo-27340: SSLSocket.sendall() now uses memoryview to create slices of
+  data. This fixes support for all bytes-like object. It is also more
+  efficient and avoids costly copies.
+
+- bpo-31178: Fix string concatenation bug in rare error path in the
+  subprocess module
+
+- bpo-31350: Micro-optimize :func:`asyncio._get_running_loop` to become up
+  to 10% faster.
+
+- bpo-31170: expat: Update libexpat from 2.2.3 to 2.2.4. Fix copying of
+  partial characters for UTF-8 input (libexpat bug 115):
+  https://github.com/libexpat/libexpat/issues/115
+
+- bpo-29136: Add TLS 1.3 cipher suites and OP_NO_TLSv1_3.
+
+- bpo-29212: Fix concurrent.futures.thread.ThreadPoolExecutor threads to
+  have a non repr() based thread name by default when no thread_name_prefix
+  is supplied. They will now identify themselves as
+  "ThreadPoolExecutor-y_n".
+
+- bpo-9146: Fix a segmentation fault in _hashopenssl when standard hash
+  functions such as md5 are not available in the linked OpenSSL library.  As
+  in some special FIPS-140 build environments.
+
+- bpo-27144: The ``map()`` and ``as_completed()`` iterators in
+  ``concurrent.futures`` now avoid keeping a reference to yielded objects.
+
+- bpo-10746: Fix ctypes producing wrong PEP 3118 type codes for integer
+  types.
+
+- bpo-22536: The subprocess module now sets the filename when
+  FileNotFoundError is raised on POSIX systems due to the executable or cwd
+  not being found.
+
+- bpo-31249: concurrent.futures: WorkItem.run() used by ThreadPoolExecutor
+  now breaks a reference cycle between an exception object and the WorkItem
+  object.
+
+- bpo-31247: xmlrpc.server now explicitly breaks reference cycles when using
+  sys.exc_info() in code handling exceptions.
+
+- bpo-30102: The ssl and hashlib modules now call
+  OPENSSL_add_all_algorithms_noconf() on OpenSSL < 1.1.0. The function
+  detects CPU features and enables optimizations on some CPU architectures
+  such as POWER8. Patch is based on research from Gustavo Serra Scalet.
+
+- bpo-31185: Fixed miscellaneous errors in asyncio speedup module.
+
+- bpo-31135: ttk: fix the destroy() method of LabeledScale and OptionMenu
+  classes. Call the parent destroy() method even if the used attribute
+  doesn't exist. The LabeledScale.destroy() method now also explicitly
+  clears label and scale attributes to help the garbage collector to destroy
+  all widgets.
+
+- bpo-31107: Fix `copyreg._slotnames()` mangled attribute calculation for
+  classes whose name begins with an underscore. Patch by Shane Harvey.
+
+- bpo-31061: Fixed a crash when using asyncio and threads.
+
+- bpo-30502: Fix handling of long oids in ssl.  Based on patch by Christian
+  Heimes.
+
+- bpo-30119: ftplib.FTP.putline() now throws ValueError on commands that
+  contains CR or LF. Patch by Dong-hee Na.
+
+- bpo-30595: multiprocessing.Queue.get() with a timeout now polls its reader
+  in non-blocking mode if it succeeded to aquire the lock but the acquire
+  took longer than the timeout.
+
+- bpo-29403: Fix ``unittest.mock``'s autospec to not fail on method-bound
+  builtin functions.  Patch by Aaron Gallagher.
+
+- bpo-30961: Fix decrementing a borrowed reference in tracemalloc.
+
+- bpo-25684: Change ``ttk.OptionMenu`` radiobuttons to be unique across
+  instances of ``OptionMenu``.
+
+- bpo-30886: Fix multiprocessing.Queue.join_thread(): it now waits until the
+  thread completes, even if the thread was started by the same process which
+  created the queue.
+
+- bpo-29854: Fix segfault in readline when using readline's history-size
+  option.  Patch by Nir Soffer.
+
+- bpo-30319: socket.close() now ignores ECONNRESET error.
+
+- bpo-30828: Fix out of bounds write in
+  `asyncio.CFuture.remove_done_callback()`.
+
+- bpo-30807: signal.setitimer() may disable the timer when passed a tiny
+  value.
+
+  Tiny values (such as 1e-6) are valid non-zero values for setitimer(),
+  which is specified as taking microsecond-resolution intervals. However, on
+  some platform, our conversion routine could convert 1e-6 into a zero
+  interval, therefore disabling the timer instead of (re-)scheduling it.
+
+- bpo-30441: Fix bug when modifying os.environ while iterating over it
+
+- bpo-30532: Fix email header value parser dropping folding white space in
+  certain cases.
+
+- bpo-30879: os.listdir() and os.scandir() now emit bytes names when called
+  with bytes-like argument.
+
+- bpo-30746: Prohibited the '=' character in environment variable names in
+  ``os.putenv()`` and ``os.spawn*()``.
+
+- bpo-29755: Fixed the lgettext() family of functions in the gettext module.
+  They now always return bytes.
+
+Documentation
+-------------
+
+- bpo-31294: Fix incomplete code snippet in the ZeroMQSocketListener and
+  ZeroMQSocketHandler examples and adapt them to Python 3.
+
+- bpo-21649: Add RFC 7525 and Mozilla server side TLS links to SSL
+  documentation.
+
+- bpo-30803: Clarify doc on truth value testing. Original patch by Peter
+  Thomassen.
+
+Tests
+-----
+
+- bpo-31320: Silence traceback in test_ssl
+
+- bpo-25674: Remove sha256.tbs-internet.com ssl test
+
+- bpo-30715: Address ALPN callback changes for OpenSSL 1.1.0f. The latest
+  version behaves like OpenSSL 1.0.2 and no longer aborts handshake.
+
+- bpo-30822: regrtest: Exclude tzdata from regrtest --all. When running the
+  test suite using --use=all / -u all, exclude tzdata since it makes
+  test_datetime too slow (15-20 min on some buildbots) which then times out
+  on some buildbots. Fix also regrtest command line parser to allow passing
+  -u extralargefile to run test_zipfile64.
+
+Build
+-----
+
+- bpo-30854: Fix compile error when compiling --without-threads. Patch by
+  Masayuki Yamamoto.
+
+Windows
+-------
+
+- bpo-30389: Adds detection of Visual Studio 2017 to distutils on Windows.
+
+- bpo-31340: Change to building with MSVC v141 (included with Visual Studio
+  2017)
+
+- bpo-30581: os.cpu_count() now returns the correct number of processors on
+  Windows when the number of logical processors is greater than 64.
+
+- bpo-30731: Add a missing xmlns to python.manifest so that it matches the
+  schema.
+
+IDLE
+----
+
+- bpo-31493: IDLE code context -- fix code update and font update timers.
+
+  Canceling timers prevents a warning message when test_idle completes.
+
+- bpo-31488: IDLE - Update non-key options in former extension classes. When
+  applying configdialog changes, call .reload for each feature class. Change
+  ParenMatch so updated options affect existing instances attached to
+  existing editor windows.
+
+- bpo-31477: IDLE - Improve rstrip entry in doc. Strip trailing whitespace
+  strips more than blank spaces.  Multiline string literals are not skipped.
+
+- bpo-31480: IDLE - make tests pass with zzdummy extension disabled by
+  default.
+
+- bpo-31421: Document how IDLE runs tkinter programs. IDLE calls tcl/tk
+  update in the background in order to make live
+
+  interaction and experimentatin with tkinter applications much easier.
+
+- bpo-31414: IDLE -- fix tk entry box tests by deleting first. Adding to an
+  int entry is not the same as deleting and inserting because int('') will
+  fail.
+
+- bpo-31051: Rearrange IDLE condigdialog GenPage into Window, Editor, and
+  Help sections.
+
+- bpo-30617: IDLE - Add docstrings and tests for outwin subclass of editor.
+
+  Move some data and functions from the class to module level. Patch by
+  Cheryl Sabella.
+
+- bpo-31287: IDLE - Do not modify tkinter.message in test_configdialog.
+
+- bpo-27099: Convert IDLE's built-in 'extensions' to regular features.
+
+  About 10 IDLE features were implemented as supposedly optional extensions.
+  Their different behavior could be confusing or worse for users and not
+  good for maintenance.  Hence the conversion.
+
+  The main difference for users is that user configurable key bindings for
+  builtin features are now handled uniformly.  Now, editing a binding in a
+  keyset only affects its value in the keyset.  All bindings are defined
+  together in the system-specific default keysets in config-extensions.def.
+  All custom keysets are saved as a whole in config-extension.cfg.  All take
+  effect as soon as one clicks Apply or Ok.
+
+  The affected events are '<<force-open-completions>>', '<<expand-word>>',
+  '<<force-open-calltip>>', '<<flash-paren>>', '<<format-paragraph>>',
+  '<<run-module>>', '<<check-module>>', and '<<zoom-height>>'.  Any (global)
+  customizations made before 3.6.3 will not affect their keyset-specific
+  customization after 3.6.3. and vice versa.
+
+  Inital patch by Charles Wohlganger.
+
+- bpo-31206: IDLE: Factor HighPage(Frame) class from ConfigDialog. Patch by
+  Cheryl Sabella.
+
+- bpo-31001: Add tests for configdialog highlight tab.  Patch by Cheryl
+  Sabella.
+
+- bpo-31205: IDLE: Factor KeysPage(Frame) class from ConfigDialog.  The
+  slightly modified tests continue to pass.  Patch by Cheryl Sabella.
+
+- bpo-31130: IDLE -- stop leaks in test_configdialog. Initial patch by
+  Victor Stinner.
+
+- bpo-31002: Add tests for configdialog keys tab. Patch by Cheryl Sabella.
+
+- bpo-19903: IDLE: Calltips use `inspect.signature` instead of
+  `inspect.getfullargspec`. This improves calltips for builtins converted to
+  use Argument Clinic. Patch by Louie Lu.
+
+- bpo-31083: IDLE - Add an outline of a TabPage class in configdialog.
+  Update existing classes to match outline. Initial patch by Cheryl Sabella.
+
+- bpo-31050: Factor GenPage(Frame) class from ConfigDialog. The slightly
+  modified tests continue to pass. Patch by Cheryl Sabella.
+
+- bpo-31004: IDLE - Factor FontPage(Frame) class from ConfigDialog.
+
+  Slightly modified tests continue to pass. Fix General tests. Patch mostly
+  by Cheryl Sabella.
+
+- bpo-30781: IDLE - Use ttk widgets in ConfigDialog. Patches by Terry Jan
+  Reedy and Cheryl Sabella.
+
+- bpo-31060: IDLE - Finish rearranging methods of ConfigDialog Grouping
+  methods pertaining to each tab and the buttons will aid writing tests and
+  improving the tabs and will enable splitting the groups into classes.
+
+- bpo-30853: IDLE -- Factor a VarTrace class out of ConfigDialog.
+
+  Instance tracers manages pairs consisting of a tk variable and a callback
+  function.  When tracing is turned on, setting the variable calls the
+  function.  Test coverage for the new class is 100%.
+
+- bpo-31003: IDLE: Add more tests for General tab.
+
+- bpo-30993: IDLE - Improve configdialog font page and tests.
+
+  In configdialog: Document causal pathways in create_font_tab docstring.
+  Simplify some attribute names. Move set_samples calls to var_changed_font
+  (idea from Cheryl Sabella).  Move related functions to positions after the
+  create widgets function.
+
+  In test_configdialog: Fix test_font_set so not order dependent.  Fix
+  renamed test_indent_scale so it tests the widget.  Adjust tests for
+  movement of set_samples call.  Add tests for load functions.  Put all font
+  tests in one class and tab indent tests in another.  Except for two lines,
+  these tests completely cover the related functions.
+
+- bpo-30981: IDLE -- Add more configdialog font page tests.
+
+- bpo-28523: IDLE: replace 'colour' with 'color' in configdialog.
+
+- bpo-30917: Add tests for idlelib.config.IdleConf. Increase coverage from
+  46% to 96%. Patch by Louie Lu.
+
+- bpo-30934: Document coverage details for idlelib tests.
+
+  * Add section to idlelib/idle-test/README.txt.
+
+  * Include check that branches are taken both ways.
+
+  * Exclude IDLE-specific code that does not run during unit tests.
+
+- bpo-30913: IDLE: Document ConfigDialog tk Vars, methods, and widgets in
+  docstrings This will facilitate improving the dialog and splitting up the
+  class. Original patch by Cheryl Sabella.
+
+- bpo-30899: IDLE: Add tests for ConfigParser subclasses in config. Patch by
+  Louie Lu.
+
+- bpo-30881: IDLE: Add docstrings to browser.py. Patch by Cheryl Sabella.
+
+- bpo-30851: IDLE: Remove unused variables in configdialog.  One is a
+  duplicate, one is set but cannot be altered by users. Patch by Cheryl
+  Sabella.
+
+- bpo-30870: IDLE: In Settings dialog, select font with Up, Down keys as
+  well as mouse. Initial patch by Louie Lu.
+
+- bpo-8231: IDLE: call config.IdleConf.GetUserCfgDir only once.
+
+- bpo-30779: IDLE: Factor ConfigChanges class from configdialog, put in
+  config; test. * In config, put dump test code in a function; run it and
+  unittest in   'if __name__ == '__main__'. * Add class config.ConfigChanges
+  based on changes_class_v4.py on bpo issue. * Add class
+  test_config.ChangesTest, partly using configdialog_tests_v1.py. * Revise
+  configdialog to use ConfigChanges; see tracker msg297804. * Revise
+  test_configdialog to match configdialog changes. * Remove configdialog
+  functions unused or moved to ConfigChanges. Cheryl Sabella contributed
+  parts of the patch.
+
+- bpo-30777: IDLE: configdialog - Add docstrings and fix comments. Patch by
+  Cheryl Sabella.
+
+- bpo-30495: IDLE: Improve textview with docstrings, PEP8 names, and more
+  tests. Patch by Cheryl Sabella.
+
+- bpo-30723: IDLE: Make several improvements to parenmatch. Add 'parens'
+  style to highlight both opener and closer. Make 'default' style, which is
+  not default, a synonym for 'opener'. Make time-delay work the same with
+  all styles. Add help for config dialog extensions tab, including help for
+  parenmatch. Add new tests.  Original patch by Charles Wohlganger.
+
+- bpo-30674: IDLE: add docstrings to grep module. Patch by Cheryl Sabella
+
+- bpo-21519: IDLE's basic custom key entry dialog now detects duplicates
+  properly. Original patch by Saimadhav Heblikar.
+
+- bpo-29910: IDLE no longer deletes a character after commenting out a
+  region by a key shortcut.  Add ``return 'break'`` for this and other
+  potential conflicts between IDLE and default key bindings.
+
+- bpo-30728: Review and change idlelib.configdialog names. Lowercase method
+  and attribute names. Replace 'colour' with 'color', expand overly cryptic
+  names, delete unneeded underscores. Replace ``import *`` with specific
+  imports. Patches by Cheryl Sabella.
+
+- bpo-6739: IDLE: Verify user-entered key sequences by trying to bind them
+  with tk. Add tests for all 3 validation functions. Original patch by G
+  Polo.  Tests added by Cheryl Sabella.
+
+Tools/Demos
+-----------
+
+- bpo-30983: gdb integration commands (py-bt, etc.) work on optimized shared
+  builds now, too.  PEP 523 introduced _PyEval_EvalFrameDefault which
+  inlines PyEval_EvalFrameEx on non-debug shared builds.  This broke the
+  ability to use py-bt, py-up, and a few other Python-specific gdb
+  integrations. The problem is fixed by only looking for
+  _PyEval_EvalFrameDefault frames in python-gdb.py.  Original patch by Bruno
+  "Polaco" Penteado.
+
+
+What's New in Python 3.6.2 final?
+=================================
+
+*Release date: 2017-07-17*
+
+No changes since release candidate 2
+
+
+
+What's New in Python 3.6.2 release candidate 2?
+===============================================
+
+*Release date: 2017-07-07*
+
+Security
+--------
+
+- bpo-30730: Prevent environment variables injection in subprocess on
+  Windows.  Prevent passing other environment variables and command
+  arguments.
+
+- bpo-30694: Upgrade expat copy from 2.2.0 to 2.2.1 to get fixes of multiple
+  security vulnerabilities including: CVE-2017-9233 (External entity
+  infinite loop DoS), CVE-2016-9063 (Integer overflow, re-fix),
+  CVE-2016-0718 (Fix regression bugs from 2.2.0's fix to CVE-2016-0718) and
+  CVE-2012-0876 (Counter hash flooding with SipHash). Note: the
+  CVE-2016-5300 (Use os-specific entropy sources like getrandom) doesn't
+  impact Python, since Python already gets entropy from the OS to set the
+  expat secret using ``XML_SetHashSalt()``.
+
+- bpo-30500: Fix urllib.parse.splithost() to correctly parse fragments. For
+  example, ``splithost('//127.0.0.1#@evil.com/')`` now correctly returns the
+  ``127.0.0.1`` host, instead of treating ``@evil.com`` as the host in an
+  authentification (``login@host``).
+
+
+What's New in Python 3.6.2 release candidate 1?
+===============================================
+
+*Release date: 2017-06-17*
+
+Core and Builtins
+-----------------
+
+- bpo-30682: Removed a too-strict assertion that failed for certain
+  f-strings, such as eval("f'\\\n'") and eval("f'\\\r'").
+
+- bpo-30604: Move co_extra_freefuncs to not be per-thread to avoid crashes
+
+- bpo-29104: Fixed parsing backslashes in f-strings.
+
+- bpo-27945: Fixed various segfaults with dict when input collections are
+  mutated during searching, inserting or comparing.  Based on patches by
+  Duane Griffin and Tim Mitchell.
+
+- bpo-25794: Fixed type.__setattr__() and type.__delattr__() for
+  non-interned attribute names.  Based on patch by Eryk Sun.
+
+- bpo-30039: If a KeyboardInterrupt happens when the interpreter is in the
+  middle of resuming a chain of nested 'yield from' or 'await' calls, it's
+  now correctly delivered to the innermost frame.
+
+- bpo-12414: sys.getsizeof() on a code object now returns the sizes which
+  includes the code struct and sizes of objects which it references. Patch
+  by Dong-hee Na.
+
+- bpo-29949: Fix memory usage regression of set and frozenset object.
+
+- bpo-29935: Fixed error messages in the index() method of tuple, list and
+  deque when pass indices of wrong type.
+
+- bpo-29859: Show correct error messages when any of the pthread_* calls in
+  thread_pthread.h fails.
+
+- bpo-28876: ``bool(range)`` works even if ``len(range)`` raises
+  :exc:`OverflowError`.
+
+- bpo-29600: Fix wrapping coroutine return values in StopIteration.
+
+- bpo-28856: Fix an oversight that %b format for bytes should support
+  objects follow the buffer protocol.
+
+- bpo-29714: Fix a regression that bytes format may fail when containing
+  zero bytes inside.
+
+- bpo-29478: If max_line_length=None is specified while using the Compat32
+  policy, it is no longer ignored.  Patch by Mircea Cosbuc.
+
+Library
+-------
+
+- bpo-30616: Functional API of enum allows to create empty enums. Patched by
+  Dong-hee Na
+
+- bpo-30038: Fix race condition between signal delivery and wakeup file
+  descriptor. Patch by Nathaniel Smith.
+
+- bpo-23894: lib2to3 now recognizes ``rb'...'`` and ``f'...'`` strings.
+
+- bpo-23890: unittest.TestCase.assertRaises() now manually breaks a
+  reference cycle to not keep objects alive longer than expected.
+
+- bpo-30149: inspect.signature() now supports callables with
+  variable-argument parameters wrapped with partialmethod. Patch by Dong-hee
+  Na.
+
+- bpo-30645: Fix path calculation in imp.load_package(), fixing it for cases
+  when a package is only shipped with bytecodes. Patch by Alexandru
+  Ardelean.
+
+- bpo-29931: Fixed comparison check for ipaddress.ip_interface objects.
+  Patch by Sanjay Sundaresan.
+
+- bpo-30605: re.compile() no longer raises a BytesWarning when compiling a
+  bytes instance with misplaced inline modifier.  Patch by Roy Williams.
+
+Security
+--------
+
+- bpo-29591: Update expat copy from 2.1.1 to 2.2.0 to get fixes of
+  CVE-2016-0718 and CVE-2016-4472. See
+  https://sourceforge.net/p/expat/bugs/537/ for more information.
+
+Library
+-------
+
+- bpo-24484: Avoid race condition in multiprocessing cleanup (#2159)
+
+- bpo-28994: The traceback no longer displayed for SystemExit raised in a
+  callback registered by atexit.
+
+- bpo-30508: Don't log exceptions if Task/Future "cancel()" method was
+  called.
+
+- bpo-28556: Updates to typing module: Add generic AsyncContextManager, add
+  support for ContextManager on all versions. Original PRs by Jelle Zijlstra
+  and Ivan Levkivskyi
+
+- bpo-29870: Fix ssl sockets leaks when connection is aborted in asyncio/ssl
+  implementation. Patch by Michaël Sghaïer.
+
+- bpo-29743: Closing transport during handshake process leaks open socket.
+  Patch by Nikolay Kim
+
+- bpo-27585: Fix waiter cancellation in asyncio.Lock. Patch by Mathieu
+  Sornay.
+
+- bpo-30418: On Windows, subprocess.Popen.communicate() now also ignore
+  EINVAL on stdin.write() if the child process is still running but closed
+  the pipe.
+
+- bpo-29822: inspect.isabstract() now works during __init_subclass__.  Patch
+  by Nate Soares.
+
+- bpo-29581: ABCMeta.__new__ now accepts ``**kwargs``, allowing abstract
+  base classes to use keyword parameters in __init_subclass__. Patch by Nate
+  Soares.
+
+- bpo-30557: faulthandler now correctly filters and displays exception codes
+  on Windows
+
+- bpo-30378: Fix the problem that logging.handlers.SysLogHandler cannot
+  handle IPv6 addresses.
+
+- bpo-29960: Preserve generator state when _random.Random.setstate() raises
+  an exception. Patch by Bryan Olson.
+
+- bpo-30414: multiprocessing.Queue._feed background running thread do not
+  break from main loop on exception.
+
+- bpo-30003: Fix handling escape characters in HZ codec.  Based on patch by
+  Ma Lin.
+
+- bpo-30301: Fix AttributeError when using SimpleQueue.empty() under *spawn*
+  and *forkserver* start methods.
+
+- bpo-30329: imaplib and poplib now catch the Windows socket WSAEINVAL error
+  (code 10022) on shutdown(SHUT_RDWR): An invalid operation was attempted.
+  This error occurs sometimes on SSL connections.
+
+- bpo-30375: Warnings emitted when compile a regular expression now always
+  point to the line in the user code.  Previously they could point into
+  inners of the re module if emitted from inside of groups or conditionals.
+
+- bpo-30048: Fixed ``Task.cancel()`` can be ignored when the task is running
+  coroutine and the coroutine returned without any more ``await``.
+
+- bpo-30266: contextlib.AbstractContextManager now supports
+  anti-registration by setting __enter__ = None or __exit__ = None,
+  following the pattern introduced in bpo-25958. Patch by Jelle Zijlstra.
+
+- bpo-30298: Weaken the condition of deprecation warnings for inline
+  modifiers. Now allowed several subsequential inline modifiers at the start
+  of the pattern (e.g. ``'(?i)(?s)...'``).  In verbose mode whitespaces and
+  comments now are allowed before and between inline modifiers (e.g. ``'(?x)
+  (?i) (?s)...'``).
+
+- bpo-29990: Fix range checking in GB18030 decoder.  Original patch by Ma
+  Lin.
+
+- bpo-26293: Change resulted because of zipfile breakage. (See also:
+  bpo-29094)
+
+- bpo-30243: Removed the __init__ methods of _json's scanner and encoder.
+  Misusing them could cause memory leaks or crashes.  Now scanner and
+  encoder objects are completely initialized in the __new__ methods.
+
+- bpo-30185: Avoid KeyboardInterrupt tracebacks in forkserver helper process
+  when Ctrl-C is received.
+
+- bpo-28556: Various updates to typing module: add typing.NoReturn type, use
+  WrapperDescriptorType, minor bug-fixes.  Original PRs by Jim
+  Fasarakis-Hilliard and Ivan Levkivskyi.
+
+- bpo-30205: Fix getsockname() for unbound AF_UNIX sockets on Linux.
+
+- bpo-30070: Fixed leaks and crashes in errors handling in the parser
+  module.
+
+- bpo-30061: Fixed crashes in IOBase methods __next__() and readlines() when
+  readline() or __next__() respectively return non-sizeable object. Fixed
+  possible other errors caused by not checking results of PyObject_Size(),
+  PySequence_Size(), or PyMapping_Size().
+
+- bpo-30017: Allowed calling the close() method of the zip entry writer
+  object multiple times.  Writing to a closed writer now always produces a
+  ValueError.
+
+- bpo-30068: _io._IOBase.readlines will check if it's closed first when hint
+  is present.
+
+- bpo-29694: Fixed race condition in pathlib mkdir with flags parents=True.
+  Patch by Armin Rigo.
+
+- bpo-29692: Fixed arbitrary unchaining of RuntimeError exceptions in
+  contextlib.contextmanager.  Patch by Siddharth Velankar.
+
+- bpo-29998: Pickling and copying ImportError now preserves name and path
+  attributes.
+
+- bpo-29953: Fixed memory leaks in the replace() method of datetime and time
+  objects when pass out of bound fold argument.
+
+- bpo-29942: Fix a crash in itertools.chain.from_iterable when encountering
+  long runs of empty iterables.
+
+- bpo-27863: Fixed multiple crashes in ElementTree caused by race conditions
+  and wrong types.
+
+- bpo-28699: Fixed a bug in pools in multiprocessing.pool that raising an
+  exception at the very first of an iterable may swallow the exception or
+  make the program hang. Patch by Davin Potts and Xiang Zhang.
+
+- bpo-25803: Avoid incorrect errors raised by Path.mkdir(exist_ok=True) when
+  the OS gives priority to errors such as EACCES over EEXIST.
+
+- bpo-29861: Release references to tasks, their arguments and their results
+  as soon as they are finished in multiprocessing.Pool.
+
+- bpo-29884: faulthandler: Restore the old sigaltstack during teardown.
+  Patch by Christophe Zeitouny.
+
+- bpo-25455: Fixed crashes in repr of recursive buffered file-like objects.
+
+- bpo-29800: Fix crashes in partial.__repr__ if the keys of partial.keywords
+  are not strings.  Patch by Michael Seifert.
+
+- bpo-29742: get_extra_info() raises exception if get called on closed ssl
+  transport. Patch by Nikolay Kim.
+
+- bpo-8256: Fixed possible failing or crashing input() if attributes
+  "encoding" or "errors" of sys.stdin or sys.stdout are not set or are not
+  strings.
+
+- bpo-28298: Fix a bug that prevented array 'Q', 'L' and 'I' from accepting
+  big intables (objects that have __int__) as elements.  Patch by Oren
+  Milman.
+
+- bpo-28231: The zipfile module now accepts path-like objects for external
+  paths.
+
+- bpo-26915: index() and count() methods of collections.abc.Sequence now
+  check identity before checking equality when do comparisons.
+
+- bpo-29615: SimpleXMLRPCDispatcher no longer chains KeyError (or any other
+  exception) to exception(s) raised in the dispatched methods. Patch by Petr
+  Motejlek.
+
+- bpo-30177: path.resolve(strict=False) no longer cuts the path after the
+  first element not present in the filesystem.  Patch by Antoine Pietri.
+
+IDLE
+----
+
+- bpo-15786: Fix several problems with IDLE's autocompletion box. The
+  following should now work: clicking on selection box items; using the
+  scrollbar; selecting an item by hitting Return. Hangs on MacOSX should no
+  longer happen. Patch by Louie Lu.
+
+- bpo-25514: Add doc subsubsection about IDLE failure to start. Popup
+  no-connection message directs users to this section.
+
+- bpo-30642: Fix reference leaks in IDLE tests. Patches by Louie Lu and
+  Terry Jan Reedy.
+
+- bpo-30495: Add docstrings for textview.py and use PEP8 names. Patches by
+  Cheryl Sabella and Terry Jan Reedy.
+
+- bpo-30290: Help-about: use pep8 names and add tests. Increase coverage to
+  100%. Patches by Louie Lu, Cheryl Sabella, and Terry Jan Reedy.
+
+- bpo-30303: Add _utest option to textview; add new tests. Increase coverage
+  to 100%. Patches by Louie Lu and Terry Jan Reedy.
+
+C API
+-----
+
+- bpo-27867: Function PySlice_GetIndicesEx() no longer replaced with a macro
+  if Py_LIMITED_API is not set.
+
+Build
+-----
+
+- bpo-29941: Add ``--with-assertions`` configure flag to explicitly enable C
+  ``assert()`` checks. Defaults to off. ``--with-pydebug`` implies
+  ``--with-assertions``.
+
+- bpo-28787: Fix out-of-tree builds of Python when configured with
+  ``--with--dtrace``.
+
+- bpo-29243: Prevent unnecessary rebuilding of Python during ``make test``,
+  ``make install`` and some other make targets when configured with
+  ``--enable-optimizations``.
+
+- bpo-23404: Don't regenerate generated files based on file modification
+  time anymore: the action is now explicit. Replace ``make touch`` with
+  ``make regen-all``.
+
+- bpo-29643: Fix ``--enable-optimization`` didn't work.
+
+Documentation
+-------------
+
+- bpo-30176: Add missing attribute related constants in curses
+  documentation.
+
+- bpo-30052: the link targets for :func:`bytes` and :func:`bytearray` are
+  now their respective type definitions, rather than the corresponding
+  builtin function entries. Use :ref:`bytes <func-bytes>` and
+  :ref:`bytearray <func-bytearray>` to reference the latter.
+
+  In order to ensure this and future cross-reference updates are applied
+  automatically, the daily documentation builds now disable the default
+  output caching features in Sphinx.
+
+- bpo-26985: Add missing info of code object in inspect documentation.
+
+Tools/Demos
+-----------
+
+- bpo-29367: python-gdb.py now supports also ``method-wrapper``
+  (``wrapperobject``) objects.
+
+Tests
+-----
+
+- bpo-30357: test_thread: setUp() now uses support.threading_setup() and
+  support.threading_cleanup() to wait until threads complete to avoid random
+  side effects on following tests. Initial patch written by Grzegorz
+  Grzywacz.
+
+- bpo-30197: Enhanced functions swap_attr() and swap_item() in the
+  test.support module. They now work when delete replaced attribute or item
+  inside the with statement.  The old value of the attribute or item (or
+  None if it doesn't exist) now will be assigned to the target of the "as"
+  clause, if there is one.
+
+Windows
+-------
+
+- bpo-30687: Locate msbuild.exe on Windows when building rather than
+  vcvarsall.bat
+
+- bpo-30450: The build process on Windows no longer depends on Subversion,
+  instead pulling external code from GitHub via a Python script.  If Python
+  3.6 is not found on the system (via ``py -3.6``), NuGet is used to
+  download a copy of 32-bit Python.
+
+
+What's New in Python 3.6.1 final?
+=================================
+
+*Release date: 2017-03-21*
+
+Core and Builtins
+-----------------
+
+- bpo-29723: The ``sys.path[0]`` initialization change for bpo-29139 caused
+  a regression by revealing an inconsistency in how sys.path is initialized
+  when executing ``__main__`` from a zipfile, directory, or other import
+  location. The interpreter now consistently avoids ever adding the import
+  location's parent directory to ``sys.path``, and ensures no other
+  ``sys.path`` entries are inadvertently modified when inserting the import
+  location named on the command line.
+
+Build
+-----
+
+- bpo-27593: fix format of git information used in sys.version
+
+- Fix incompatible comment in python.h
+
+
+What's New in Python 3.6.1 release candidate 1?
+===============================================
+
+*Release date: 2017-03-04*
+
+Core and Builtins
+-----------------
+
+- bpo-28893: Set correct __cause__ for errors about invalid awaitables
+  returned from __aiter__ and __anext__.
+
+- bpo-29683: Fixes to memory allocation in _PyCode_SetExtra.  Patch by Brian
+  Coleman.
+
+- bpo-29684: Fix minor regression of PyEval_CallObjectWithKeywords. It
+  should raise TypeError when kwargs is not a dict.  But it might cause segv
+  when args=NULL and kwargs is not a dict.
+
+- bpo-28598: Support __rmod__ for subclasses of str being called before
+  str.__mod__. Patch by Martijn Pieters.
+
+- bpo-29607: Fix stack_effect computation for CALL_FUNCTION_EX. Patch by
+  Matthieu Dartiailh.
+
+- bpo-29602: Fix incorrect handling of signed zeros in complex constructor
+  for complex subclasses and for inputs having a __complex__ method. Patch
+  by Serhiy Storchaka.
+
+- bpo-29347: Fixed possibly dereferencing undefined pointers when creating
+  weakref objects.
+
+- bpo-29438: Fixed use-after-free problem in key sharing dict.
+
+- bpo-29319: Prevent RunMainFromImporter overwriting sys.path[0].
+
+- bpo-29337: Fixed possible BytesWarning when compare the code objects.
+  Warnings could be emitted at compile time.
+
+- bpo-29327: Fixed a crash when pass the iterable keyword argument to
+  sorted().
+
+- bpo-29034: Fix memory leak and use-after-free in os module
+  (path_converter).
+
+- bpo-29159: Fix regression in bytes(x) when x.__index__() raises Exception.
 
 - bpo-28932: Do not include <sys/random.h> if it does not exist.
 
@@ -4664,8 +6730,110 @@ Core and Builtins
 Library
 -------
 
+- bpo-29169: Update zlib to 1.2.11.
+
+- bpo-29623: Allow use of path-like object as a single argument in
+  ConfigParser.read(). Patch by David Ellis.
+
+- bpo-28963: Fix out of bound iteration in
+  asyncio.Future.remove_done_callback implemented in C.
+
+- bpo-29704: asyncio.subprocess.SubprocessStreamProtocol no longer closes
+  before all pipes are closed.
+
+- bpo-29271: Fix Task.current_task and Task.all_tasks implemented in C to
+  accept None argument as their pure Python implementation.
+
+- bpo-29703: Fix asyncio to support instantiation of new event loops in
+  child processes.
+
+- bpo-29376: Fix assertion error in threading._DummyThread.is_alive().
+
+- bpo-28624: Add a test that checks that cwd parameter of Popen() accepts
+  PathLike objects.  Patch by Sayan Chowdhury.
+
+- bpo-28518: Start a transaction implicitly before a DML statement. Patch by
+  Aviv Palivoda.
+
+- bpo-29532: Altering a kwarg dictionary passed to functools.partial() no
+  longer affects a partial object after creation.
+
+- bpo-29110: Fix file object leak in aifc.open() when file is given as a
+  filesystem path and is not in valid AIFF format. Patch by Anthony Zhang.
+
+- bpo-28556: Various updates to typing module: typing.Counter,
+  typing.ChainMap, improved ABC caching, etc. Original PRs by Jelle
+  Zijlstra, Ivan Levkivskyi, Manuel Krebber, and Łukasz Langa.
+
+- bpo-29100: Fix datetime.fromtimestamp() regression introduced in Python
+  3.6.0: check minimum and maximum years.
+
+- bpo-29519: Fix weakref spewing exceptions during interpreter shutdown when
+  used with a rare combination of multiprocessing and custom codecs.
+
+- bpo-29416: Prevent infinite loop in pathlib.Path.mkdir
+
+- bpo-29444: Fixed out-of-bounds buffer access in the group() method of the
+  match object. Based on patch by WGH.
+
+- bpo-29335: Fix subprocess.Popen.wait() when the child process has exited
+  to a stopped instead of terminated state (ex: when under ptrace).
+
+- bpo-29290: Fix a regression in argparse that help messages would wrap at
+  non-breaking spaces.
+
+- bpo-28735: Fixed the comparison of mock.MagickMock with mock.ANY.
+
+- bpo-29316: Restore the provisional status of typing module, add
+  corresponding note to documentation. Patch by Ivan L.
+
+- bpo-29219: Fixed infinite recursion in the repr of uninitialized
+  ctypes.CDLL instances.
+
+- bpo-29011: Fix an important omission by adding Deque to the typing module.
+
+- bpo-28969: Fixed race condition in C implementation of
+  functools.lru_cache. KeyError could be raised when cached function with
+  full cache was simultaneously called from differen threads with the same
+  uncached arguments.
+
+- bpo-29142: In urllib.request, suffixes in no_proxy environment variable
+  with leading dots could match related hostnames again (e.g. .b.c matches
+  a.b.c). Patch by Milan Oberkirch.
+
+- bpo-28961: Fix unittest.mock._Call helper: don't ignore the name parameter
+  anymore. Patch written by Jiajun Huang.
+
+- bpo-29203: functools.lru_cache() now respects PEP 468 and preserves the
+  order of keyword arguments.  f(a=1, b=2) is now cached separately from
+  f(b=2, a=1) since both calls could potentially give different results.
+
+- bpo-15812: inspect.getframeinfo() now correctly shows the first line of a
+  context. Patch by Sam Breese.
+
+- bpo-29094: Offsets in a ZIP file created with extern file object and modes
+  "w" and "x" now are relative to the start of the file.
+
 - bpo-29085: Allow random.Random.seed() to use high quality OS randomness
   rather than the pid and time.
+
+- bpo-29061: Fixed bug in secrets.randbelow() which would hang when given a
+  negative input.  Patch by Brendan Donegan.
+
+- bpo-29079: Prevent infinite loop in pathlib.resolve() on Windows
+
+- bpo-13051: Fixed recursion errors in large or resized
+  curses.textpad.Textbox.  Based on patch by Tycho Andersen.
+
+- bpo-29119: Fix weakrefs in the pure python version of
+  collections.OrderedDict move_to_end() method. Contributed by Andra
+  Bogildea.
+
+- bpo-9770: curses.ascii predicates now work correctly with negative
+  integers.
+
+- bpo-28427: old keys should not remove new values from WeakValueDictionary
+  when collecting from another thread.
 
 - bpo-28923: Remove editor artifacts from Tix.py.
 
@@ -4691,8 +6859,18 @@ Library
   now when the grp module cannot be imported, as for example on Android
   platforms.
 
+IDLE
+----
+
+- bpo-29071: IDLE colors f-string prefixes (but not invalid ur prefixes).
+
+- bpo-28572: Add 10% to coverage of IDLE's test_configdialog. Update and
+  augment description of the configuration system.
+
 Windows
 -------
+
+- bpo-29579: Removes readme.txt from the installer
 
 - bpo-29326: Ignores blank lines in ._pth files (Patch by Alexey Izbyshev)
 
@@ -4707,13 +6885,48 @@ Windows
 
 - bpo-28896: Deprecate WindowsRegistryFinder and disable it by default.
 
+C API
+-----
+
+- bpo-27867: Function PySlice_GetIndicesEx() is replaced with a macro if
+  Py_LIMITED_API is not set or set to the value between 0x03050400 and
+  0x03060000 (not including) or 0x03060100 or higher.
+
+- bpo-29083: Fixed the declaration of some public API functions.
+  PyArg_VaParse() and PyArg_VaParseTupleAndKeywords() were not available in
+  limited API. PyArg_ValidateKeywordArguments(), PyArg_UnpackTuple() and
+  Py_BuildValue() were not available in limited API of version < 3.3 when
+  PY_SSIZE_T_CLEAN is defined.
+
+- bpo-29058: All stable API extensions added after Python 3.2 are now
+  available only when Py_LIMITED_API is set to the PY_VERSION_HEX value of
+  the minimum Python version supporting this API.
+
 Documentation
 -------------
+
+- bpo-28929: Link the documentation to its source file on GitHub.
+
+- bpo-25008: Document smtpd.py as effectively deprecated and add a pointer
+  to aiosmtpd, a third-party asyncio-based replacement.
+
+- bpo-26355: Add canonical header link on each page to corresponding major
+  version of the documentation. Patch by Matthias Bussonnier.
 
 - bpo-29349: Fix Python 2 syntax in code for building the documentation.
 
 Tests
 -----
+
+- bpo-28087: Skip test_asyncore and test_eintr poll failures on macOS. Skip
+  some tests of select.poll when running on macOS due to unresolved issues
+  with the underlying system poll function on some macOS versions.
+
+- bpo-29571: to match the behaviour of the ``re.LOCALE`` flag,
+  test_re.test_locale_flag now uses ``locale.getpreferredencoding(False)``
+  to determine the candidate encoding for the test regex (allowing it to
+  correctly skip the test when the default locale encoding is a multi-byte
+  encoding)
 
 - bpo-28950: Disallow -j0 to be combined with -T/-l in regrtest command line
   arguments.
@@ -4726,6 +6939,21 @@ Tests
 
 Build
 -----
+
+- bpo-27593: sys.version and the platform module python_build(),
+  python_branch(), and python_revision() functions now use git information
+  rather than hg when building from a repo.
+
+- bpo-29572: Update Windows build and OS X installers to use OpenSSL 1.0.2k.
+
+- bpo-26851: Set Android compilation and link flags.
+
+- bpo-28768: Fix implicit declaration of function _setmode. Patch by
+  Masayuki Yamamoto
+
+- bpo-29080: Removes hard dependency on hg.exe from PCBuild/build.bat
+
+- bpo-23903: Added missed names to PC/python3.def.
 
 - bpo-28762: lockf() is available on Android API level 24, but the F_LOCK
   macro is not defined in android-ndk-r13.
@@ -4809,7 +7037,7 @@ Library
   again.  But they still are deprecated and will be disabled in 3.7.
 
 - bpo-28835: Fix a regression introduced in warnings.catch_warnings(): call
-  warnings.showwarning() if it was overridden inside the context manager.
+  warnings.showwarning() if it was overriden inside the context manager.
 
 - bpo-27172: To assist with upgrades from 2.7, the previously documented
   deprecation of ``inspect.getfullargspec()`` has been reversed. This
@@ -4988,8 +7216,6 @@ Core and Builtins
 
 Library
 -------
-
-- bpo-26128: Added keyword-only arguments support for subprocess.STARTUPINFO
 
 - bpo-27517: LZMA compressor and decompressor no longer raise exceptions if
   given empty data twice.  Patch by Benjamin Fogle.
@@ -6291,8 +8517,8 @@ Build
 - bpo-23968: Rename the platform directory from plat-$(MACHDEP) to
   plat-$(PLATFORM_TRIPLET). Rename the config directory (LIBPL) from
   config-$(LDVERSION) to config-$(LDVERSION)-$(PLATFORM_TRIPLET). Install
-  the platform specific _sysconfigdata module into the platform directory
-  and rename it to include the ABIFLAGS.
+  the platform specifc _sysconfigdata module into the platform directory and
+  rename it to include the ABIFLAGS.
 
 - Don't use largefile support for GNU/Hurd.
 
@@ -7839,7 +10065,7 @@ Build
 - bpo-26624: Adds validation of ucrtbase[d].dll version with warning for old
   versions.
 
-- bpo-17603: Avoid error about nonexistent fileblocks.o file by using a
+- bpo-17603: Avoid error about nonexistant fileblocks.o file by using a
   lower-level check for st_blocks in struct stat.
 
 - bpo-26079: Fixing the build output folder for tix-8.4.3.6. Patch by Bjoern
@@ -7926,6 +10152,491 @@ C API
   string.
 
 
+What's New in Python 3.5.5 final?
+=================================
+
+*Release date: 2018-02-04*
+
+There were no new changes in version 3.5.5.
+
+
+
+What's New in Python 3.5.5 release candidate 1?
+===============================================
+
+*Release date: 2018-01-23*
+
+Security
+--------
+
+- bpo-32551: The ``sys.path[0]`` initialization change for bpo-29139 caused
+  a regression by revealing an inconsistency in how sys.path is initialized
+  when executing ``__main__`` from a zipfile, directory, or other import
+  location. This is considered a potential security issue, as it may lead to
+  privileged processes unexpectedly loading code from user controlled
+  directories in situations where that was not previously the case.
+
+  The interpreter now consistently avoids ever adding the import location's
+  parent directory to ``sys.path``, and ensures no other ``sys.path``
+  entries are inadvertently modified when inserting the import location
+  named on the command line. (Originally reported as bpo-29723 against
+  Python 3.6rc1, but it was missed at the time that the then upcoming Python
+  3.5.4 release would also be affected)
+
+- bpo-30657: Fixed possible integer overflow in PyBytes_DecodeEscape,
+  CVE-2017-1000158. Original patch by Jay Bosamiya; rebased to Python 3 by
+  Miro Hrončok.
+
+- bpo-30947: Upgrade libexpat embedded copy from version 2.2.1 to 2.2.3 to
+  get security fixes.
+
+Core and Builtins
+-----------------
+
+- bpo-31095: Fix potential crash during GC caused by ``tp_dealloc`` which
+  doesn't call ``PyObject_GC_UnTrack()``.
+
+Library
+-------
+
+- bpo-32072: Fixed issues with binary plists:
+
+  * Fixed saving bytearrays.
+  * Identical objects will be saved only once.
+  * Equal references will be load as identical objects.
+  * Added support for saving and loading recursive data structures.
+
+- bpo-31170: expat: Update libexpat from 2.2.3 to 2.2.4. Fix copying of
+  partial characters for UTF-8 input (libexpat bug 115):
+  https://github.com/libexpat/libexpat/issues/115
+
+
+What's New in Python 3.5.4 final?
+=================================
+
+*Release date: 2017-08-07*
+
+Library
+-------
+
+- bpo-30119: ftplib.FTP.putline() now throws ValueError on commands that
+  contains CR or LF. Patch by Dong-hee Na.
+
+
+What's New in Python 3.5.4 release candidate 1?
+===============================================
+
+*Release date: 2017-07-23*
+
+Security
+--------
+
+- bpo-30730: Prevent environment variables injection in subprocess on
+  Windows.  Prevent passing other environment variables and command
+  arguments.
+
+- bpo-30694: Upgrade expat copy from 2.2.0 to 2.2.1 to get fixes of multiple
+  security vulnerabilities including: CVE-2017-9233 (External entity
+  infinite loop DoS), CVE-2016-9063 (Integer overflow, re-fix),
+  CVE-2016-0718 (Fix regression bugs from 2.2.0's fix to CVE-2016-0718) and
+  CVE-2012-0876 (Counter hash flooding with SipHash). Note: the
+  CVE-2016-5300 (Use os- specific entropy sources like getrandom) doesn't
+  impact Python, since Python already gets entropy from the OS to set the
+  expat secret using ``XML_SetHashSalt()``.
+
+- bpo-30500: Fix urllib.parse.splithost() to correctly parse fragments. For
+  example, ``splithost('//127.0.0.1#@evil.com/')`` now correctly returns the
+  ``127.0.0.1`` host, instead of treating ``@evil.com`` as the host in an
+  authentification (``login@host``).
+
+- bpo-29591: Update expat copy from 2.1.1 to 2.2.0 to get fixes of
+  CVE-2016-0718 and CVE-2016-4472. See
+  https://sourceforge.net/p/expat/bugs/537/ for more information.
+
+Core and Builtins
+-----------------
+
+- bpo-30876: Relative import from unloaded package now reimports the package
+  instead of failing with SystemError.  Relative import from non-package now
+  fails with ImportError rather than SystemError.
+
+- bpo-30765: Avoid blocking in pthread_mutex_lock() when
+  PyThread_acquire_lock() is asked not to block.
+
+- bpo-27945: Fixed various segfaults with dict when input collections are
+  mutated during searching, inserting or comparing.  Based on patches by
+  Duane Griffin and Tim Mitchell.
+
+- bpo-25794: Fixed type.__setattr__() and type.__delattr__() for
+  non-interned attribute names.  Based on patch by Eryk Sun.
+
+- bpo-29935: Fixed error messages in the index() method of tuple, list and
+  deque when pass indices of wrong type.
+
+- bpo-28876: ``bool(range)`` works even if ``len(range)`` raises
+  :exc:`OverflowError`.
+
+- bpo-29600: Fix wrapping coroutine return values in StopIteration.
+
+- bpo-29537: Restore runtime compatibility with bytecode files generated by
+  CPython 3.5.0 to 3.5.2, and adjust the eval loop to avoid the problems
+  that could be caused by the malformed variant of the
+  BUILD_MAP_UNPACK_WITH_CALL opcode that they may contain. Patch by Petr
+  Viktorin, Serhiy Storchaka, and Nick Coghlan.
+
+- bpo-28598: Support __rmod__ for subclasses of str being called before
+  str.__mod__. Patch by Martijn Pieters.
+
+- bpo-29602: Fix incorrect handling of signed zeros in complex constructor
+  for complex subclasses and for inputs having a __complex__ method. Patch
+  by Serhiy Storchaka.
+
+- bpo-29347: Fixed possibly dereferencing undefined pointers when creating
+  weakref objects.
+
+- bpo-29438: Fixed use-after-free problem in key sharing dict.
+
+- bpo-29319: Prevent RunMainFromImporter overwriting sys.path[0].
+
+- bpo-29337: Fixed possible BytesWarning when compare the code objects.
+  Warnings could be emitted at compile time.
+
+- bpo-29478: If max_line_length=None is specified while using the Compat32
+  policy, it is no longer ignored.  Patch by Mircea Cosbuc.
+
+Library
+-------
+
+- bpo-29403: Fix ``unittest.mock``'s autospec to not fail on method-bound
+  builtin functions.  Patch by Aaron Gallagher.
+
+- bpo-30961: Fix decrementing a borrowed reference in tracemalloc.
+
+- bpo-30886: Fix multiprocessing.Queue.join_thread(): it now waits until the
+  thread completes, even if the thread was started by the same process which
+  created the queue.
+
+- bpo-29854: Fix segfault in readline when using readline's history-size
+  option.  Patch by Nir Soffer.
+
+- bpo-30807: signal.setitimer() may disable the timer when passed a tiny
+  value.
+
+  Tiny values (such as 1e-6) are valid non-zero values for setitimer(),
+  which is specified as taking microsecond-resolution intervals. However, on
+  some platform, our conversion routine could convert 1e-6 into a zero
+  interval, therefore disabling the timer instead of (re-)scheduling it.
+
+- bpo-30441: Fix bug when modifying os.environ while iterating over it
+
+- bpo-30532: Fix email header value parser dropping folding white space in
+  certain cases.
+
+- bpo-29169: Update zlib to 1.2.11.
+
+- bpo-30879: os.listdir() and os.scandir() now emit bytes names when called
+  with bytes- like argument.
+
+- bpo-30746: Prohibited the '=' character in environment variable names in
+  ``os.putenv()`` and ``os.spawn*()``.
+
+- bpo-29755: Fixed the lgettext() family of functions in the gettext module.
+  They now always return bytes.
+
+- bpo-30645: Fix path calculation in imp.load_package(), fixing it for cases
+  when a package is only shipped with bytecodes. Patch by Alexandru
+  Ardelean.
+
+- bpo-23890: unittest.TestCase.assertRaises() now manually breaks a
+  reference cycle to not keep objects alive longer than expected.
+
+- bpo-30149: inspect.signature() now supports callables with
+  variable-argument parameters wrapped with partialmethod. Patch by Dong-hee
+  Na.
+
+- bpo-29931: Fixed comparison check for ipaddress.ip_interface objects.
+  Patch by Sanjay Sundaresan.
+
+- bpo-24484: Avoid race condition in multiprocessing cleanup.
+
+- bpo-28994: The traceback no longer displayed for SystemExit raised in a
+  callback registered by atexit.
+
+- bpo-30508: Don't log exceptions if Task/Future "cancel()" method was
+  called.
+
+- bpo-28556: Updates to typing module: Add generic AsyncContextManager, add
+  support for ContextManager on all versions. Original PRs by Jelle Zijlstra
+  and Ivan Levkivskyi
+
+- bpo-29870: Fix ssl sockets leaks when connection is aborted in asyncio/ssl
+  implementation. Patch by Michaël Sghaïer.
+
+- bpo-29743: Closing transport during handshake process leaks open socket.
+  Patch by Nikolay Kim
+
+- bpo-27585: Fix waiter cancellation in asyncio.Lock. Patch by Mathieu
+  Sornay.
+
+- bpo-30418: On Windows, subprocess.Popen.communicate() now also ignore
+  EINVAL on stdin.write() if the child process is still running but closed
+  the pipe.
+
+- bpo-30378: Fix the problem that logging.handlers.SysLogHandler cannot
+  handle IPv6 addresses.
+
+- bpo-29960: Preserve generator state when _random.Random.setstate() raises
+  an exception. Patch by Bryan Olson.
+
+- bpo-30414: multiprocessing.Queue._feed background running thread do not
+  break from main loop on exception.
+
+- bpo-30003: Fix handling escape characters in HZ codec.  Based on patch by
+  Ma Lin.
+
+- bpo-30301: Fix AttributeError when using SimpleQueue.empty() under *spawn*
+  and *forkserver* start methods.
+
+- bpo-30329: imaplib and poplib now catch the Windows socket WSAEINVAL error
+  (code 10022) on shutdown(SHUT_RDWR): An invalid operation was attempted.
+  This error occurs sometimes on SSL connections.
+
+- bpo-30375: Warnings emitted when compile a regular expression now always
+  point to the line in the user code.  Previously they could point into
+  inners of the re module if emitted from inside of groups or conditionals.
+
+- bpo-30048: Fixed ``Task.cancel()`` can be ignored when the task is running
+  coroutine and the coroutine returned without any more ``await``.
+
+- bpo-29990: Fix range checking in GB18030 decoder.  Original patch by Ma
+  Lin.
+
+- bpo-26293: Change resulted because of zipfile breakage. (See also:
+  bpo-29094)
+
+- bpo-30243: Removed the __init__ methods of _json's scanner and encoder.
+  Misusing them could cause memory leaks or crashes.  Now scanner and
+  encoder objects are completely initialized in the __new__ methods.
+
+- bpo-30185: Avoid KeyboardInterrupt tracebacks in forkserver helper process
+  when Ctrl-C is received.
+
+- bpo-28556: Various updates to typing module: add typing.NoReturn type, use
+  WrapperDescriptorType, minor bug-fixes.  Original PRs by Jim Fasarakis-
+  Hilliard and Ivan Levkivskyi.
+
+- bpo-30205: Fix getsockname() for unbound AF_UNIX sockets on Linux.
+
+- bpo-30070: Fixed leaks and crashes in errors handling in the parser
+  module.
+
+- bpo-30061: Fixed crashes in IOBase methods __next__() and readlines() when
+  readline() or __next__() respectively return non-sizeable object. Fixed
+  possible other errors caused by not checking results of PyObject_Size(),
+  PySequence_Size(), or PyMapping_Size().
+
+- bpo-30068: _io._IOBase.readlines will check if it's closed first when hint
+  is present.
+
+- bpo-29694: Fixed race condition in pathlib mkdir with flags parents=True.
+  Patch by Armin Rigo.
+
+- bpo-29692: Fixed arbitrary unchaining of RuntimeError exceptions in
+  contextlib.contextmanager.  Patch by Siddharth Velankar.
+
+- bpo-29998: Pickling and copying ImportError now preserves name and path
+  attributes.
+
+- bpo-29942: Fix a crash in itertools.chain.from_iterable when encountering
+  long runs of empty iterables.
+
+- bpo-27863: Fixed multiple crashes in ElementTree caused by race conditions
+  and wrong types.
+
+- bpo-28699: Fixed a bug in pools in multiprocessing.pool that raising an
+  exception at the very first of an iterable may swallow the exception or
+  make the program hang. Patch by Davin Potts and Xiang Zhang.
+
+- bpo-25803: Avoid incorrect errors raised by Path.mkdir(exist_ok=True) when
+  the OS gives priority to errors such as EACCES over EEXIST.
+
+- bpo-29861: Release references to tasks, their arguments and their results
+  as soon as they are finished in multiprocessing.Pool.
+
+- bpo-29884: faulthandler: Restore the old sigaltstack during teardown.
+  Patch by Christophe Zeitouny.
+
+- bpo-25455: Fixed crashes in repr of recursive buffered file-like objects.
+
+- bpo-29800: Fix crashes in partial.__repr__ if the keys of partial.keywords
+  are not strings.  Patch by Michael Seifert.
+
+- bpo-29742: get_extra_info() raises exception if get called on closed ssl
+  transport. Patch by Nikolay Kim.
+
+- bpo-8256: Fixed possible failing or crashing input() if attributes
+  "encoding" or "errors" of sys.stdin or sys.stdout are not set or are not
+  strings.
+
+- bpo-28298: Fix a bug that prevented array 'Q', 'L' and 'I' from accepting
+  big intables (objects that have __int__) as elements.  Patch by Oren
+  Milman.
+
+- bpo-29615: SimpleXMLRPCDispatcher no longer chains KeyError (or any other
+  exception) to exception(s) raised in the dispatched methods. Patch by Petr
+  Motejlek.
+
+- bpo-29704: asyncio.subprocess.SubprocessStreamProtocol no longer closes
+  before all pipes are closed.
+
+- bpo-29703: Fix asyncio to support instantiation of new event loops in
+  child processes.
+
+- bpo-29376: Fix assertion error in threading._DummyThread.is_alive().
+
+- bpo-29110: Fix file object leak in aifc.open() when file is given as a
+  filesystem path and is not in valid AIFF format. Patch by Anthony Zhang.
+
+- bpo-28961: Fix unittest.mock._Call helper: don't ignore the name parameter
+  anymore. Patch written by Jiajun Huang.
+
+- bpo-29532: Altering a kwarg dictionary passed to functools.partial() no
+  longer affects a partial object after creation.
+
+- bpo-28556: Various updates to typing module: typing.Counter,
+  typing.ChainMap, improved ABC caching, etc. Original PRs by Jelle
+  Zijlstra, Ivan Levkivskyi, Manuel Krebber, and Łukasz Langa.
+
+- bpo-29100: Fix datetime.fromtimestamp() regression introduced in Python
+  3.6.0: check minimum and maximum years.
+
+- bpo-29519: Fix weakref spewing exceptions during interpreter shutdown when
+  used with a rare combination of multiprocessing and custom codecs.
+
+- bpo-29416: Prevent infinite loop in pathlib.Path.mkdir
+
+- bpo-29444: Fixed out-of-bounds buffer access in the group() method of the
+  match object. Based on patch by WGH.
+
+- bpo-29335: Fix subprocess.Popen.wait() when the child process has exited
+  to a stopped instead of terminated state (ex: when under ptrace).
+
+- bpo-29290: Fix a regression in argparse that help messages would wrap at
+  non-breaking spaces.
+
+- bpo-28735: Fixed the comparison of mock.MagickMock with mock.ANY.
+
+- bpo-29011: Fix an important omission by adding Deque to the typing module.
+
+- bpo-29219: Fixed infinite recursion in the repr of uninitialized
+  ctypes.CDLL instances.
+
+- bpo-28969: Fixed race condition in C implementation of
+  functools.lru_cache. KeyError could be raised when cached function with
+  full cache was simultaneously called from differen threads with the same
+  uncached arguments.
+
+- bpo-29142: In urllib.request, suffixes in no_proxy environment variable
+  with leading dots could match related hostnames again (e.g. .b.c matches
+  a.b.c). Patch by Milan Oberkirch.
+
+Documentation
+-------------
+
+- bpo-30176: Add missing attribute related constants in curses
+  documentation.
+
+- bpo-26985: Add missing info of code object in inspect documentation.
+
+- bpo-28929: Link the documentation to its source file on GitHub.
+
+- bpo-25008: Document smtpd.py as effectively deprecated and add a pointer
+  to aiosmtpd, a third-party asyncio-based replacement.
+
+- bpo-26355: Add canonical header link on each page to corresponding major
+  version of the documentation. Patch by Matthias Bussonnier.
+
+- bpo-29349: Fix Python 2 syntax in code for building the documentation.
+
+Tests
+-----
+
+- bpo-30822: Fix regrtest command line parser to allow passing -u
+  extralargefile to run test_zipfile64.
+
+- bpo-30383: regrtest: Enhance regrtest and backport features from the
+  master branch.
+
+  Add options: --coverage, --testdir, --list-tests (list test files, don't
+  run them), --list-cases (list test identifiers, don't run them,
+  :issue:`30523`), --matchfile (load a list of test filters from a text
+  file, :issue:`30540`), --slowest (alias to --slow).
+
+  Enhance output: add timestamp, test result, currently running tests,
+  "Tests result: xxx" summary with total duration, etc.
+
+  Fix reference leak hunting in regrtest, --huntrleaks: regrtest now warms
+  up caches, create explicitly all internal singletons which are created on
+  demand to prevent false positives when checking for reference leaks.
+  (:issue:`30675`).
+
+- bpo-30357: test_thread: setUp() now uses support.threading_setup() and
+  support.threading_cleanup() to wait until threads complete to avoid random
+  side effects on following tests. Initial patch written by Grzegorz
+  Grzywacz.
+
+- bpo-28087: Skip test_asyncore and test_eintr poll failures on macOS. Skip
+  some tests of select.poll when running on macOS due to unresolved issues
+  with the underlying system poll function on some macOS versions.
+
+- bpo-30197: Enhanced functions swap_attr() and swap_item() in the
+  test.support module. They now work when delete replaced attribute or item
+  inside the with statement.  The old value of the attribute or item (or
+  None if it doesn't exist) now will be assigned to the target of the "as"
+  clause, if there is one.
+
+- bpo-29571: to match the behaviour of the ``re.LOCALE`` flag,
+  test_re.test_locale_flag now uses ``locale.getpreferredencoding(False)``
+  to determine the candidate encoding for the test regex (allowing it to
+  correctly skip the test when the default locale encoding is a multi-byte
+  encoding)
+
+Build
+-----
+
+- bpo-29243: Prevent unnecessary rebuilding of Python during ``make test``,
+  ``make install`` and some other make targets when configured with
+  ``--enable- optimizations``.
+
+- bpo-23404: Don't regenerate generated files based on file modification
+  time anymore: the action is now explicit. Replace ``make touch`` with
+  ``make regen-all``.
+
+- bpo-29643: Fix ``--enable-optimization`` didn't work.
+
+Windows
+-------
+
+- bpo-30687: Locate msbuild.exe on Windows when building rather than
+  vcvarsall.bat
+
+- bpo-29392: Prevent crash when passing invalid arguments into msvcrt
+  module.
+
+C API
+-----
+
+- bpo-27867: Function PySlice_GetIndicesEx() is replaced with a macro if
+  Py_LIMITED_API is set to the value between 0x03050400 and 0x03060000 (not
+  including) or 0x03060100 or higher.
+
+- bpo-29083: Fixed the declaration of some public API functions.
+  PyArg_VaParse() and PyArg_VaParseTupleAndKeywords() were not available in
+  limited API. PyArg_ValidateKeywordArguments(), PyArg_UnpackTuple() and
+  Py_BuildValue() were not available in limited API of version < 3.3 when
+  PY_SSIZE_T_CLEAN is defined.
+
+
 What's New in Python 3.5.3 final?
 =================================
 
@@ -7966,7 +10677,7 @@ Core and Builtins
   when decode astral characters.  Patch by Xiang Zhang.
 
 - bpo-19398: Extra slash no longer added to sys.path components in case of
-  empty compile-time PYTHONPATH components.
+  empty compile- time PYTHONPATH components.
 
 - bpo-28426: Fixed potential crash in PyUnicode_AsDecodedObject() in debug
   build.
@@ -8050,7 +10761,7 @@ Core and Builtins
 
 - bpo-27419: Standard __import__() no longer look up "__import__" in globals
   or builtins for importing submodules or "from import".  Fixed handling an
-  error of non-string package name.
+  error of non- string package name.
 
 - bpo-27083: Respect the PYTHONCASEOK environment variable under Windows.
 
@@ -8596,8 +11307,8 @@ Build
 
 - bpo-27983: Cause lack of llvm-profdata tool when using clang as required
   for PGO linking to be a configure time error rather than make time when
-  ``--with-optimizations`` is enabled.  Also improve our ability to find the
-  llvm-profdata tool on MacOS and some Linuxes.
+  --with- optimizations is enabled.  Also improve our ability to find the
+  llvm- profdata tool on MacOS and some Linuxes.
 
 - bpo-26307: The profile-opt build now applies PGO to the built-in modules.
 
@@ -8615,8 +11326,8 @@ Build
   Hsuan Yen.
 
 - bpo-27641: The configure script now inserts comments into the makefile to
-  prevent the pgen and _freeze_importlib executables from being
-  cross-compiled.
+  prevent the pgen and _freeze_importlib executables from being cross-
+  compiled.
 
 - bpo-26662: Set PYTHON_FOR_GEN in configure as the Python program to be
   used for file generation during the build.
@@ -8802,11 +11513,12 @@ Library
   correctly.  Initial patch by ingrid.
 
 - A new version of typing.py provides several new classes and features:
-  @overload outside stubs, DefaultDict, Text, ContextManager, Type[],
-  NewType(), TYPE_CHECKING, and numerous bug fixes (note that some of the
-  new features are not yet implemented in mypy or other static analyzers).
-  Also classes for PEP 492 (Awaitable, AsyncIterable, AsyncIterator) have
-  been added (in fact they made it into 3.5.1 but were never mentioned).
+  @overload outside stubs, Reversible, DefaultDict, Text, ContextManager,
+  Type[], NewType(), TYPE_CHECKING, and numerous bug fixes (note that some
+  of the new features are not yet implemented in mypy or other static
+  analyzers). Also classes for PEP 492 (Awaitable, AsyncIterable,
+  AsyncIterator) have been added (in fact they made it into 3.5.1 but were
+  never mentioned).
 
 - bpo-25738: Stop http.server.BaseHTTPRequestHandler.send_error() from
   sending a message body for 205 Reset Content.  Also, don't send Content
@@ -8860,9 +11572,9 @@ Library
 
 - bpo-17214: The "urllib.request" module now percent-encodes non-ASCII bytes
   found in redirect target URLs.  Some servers send Location header fields
-  with non-ASCII bytes, but "http.client" requires the request target to be
-  ASCII-encodable, otherwise a UnicodeEncodeError is raised.  Based on patch
-  by Christian Heimes.
+  with non- ASCII bytes, but "http.client" requires the request target to be
+  ASCII- encodable, otherwise a UnicodeEncodeError is raised.  Based on
+  patch by Christian Heimes.
 
 - bpo-26892: Honor debuglevel flag in urllib.request.HTTPHandler. Patch
   contributed by Chi Hsuan Yen.
@@ -9315,7 +12027,7 @@ Build
   de Gaye.
 
 - bpo-22359: Disable the rules for running _freeze_importlib and pgen when
-  cross-compiling.  The output of these programs is normally saved with the
+  cross- compiling.  The output of these programs is normally saved with the
   source code anyway, and is still regenerated when doing a native build.
   Patch by Xavier de Gaye.
 
@@ -9334,7 +12046,7 @@ Build
 - bpo-26624: Adds validation of ucrtbase[d].dll version with warning for old
   versions.
 
-- bpo-17603: Avoid error about nonexistent fileblocks.o file by using a
+- bpo-17603: Avoid error about nonexistant fileblocks.o file by using a
   lower-level check for st_blocks in struct stat.
 
 - bpo-26079: Fixing the build output folder for tix-8.4.3.6. Patch by Bjoern
@@ -9484,7 +12196,7 @@ Core and Builtins
 - bpo-25003: On Solaris 11.3 or newer, os.urandom() now uses the getrandom()
   function instead of the getentropy() function. The getentropy() function
   is blocking to generate very good quality entropy, os.urandom() doesn't
-  need such high-quality entropy.
+  need such high- quality entropy.
 
 - bpo-25182: The stdprinter (used as sys.stderr before the io module is
   imported at startup) now uses the backslashreplace error handler.
@@ -9792,12 +12504,12 @@ IDLE
 - bpo-25173: Associate tkinter messageboxes with a specific widget. For Mac
   OSX, make them a 'sheet'.  Patch by Mark Roseman.
 
-- bpo-25198: Enhance the initial html viewer now used for Idle Help.
-  Properly indent fixed-pitch text (patch by Mark Roseman). Give code
-  snippet a very Sphinx-like light blueish-gray background. Re-use initial
-  width and height set by users for shell and editor. When the Table of
-  Contents (TOC) menu is used, put the section header at the top of the
-  screen.
+- bpo-25198: Enhance the initial html viewer now used for Idle Help. *
+  Properly indent fixed-pitch text (patch by Mark Roseman). * Give code
+  snippet a very Sphinx- like light blueish-gray background. * Re-use
+  initial width and height set by users for shell and editor. * When the
+  Table of Contents (TOC) menu is used, put the section header at the top of
+  the screen.
 
 - bpo-25225: Condense and rewrite Idle doc section on text colors.
 
@@ -10175,7 +12887,7 @@ Library
   inside a data segment.
 
 - bpo-15014: SMTP.auth() and SMTP.login() now support RFC 4954's optional
-  initial-response argument to the SMTP AUTH command.
+  initial- response argument to the SMTP AUTH command.
 
 - bpo-24669: Fix inspect.getsource() for 'async def' functions. Patch by Kai
   Groner.
@@ -10239,7 +12951,7 @@ Library
   called.  Based on patch by Martin Panter.
 
 - bpo-20387: Restore semantic round-trip correctness in tokenize/untokenize
-  for tab-indented blocks.
+  for tab- indented blocks.
 
 - bpo-24456: Fixed possible buffer over-read in adpcm2lin() and lin2adpcm()
   functions of the audioop module.
@@ -10877,7 +13589,7 @@ Library
 -------
 
 - bpo-14260: The groupindex attribute of regular expression pattern object
-  now is non-modifiable mapping.
+  now is non- modifiable mapping.
 
 - bpo-23792: Ignore KeyboardInterrupt when the pydoc pager is active. This
   mimics the behavior of the standard unix pagers, and prevents pipepager
@@ -12012,7 +14724,7 @@ Library
 - bpo-5411: Added support for the "xztar" format in the shutil module.
 
 - bpo-21121: Don't force 3rd party C extensions to be built with
-  ``-Werror=declaration-after-statement``.
+  -Werror=declaration- after-statement.
 
 - bpo-21975: Fixed crash when using uninitialized sqlite3.Row (in particular
   when unpickling pickled sqlite3.Row).  sqlite3.Row is now initialized in
@@ -12113,7 +14825,7 @@ Library
   Initial patch by Phil Elson.
 
 - bpo-21932: os.read() now uses a :c:func:`Py_ssize_t` type instead of
-  :c:type:`int` for the size to support reading more than 2 GiB at once. On
+  :c:type:`int` for the size to support reading more than 2 GB at once. On
   Windows, the size is truncted to INT_MAX. As any call to os.read(), the OS
   may read less bytes than the number of requested bytes.
 
@@ -12146,7 +14858,7 @@ Library
 - bpo-5800: headers parameter of wsgiref.headers.Headers is now optional.
   Initial patch by Pablo Torres Navarrete and SilentGhost.
 
-- bpo-21781: ssl.RAND_add() now supports strings longer than 2 GiB.
+- bpo-21781: ssl.RAND_add() now supports strings longer than 2 GB.
 
 - bpo-21679: Prevent extraneous fstat() calls during open().  Patch by
   Bohuslav Kabrda.
@@ -12548,7 +15260,7 @@ Library
 - bpo-20378: Improve repr of inspect.Signature and inspect.Parameter.
 
 - bpo-20816: Fix inspect.getcallargs() to raise correct TypeError for
-  missing keyword-only arguments. Patch by Jeremiah Lowin.
+  missing keyword- only arguments. Patch by Jeremiah Lowin.
 
 - bpo-20817: Fix inspect.getcallargs() to fail correctly if more than 3
   arguments are missing. Patch by Jeremiah Lowin.
@@ -12747,7 +15459,7 @@ Build
 - bpo-21811: Anticipated fixes to support OS X versions > 10.9.
 
 - bpo-21166: Prevent possible segfaults and other random failures of python
-  ``--generate-posix-vars`` in pybuilddir.txt build target.
+  --generate- posix-vars in pybuilddir.txt build target.
 
 - bpo-18096: Fix library order returned by python-config.
 
