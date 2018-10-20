@@ -25,7 +25,7 @@ index cbc58e7..ff43393 100644
              try:
                  g.dump(gp)
 diff --git a/Lib/lib2to3/tests/test_parser.py b/Lib/lib2to3/tests/test_parser.py
-index 74653ea..daef98c 100644
+index 829e5a7..9a6788a 100644
 --- a/Lib/lib2to3/tests/test_parser.py
 +++ b/Lib/lib2to3/tests/test_parser.py
 @@ -38,83 +38,6 @@ class TestDriver(support.TestCase):
