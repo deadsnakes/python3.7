@@ -1181,7 +1181,9 @@
  _PyContext_NewHamtForTests@Base @SVER@
  _PyCoreConfig_Clear@Base @SVER@
  _PyCoreConfig_Copy@Base @SVER@
+ _PyCoreConfig_GetGlobalConfig@Base 3.7.1
  _PyCoreConfig_Read@Base @SVER@
+ _PyCoreConfig_SetGlobalConfig@Base 3.7.1
  _PyCoroWrapper_Type@Base @SVER@
  _PyCoro_GetAwaitableIter@Base @SVER@
  _PyDebugAllocatorStats@Base @SVER@
@@ -1715,8 +1717,10 @@
  _Py_ImportFrom@Base @SVER@
  _Py_Index@Base @SVER@
  _Py_InitializeCore@Base @SVER@
- _Py_InitializeEx_Private@Base @SVER@
+ _Py_InitializeCore_impl@Base 3.7.1
+ _Py_InitializeFromConfig@Base 3.7.1
  _Py_InitializeMainInterpreter@Base @SVER@
+ _Py_Initialize_ReadEnvVarsNoAlloc@Base 3.7.1
  _Py_Interactive@Base @SVER@
  _Py_IsCoreInitialized@Base @SVER@
  _Py_IsFinalizing@Base @SVER@
