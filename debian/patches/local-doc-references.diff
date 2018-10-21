@@ -9,7 +9,7 @@ Subject: local-doc-references
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Doc/tools/templates/layout.html b/Doc/tools/templates/layout.html
-index c210667..ddaca88 100644
+index 8cf903d..f678a93 100644
 --- a/Doc/tools/templates/layout.html
 +++ b/Doc/tools/templates/layout.html
 @@ -39,7 +39,7 @@

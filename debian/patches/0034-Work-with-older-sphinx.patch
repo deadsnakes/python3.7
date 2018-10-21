@@ -7,7 +7,7 @@ Subject: Work with older sphinx
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/Doc/tools/extensions/pyspecific.py b/Doc/tools/extensions/pyspecific.py
-index 92506e7..0861759 100644
+index 90d7cea..5cd34e8 100644
 --- a/Doc/tools/extensions/pyspecific.py
 +++ b/Doc/tools/extensions/pyspecific.py
 @@ -23,7 +23,6 @@ from docutils import nodes, utils
@@ -18,7 +18,7 @@ index 92506e7..0861759 100644
  from sphinx.util.nodes import split_explicit_title
  from sphinx.writers.html import HTMLTranslator
  from sphinx.writers.text import TextWriter, TextTranslator
-@@ -310,7 +309,7 @@ class PydocTopicsBuilder(Builder):
+@@ -329,7 +328,7 @@ class PydocTopicsBuilder(Builder):
  
      def write(self, *ignored):
          writer = TextWriter(self)
