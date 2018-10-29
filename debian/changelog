@@ -1,3 +1,9 @@
+python3.7 (3.7.1-1+trusty1) trusty; urgency=medium
+
+  * Python 3.7.1 release.
+
+ -- Anthony Sottile <asottile@umich.edu>  Mon, 29 Oct 2018 14:38:32 -0700
+
 python3.7 (3.7.0-1+trusty1) trusty; urgency=medium
 
   * Python 3.7.0 release.
