@@ -8,10 +8,10 @@ Subject: platform-lsbrelease
  1 file changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/platform.py b/Lib/platform.py
-index 20f9817..ee9a14a 100755
+index 4482f47..f1d6ce0 100755
 --- a/Lib/platform.py
 +++ b/Lib/platform.py
-@@ -267,7 +267,7 @@ _release_version = re.compile(r'([^0-9]+)'
+@@ -297,7 +297,7 @@ _release_version = re.compile(r'([^0-9]+)'
  _supported_dists = (
      'SuSE', 'debian', 'fedora', 'redhat', 'centos',
      'mandrake', 'mandriva', 'rocks', 'slackware', 'yellowdog', 'gentoo',
@@ -20,7 +20,7 @@ index 20f9817..ee9a14a 100755
  
  def _parse_release_file(firstline):
  
-@@ -296,6 +296,10 @@ def _parse_release_file(firstline):
+@@ -326,6 +326,10 @@ def _parse_release_file(firstline):
              id = l[1]
      return '', version, id
  
@@ -31,7 +31,7 @@ index 20f9817..ee9a14a 100755
  def linux_distribution(distname='', version='', id='',
  
                         supported_dists=_supported_dists,
-@@ -328,6 +332,25 @@ def _linux_distribution(distname, version, id, supported_dists,
+@@ -358,6 +362,25 @@ def _linux_distribution(distname, version, id, supported_dists,
          args given as parameters.
  
      """
