@@ -1,3 +1,9 @@
+python3.7 (3.7.2-1+xenial1) xenial; urgency=medium
+
+  * Python 3.7.2 release.
+
+ -- Anthony Sottile <asottile@umich.edu>  Mon, 24 Dec 2018 10:52:07 -0800
+
 python3.7 (3.7.1-1+xenial1) xenial; urgency=medium
 
   * Python 3.7.1 release.
