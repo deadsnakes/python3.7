@@ -8,10 +8,10 @@ Subject: pydoc-use-pager
  1 file changed, 2 insertions(+)
 
 diff --git a/Lib/pydoc.py b/Lib/pydoc.py
-index efb04db..45c0ad7 100644
+index 91e196d..fba4f78 100644
 --- a/Lib/pydoc.py
 +++ b/Lib/pydoc.py
-@@ -1475,6 +1475,8 @@ def getpager():
+@@ -1473,6 +1473,8 @@ def getpager():
          return plainpager
      if sys.platform == 'win32':
          return lambda text: tempfilepager(plain(text), 'more <')
