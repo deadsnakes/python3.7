@@ -1179,6 +1179,7 @@
  _PyContext_Fini@Base @SVER@
  _PyContext_Init@Base @SVER@
  _PyContext_NewHamtForTests@Base @SVER@
+ _PyCoreConfig_AsDict@Base 3.7.2
  _PyCoreConfig_Clear@Base @SVER@
  _PyCoreConfig_Copy@Base @SVER@
  _PyCoreConfig_GetGlobalConfig@Base 3.7.1
@@ -1225,6 +1226,7 @@
  _PyEval_FiniThreads@Base @SVER@
  _PyEval_GetAsyncGenFinalizer@Base @SVER@
  _PyEval_GetAsyncGenFirstiter@Base @SVER@
+ _PyEval_GetBuiltinId@Base 3.7.2
  _PyEval_GetCoroutineOriginTrackingDepth@Base @SVER@
  _PyEval_GetCoroutineWrapper@Base @SVER@
  _PyEval_SetCoroutineWrapper@Base @SVER@
@@ -1383,12 +1385,14 @@
  _PyLong_One@Base @SVER@
  _PyLong_Sign@Base @SVER@
  _PyLong_Zero@Base @SVER@
+ _PyMainInterpreterConfig_AsDict@Base 3.7.2
  _PyMainInterpreterConfig_Clear@Base @SVER@
  _PyMainInterpreterConfig_Copy@Base @SVER@
  _PyMainInterpreterConfig_Read@Base @SVER@
  _PyManagedBuffer_Type@Base @SVER@
  _PyMem_DumpTraceback@Base @SVER@
  _PyMem_GetAllocatorsName@Base @SVER@
+ _PyMem_IsFreed@Base 3.7.2
  _PyMem_RawStrdup@Base @SVER@
  _PyMem_RawWcsdup@Base @SVER@
  _PyMem_SetDefaultAllocator@Base @SVER@
@@ -1445,6 +1449,7 @@
  _PyObject_HasFastCall@Base @SVER@
  _PyObject_HasLen@Base @SVER@
  _PyObject_IsAbstract@Base @SVER@
+ _PyObject_IsFreed@Base 3.7.2
  _PyObject_LookupAttr@Base @SVER@
  _PyObject_LookupAttrId@Base @SVER@
  _PyObject_LookupSpecial@Base @SVER@
@@ -1702,6 +1707,8 @@
  _Py_FunctionDef@Base @SVER@
  _Py_GeneratorExp@Base @SVER@
  _Py_GetAllocatedBlocks@Base @SVER@
+ _Py_GetForceASCII@Base 3.7.2
+ _Py_GetGlobalVariablesAsDict@Base 3.7.2
  _Py_GetLocaleconvNumeric@Base @SVER@
  _Py_Gid_Converter@Base @SVER@
  _Py_Global@Base @SVER@
@@ -1747,11 +1754,13 @@
  _Py_ReadHashSeed@Base @SVER@
  _Py_ReadyTypes@Base @SVER@
  _Py_ReleaseInternedUnicodeStrings@Base @SVER@
+ _Py_ResetForceASCII@Base 3.7.2
  _Py_RestoreSignals@Base @SVER@
  _Py_Return@Base @SVER@
  _Py_Set@Base @SVER@
  _Py_SetComp@Base @SVER@
  _Py_SetLocaleFromEnv@Base @SVER@
+ _Py_SetProgramFullPath@Base 3.7.2
  _Py_Slice@Base @SVER@
  _Py_Starred@Base @SVER@
  _Py_Str@Base @SVER@
