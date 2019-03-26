@@ -154,10 +154,10 @@ index 0ddc736..0a71b61 100644
          self.outputs = [self.target]
  
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index e07a6c8..1007527 100644
+index 83160f8..50e20f6 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -122,6 +122,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
+@@ -135,6 +135,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
      If 'prefix' is supplied, use it instead of sys.base_prefix or
      sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
      """
@@ -165,7 +165,7 @@ index e07a6c8..1007527 100644
      if prefix is None:
          if standard_lib:
              prefix = plat_specific and BASE_EXEC_PREFIX or BASE_PREFIX
-@@ -133,6 +134,12 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
+@@ -146,6 +147,12 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
                                   "lib", "python" + get_python_version())
          if standard_lib:
              return libpython
@@ -214,7 +214,7 @@ index 287ab19..00e3f94 100644
  
      def test_debug_mode(self):
 diff --git a/Lib/pydoc.py b/Lib/pydoc.py
-index 8fb1e51..91e196d 100644
+index d023bb3..5f7b38a 100644
 --- a/Lib/pydoc.py
 +++ b/Lib/pydoc.py
 @@ -420,6 +420,7 @@ class Doc:
@@ -226,7 +226,7 @@ index 8fb1e51..91e196d 100644
              object.__name__ not in ('xml.etree', 'test.pydoc_mod')):
              if docloc.startswith(("http://", "https://")):
 diff --git a/Lib/site.py b/Lib/site.py
-index ffd132b..d8445a7 100644
+index ad11463..4829f88 100644
 --- a/Lib/site.py
 +++ b/Lib/site.py
 @@ -7,12 +7,18 @@
@@ -273,10 +273,10 @@ index ffd132b..d8445a7 100644
              sitepackages.append(prefix)
              sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
 diff --git a/Lib/test/test_site.py b/Lib/test/test_site.py
-index a30bd2f..5a3ca99 100644
+index 655a12d..3c1a4fe 100644
 --- a/Lib/test/test_site.py
 +++ b/Lib/test/test_site.py
-@@ -267,10 +267,10 @@ class HelperFunctionsTests(unittest.TestCase):
+@@ -269,10 +269,10 @@ class HelperFunctionsTests(unittest.TestCase):
          dirs = site.getsitepackages()
          if os.sep == '/':
              # OS X, Linux, FreeBSD, etc
