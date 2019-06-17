@@ -8,24 +8,24 @@ Subject: lto-link-flags
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index cc1413b..517ad3a 100644
+index db2a1f4..437c629 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -147,7 +147,7 @@ CONFINCLUDEPY=	$(CONFINCLUDEDIR)/python$(LDVERSION)
+@@ -155,7 +155,7 @@ CONFINCLUDEPY=	$(CONFINCLUDEDIR)/python$(LDVERSION)
  SHLIB_SUFFIX=	@SHLIB_SUFFIX@
  EXT_SUFFIX=	@EXT_SUFFIX@
  LDSHARED=	@LDSHARED@ $(PY_LDFLAGS)
--BLDSHARED=	@BLDSHARED@ $(PY_LDFLAGS)
-+BLDSHARED=	@BLDSHARED@ $(PY_LDFLAGS) $(PY_CFLAGS)
+-BLDSHARED=	@BLDSHARED@ $(PY_CORE_LDFLAGS)
++BLDSHARED=	@BLDSHARED@ $(PY_CORE_LDFLAGS) $(PY_CFLAGS)
  LDCXXSHARED=	@LDCXXSHARED@
  DESTSHARED=	$(BINLIBDEST)/lib-dynload
  
-@@ -577,7 +577,7 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
+@@ -585,7 +585,7 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
  
  # Build the interpreter
  $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
--	$(LINKCC) $(PY_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
-+	$(LINKCC) $(PY_LDFLAGS) $(PY_CFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
+-	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
++	$(LINKCC) $(PY_CORE_LDFLAGS) $(PY_CFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
  
  platform: $(BUILDPYTHON) pybuilddir.txt
  	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform

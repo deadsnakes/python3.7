@@ -9,7 +9,7 @@ Subject: bdist-wininst-notfound
  1 file changed, 4 insertions(+)
 
 diff --git a/Lib/distutils/command/bdist_wininst.py b/Lib/distutils/command/bdist_wininst.py
-index 0871a4f..750e082 100644
+index fde5675..ff4577a 100644
 --- a/Lib/distutils/command/bdist_wininst.py
 +++ b/Lib/distutils/command/bdist_wininst.py
 @@ -358,6 +358,10 @@ class bdist_wininst(Command):

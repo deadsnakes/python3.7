@@ -10,10 +10,10 @@ Subject: multiarch
  3 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index d62a415..0f793ba 100644
+index 04e3fdc..f21e770 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -99,6 +99,9 @@ def get_python_inc(plat_specific=0, prefix=None):
+@@ -107,6 +107,9 @@ def get_python_inc(plat_specific=0, prefix=None):
                  incdir = os.path.join(get_config_var('srcdir'), 'Include')
                  return os.path.normpath(incdir)
          python_dir = 'python' + get_python_version() + build_flags
@@ -22,12 +22,12 @@ index d62a415..0f793ba 100644
 +            return sysconfig.get_path('platinclude')
          return os.path.join(prefix, "include", python_dir)
      elif os.name == "nt":
-         return os.path.join(prefix, "include")
+         if python_build:
 diff --git a/Lib/sysconfig.py b/Lib/sysconfig.py
-index 9ee4d31..1ae5088 100644
+index d15cec8..8788009 100644
 --- a/Lib/sysconfig.py
 +++ b/Lib/sysconfig.py
-@@ -551,6 +551,12 @@ def get_config_vars(*args):
+@@ -558,6 +558,12 @@ def get_config_vars(*args):
          # the init-function.
          _CONFIG_VARS['userbase'] = _getuserbase()
  
@@ -41,10 +41,10 @@ index 9ee4d31..1ae5088 100644
          srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)
          if os.name == 'posix':
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 517ad3a..7ac53ed 100644
+index 437c629..de6cc2f 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -791,6 +791,7 @@ Modules/signalmodule.o: $(srcdir)/Modules/signalmodule.c $(srcdir)/Modules/posix
+@@ -799,6 +799,7 @@ Modules/signalmodule.o: $(srcdir)/Modules/signalmodule.c $(srcdir)/Modules/posix
  
  Python/dynload_shlib.o: $(srcdir)/Python/dynload_shlib.c Makefile
  	$(CC) -c $(PY_CORE_CFLAGS) \
@@ -52,7 +52,7 @@ index 517ad3a..7ac53ed 100644
  		-DSOABI='"$(SOABI)"' \
  		-o $@ $(srcdir)/Python/dynload_shlib.c
  
-@@ -1464,7 +1465,7 @@ inclinstall:
+@@ -1482,7 +1483,7 @@ inclinstall:
  LIBPL=		@LIBPL@
  
  # pkgconfig directory
