@@ -1094,7 +1094,7 @@ _asyncio_Future_get_loop_impl(FutureObj *self)
 }
 
 static PyObject *
-FutureObj_get_blocking(FutureObj *fut)
+FutureObj_get_blocking(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     if (future_is_alive(fut) && fut->fut_blocking) {
         Py_RETURN_TRUE;
@@ -1105,9 +1105,13 @@ FutureObj_get_blocking(FutureObj *fut)
 }
 
 static int
-FutureObj_set_blocking(FutureObj *fut, PyObject *val)
+FutureObj_set_blocking(FutureObj *fut, PyObject *val, void *Py_UNUSED(ignored))
 {
     if (future_ensure_alive(fut)) {
+        return -1;
+    }
+    if (val == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "cannot delete attribute");
         return -1;
     }
 
@@ -1120,7 +1124,7 @@ FutureObj_set_blocking(FutureObj *fut, PyObject *val)
 }
 
 static PyObject *
-FutureObj_get_log_traceback(FutureObj *fut)
+FutureObj_get_log_traceback(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     ENSURE_FUTURE_ALIVE(fut)
     if (fut->fut_log_tb) {
@@ -1132,8 +1136,12 @@ FutureObj_get_log_traceback(FutureObj *fut)
 }
 
 static int
-FutureObj_set_log_traceback(FutureObj *fut, PyObject *val)
+FutureObj_set_log_traceback(FutureObj *fut, PyObject *val, void *Py_UNUSED(ignored))
 {
+    if (val == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "cannot delete attribute");
+        return -1;
+    }
     int is_true = PyObject_IsTrue(val);
     if (is_true < 0) {
         return -1;
@@ -1148,7 +1156,7 @@ FutureObj_set_log_traceback(FutureObj *fut, PyObject *val)
 }
 
 static PyObject *
-FutureObj_get_loop(FutureObj *fut)
+FutureObj_get_loop(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     if (!future_is_alive(fut)) {
         Py_RETURN_NONE;
@@ -1158,7 +1166,7 @@ FutureObj_get_loop(FutureObj *fut)
 }
 
 static PyObject *
-FutureObj_get_callbacks(FutureObj *fut)
+FutureObj_get_callbacks(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     Py_ssize_t i;
 
@@ -1210,7 +1218,7 @@ FutureObj_get_callbacks(FutureObj *fut)
 }
 
 static PyObject *
-FutureObj_get_result(FutureObj *fut)
+FutureObj_get_result(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     ENSURE_FUTURE_ALIVE(fut)
     if (fut->fut_result == NULL) {
@@ -1221,7 +1229,7 @@ FutureObj_get_result(FutureObj *fut)
 }
 
 static PyObject *
-FutureObj_get_exception(FutureObj *fut)
+FutureObj_get_exception(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     ENSURE_FUTURE_ALIVE(fut)
     if (fut->fut_exception == NULL) {
@@ -1232,7 +1240,7 @@ FutureObj_get_exception(FutureObj *fut)
 }
 
 static PyObject *
-FutureObj_get_source_traceback(FutureObj *fut)
+FutureObj_get_source_traceback(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     if (!future_is_alive(fut) || fut->fut_source_tb == NULL) {
         Py_RETURN_NONE;
@@ -1242,7 +1250,7 @@ FutureObj_get_source_traceback(FutureObj *fut)
 }
 
 static PyObject *
-FutureObj_get_state(FutureObj *fut)
+FutureObj_get_state(FutureObj *fut, void *Py_UNUSED(ignored))
 {
     _Py_IDENTIFIER(PENDING);
     _Py_IDENTIFIER(CANCELLED);
@@ -1723,7 +1731,7 @@ TaskStepMethWrapper_traverse(TaskStepMethWrapper *o,
 }
 
 static PyObject *
-TaskStepMethWrapper_get___self__(TaskStepMethWrapper *o)
+TaskStepMethWrapper_get___self__(TaskStepMethWrapper *o, void *Py_UNUSED(ignored))
 {
     if (o->sw_task) {
         Py_INCREF(o->sw_task);
@@ -1995,7 +2003,7 @@ TaskObj_traverse(TaskObj *task, visitproc visit, void *arg)
 }
 
 static PyObject *
-TaskObj_get_log_destroy_pending(TaskObj *task)
+TaskObj_get_log_destroy_pending(TaskObj *task, void *Py_UNUSED(ignored))
 {
     if (task->task_log_destroy_pending) {
         Py_RETURN_TRUE;
@@ -2006,8 +2014,12 @@ TaskObj_get_log_destroy_pending(TaskObj *task)
 }
 
 static int
-TaskObj_set_log_destroy_pending(TaskObj *task, PyObject *val)
+TaskObj_set_log_destroy_pending(TaskObj *task, PyObject *val, void *Py_UNUSED(ignored))
 {
+    if (val == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "cannot delete attribute");
+        return -1;
+    }
     int is_true = PyObject_IsTrue(val);
     if (is_true < 0) {
         return -1;
@@ -2017,7 +2029,7 @@ TaskObj_set_log_destroy_pending(TaskObj *task, PyObject *val)
 }
 
 static PyObject *
-TaskObj_get_must_cancel(TaskObj *task)
+TaskObj_get_must_cancel(TaskObj *task, void *Py_UNUSED(ignored))
 {
     if (task->task_must_cancel) {
         Py_RETURN_TRUE;
@@ -2028,7 +2040,7 @@ TaskObj_get_must_cancel(TaskObj *task)
 }
 
 static PyObject *
-TaskObj_get_coro(TaskObj *task)
+TaskObj_get_coro(TaskObj *task, void *Py_UNUSED(ignored))
 {
     if (task->task_coro) {
         Py_INCREF(task->task_coro);
@@ -2039,7 +2051,7 @@ TaskObj_get_coro(TaskObj *task)
 }
 
 static PyObject *
-TaskObj_get_fut_waiter(TaskObj *task)
+TaskObj_get_fut_waiter(TaskObj *task, void *Py_UNUSED(ignored))
 {
     if (task->task_fut_waiter) {
         Py_INCREF(task->task_fut_waiter);

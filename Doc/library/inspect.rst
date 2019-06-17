@@ -132,9 +132,6 @@ attributes:
 |           | f_locals          | local namespace seen by   |
 |           |                   | this frame                |
 +-----------+-------------------+---------------------------+
-|           | f_restricted      | 0 or 1 if frame is in     |
-|           |                   | restricted execution mode |
-+-----------+-------------------+---------------------------+
 |           | f_trace           | tracing function for this |
 |           |                   | frame, or ``None``        |
 +-----------+-------------------+---------------------------+
@@ -561,6 +558,10 @@ function.
 
    Raises :exc:`ValueError` if no signature can be provided, and
    :exc:`TypeError` if that type of object is not supported.
+
+   A slash(/) in the signature of a function denotes that the parameters prior
+   to it are positional-only. For more info, see
+   :ref:`the FAQ entry on positional-only parameters <faq-positional-only-arguments>`.
 
    .. versionadded:: 3.5
       ``follow_wrapped`` parameter. Pass ``False`` to get a signature of

@@ -81,7 +81,7 @@ The abstract event loop policy base class is defined as follows:
 
    .. method:: set_child_watcher(watcher)
 
-      Get the current child process watcher to *watcher*.
+      Set the current child process watcher to *watcher*.
 
       This function is Unix specific.
 
@@ -103,7 +103,7 @@ asyncio ships with the following built-in policies:
    An alternative event loop policy that uses the
    :class:`ProactorEventLoop` event loop implementation.
 
-   Availability: Windows.
+   .. availability:: Windows.
 
 
 Process Watchers

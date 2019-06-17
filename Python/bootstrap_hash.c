@@ -20,6 +20,10 @@
 #  endif
 #endif
 
+#ifdef _Py_MEMORY_SANITIZER
+#  include <sanitizer/msan_interface.h>
+#endif
+
 #ifdef Py_DEBUG
 int _Py_HashSecret_Initialized = 0;
 #else
@@ -112,7 +116,7 @@ py_getrandom(void *buffer, Py_ssize_t size, int blocking, int raise)
     flags = blocking ? 0 : GRND_NONBLOCK;
     dest = buffer;
     while (0 < size) {
-#ifdef sun
+#if defined(__sun) && defined(__SVR4)
         /* Issue #26735: On Solaris, getrandom() is limited to returning up
            to 1024 bytes. Call it multiple times if more bytes are
            requested. */
@@ -143,6 +147,11 @@ py_getrandom(void *buffer, Py_ssize_t size, int blocking, int raise)
         else {
             n = syscall(SYS_getrandom, dest, n, flags);
         }
+#  ifdef _Py_MEMORY_SANITIZER
+        if (n > 0) {
+             __msan_unpoison(dest, n);
+        }
+#  endif
 #endif
 
         if (n < 0) {
@@ -257,7 +266,7 @@ py_getentropy(char *buffer, Py_ssize_t size, int raise)
     }
     return 1;
 }
-#endif /* defined(HAVE_GETENTROPY) && !defined(sun) */
+#endif /* defined(HAVE_GETENTROPY) && !(defined(__sun) && defined(__SVR4)) */
 
 
 static struct {
