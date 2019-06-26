@@ -773,7 +773,6 @@ ifeq ($(with_interp),static)
 	sed -e '/^OPT/s,-O3,-O2,' \
 	    -e 's/-O3/-O2/g;s/$(LTO_CFLAGS)//g' \
 	    -e 's/-fprofile-use *-fprofile-correction//g' \
-	    -e 's/-fstack-protector /-fstack-protector-strong /g' \
 	    -e 's,^RUNSHARED *=.*,RUNSHARED=,' \
 	    -e '/BLDLIBRARY/s/-L\. //' \
 		$(buildd_shared)/$(shell cat $(buildd_shared)/pybuilddir.txt)/_sysconfigdata_m_$(PLAT)_$(DEB_HOST_MULTIARCH).py \
@@ -789,7 +788,6 @@ endif
 	sed -i \
 	  -e 's/-O3/-O2/g;s/$(LTO_CFLAGS)//g' \
 	  -e 's/-fprofile-use *-fprofile-correction//g' \
-	  -e 's/-fstack-protector /-fstack-protector-strong /g' \
 		$(d)/$(scriptdir)/_sysconfigdata_m_$(PLAT)_$(DEB_HOST_MULTIARCH).py
 
 	-find $(d)/usr/lib/python$(VER) -name '*_failed*.so'
@@ -873,7 +871,6 @@ endif
 	: # install the Makefile of the shared python build
 	sed -e '/^OPT/s,-O3,-O2,' \
 	    -e 's/$(LTO_CFLAGS)//g' \
-	    -e 's/-fstack-protector /-fstack-protector-strong /g' \
 	    -e 's,^RUNSHARED *=.*,RUNSHARED=,' \
 	    -e '/BLDLIBRARY/s/-L\. //' \
 		$(buildd_shared)/Makefile \
@@ -1169,7 +1166,6 @@ endif
 	: # install the Makefile of the shared python debug build
 	sed -e '/^OPT/s,-O3,-O2,' \
 	    -e 's/$(LTO_CFLAGS)//g' \
-	    -e 's/-fstack-protector /-fstack-protector-strong /g' \
 	    -e 's,^RUNSHARED *=.*,RUNSHARED=,' \
 	    -e '/BLDLIBRARY/s/-L\. //' \
 		$(buildd_shdebug)/Makefile \
@@ -1181,7 +1177,6 @@ endif
 	sed -i \
 	  -e 's/-O3/-O2/g;s/$(LTO_CFLAGS)//g' \
 	  -e 's/-fprofile-use *-fprofile-correction//g' \
-	  -e 's/-fstack-protector /-fstack-protector-strong /g' \
 		$(d)-dbg/$(scriptdir)/_sysconfigdata_dm_$(PLAT)_$(DEB_HOST_MULTIARCH).py
 
 	mv $(d)-dbg/usr/lib/libpython*.a $(d)-dbg/usr/lib/$(DEB_HOST_MULTIARCH)/
