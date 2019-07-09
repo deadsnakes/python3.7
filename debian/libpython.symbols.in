@@ -1392,7 +1392,6 @@
  _PyManagedBuffer_Type@Base @SVER@
  _PyMem_DumpTraceback@Base @SVER@
  _PyMem_GetAllocatorsName@Base @SVER@
- _PyMem_IsFreed@Base 3.7.2
  _PyMem_RawStrdup@Base @SVER@
  _PyMem_RawWcsdup@Base @SVER@
  _PyMem_SetDefaultAllocator@Base @SVER@
