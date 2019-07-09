@@ -10,7 +10,7 @@ Subject: distutils-sysconfig
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index 9c27cd8..71b1de5 100644
+index 9c27cd8..6961e6f 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
 @@ -195,9 +195,11 @@ def customize_compiler(compiler):
@@ -37,7 +37,7 @@ index 9c27cd8..71b1de5 100644
              cflags = cflags + ' ' + os.environ['CFLAGS']
              ldshared = ldshared + ' ' + os.environ['CFLAGS']
 +        elif configure_cflags:
-+            cflags = clags + ' ' + configure_cflags
++            cflags = cflags + ' ' + configure_cflags
 +            ldshared = ldshared + ' ' + configure_cflags
          if 'CPPFLAGS' in os.environ:
              cpp = cpp + ' ' + os.environ['CPPFLAGS']

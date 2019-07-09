@@ -10,7 +10,7 @@ Subject: multiarch
  3 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index 71b1de5..93e3360 100644
+index 6961e6f..d05d659 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
 @@ -112,6 +112,9 @@ def get_python_inc(plat_specific=0, prefix=None):
