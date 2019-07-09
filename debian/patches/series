@@ -31,3 +31,4 @@ temporary-changes.diff
 0036-Disable-broken-dbm.ndbm-tests.patch
 0034-Work-with-older-sphinx.patch
 0034-fixes-for-old-sphinx.patch
+0034-fix-older-sphinx-again.patch
