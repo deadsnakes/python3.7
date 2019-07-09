@@ -8,7 +8,7 @@ Subject: fixes for old sphinx
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/Doc/conf.py b/Doc/conf.py
-index eab3c39..c48fe3f 100644
+index da8b9d7..515dca9 100644
 --- a/Doc/conf.py
 +++ b/Doc/conf.py
 @@ -34,8 +34,8 @@ today_fmt = '%B %d, %Y'
