@@ -1,3 +1,9 @@
+python3.7 (3.7.4-1+bionic2) bionic; urgency=medium
+
+  * Fix typo in patch conflict resolution
+
+ -- Anthony Sottile <asottile@umich.edu>  Tue, 09 Jul 2019 08:11:16 -0700
+
 python3.7 (3.7.4-1+bionic1) bionic; urgency=medium
 
   * Python 3.7.4 release.
