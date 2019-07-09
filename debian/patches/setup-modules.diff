@@ -8,7 +8,7 @@ Subject: setup-modules
  1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/Modules/Setup.dist b/Modules/Setup.dist
-index 8cc6bf0..e506586 100644
+index 344e03a..e506586 100644
 --- a/Modules/Setup.dist
 +++ b/Modules/Setup.dist
 @@ -178,7 +178,7 @@ _symtable symtablemodule.c
@@ -52,7 +52,7 @@ index 8cc6bf0..e506586 100644
  # Interface to the Expat XML parser
  # More information on Expat can be found at www.libexpat.org.
  #
--#pyexpat expat/xmlparse.c expat/xmlrole.c expat/xmltok.c pyexpat.c -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DXML_POOR_ENTROPY=1 -DUSE_PYEXPAT_CAPI
+-#pyexpat expat/xmlparse.c expat/xmlrole.c expat/xmltok.c pyexpat.c -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DXML_POOR_ENTROPY -DUSE_PYEXPAT_CAPI
 +#pyexpat pyexpat.c -lexpat
  
  # Hye-Shik Chang's CJKCodecs
