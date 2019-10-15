@@ -426,7 +426,7 @@ are always available.  They are listed here in alphabetical order.
               n += 1
 
 
-.. function:: eval(expression, globals=None, locals=None)
+.. function:: eval(expression[, globals[, locals]])
 
    The arguments are a string and optional globals and locals.  If provided,
    *globals* must be a dictionary.  If provided, *locals* can be any mapping
@@ -1531,6 +1531,10 @@ are always available.  They are listed here in alphabetical order.
           def method(self, arg):
               super().method(arg)    # This does the same thing as:
                                      # super(C, self).method(arg)
+
+   In addition to method lookups, :func:`super` also works for attribute
+   lookups.  One possible use case for this is calling :term:`descriptor`\s
+   in a parent or sibling class.
 
    Note that :func:`super` is implemented as part of the binding process for
    explicit dotted attribute lookups such as ``super().__getitem__(name)``.
