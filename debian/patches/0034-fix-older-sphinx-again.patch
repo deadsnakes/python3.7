@@ -7,7 +7,7 @@ Subject: fix-older-sphinx-again
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/Doc/tools/extensions/suspicious.py b/Doc/tools/extensions/suspicious.py
-index 8d80f67..d1d2104 100644
+index fd50f31..6d45e57 100644
 --- a/Doc/tools/extensions/suspicious.py
 +++ b/Doc/tools/extensions/suspicious.py
 @@ -41,6 +41,7 @@ Copyright 2009 Gabriel A. Genellina

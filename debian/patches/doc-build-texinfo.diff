@@ -7,10 +7,10 @@ Subject: doc-build-texinfo
  1 file changed, 6 insertions(+)
 
 diff --git a/Doc/Makefile b/Doc/Makefile
-index 307d1e0..7b67d84 100644
+index 08013c0..50c8d27 100644
 --- a/Doc/Makefile
 +++ b/Doc/Makefile
-@@ -27,6 +27,7 @@ help:
+@@ -31,6 +31,7 @@ help:
  	@echo "  htmlview   to open the index page built by the html target in your browser"
  	@echo "  htmlhelp   to make HTML files and a HTML help project"
  	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
@@ -18,7 +18,7 @@ index 307d1e0..7b67d84 100644
  	@echo "  text       to make plain text files"
  	@echo "  epub       to make EPUB files"
  	@echo "  changes    to make an overview over all changed/added/deprecated items"
-@@ -72,6 +73,11 @@ latex: build
+@@ -76,6 +77,11 @@ latex: build
  	@echo "Run \`make all-pdf' or \`make all-ps' in that directory to" \
  	      "run these through (pdf)latex."
  
