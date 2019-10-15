@@ -8,7 +8,7 @@ Subject: fixes for old sphinx
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/Doc/conf.py b/Doc/conf.py
-index da8b9d7..515dca9 100644
+index ce2d47f..007cb4a 100644
 --- a/Doc/conf.py
 +++ b/Doc/conf.py
 @@ -34,8 +34,8 @@ today_fmt = '%B %d, %Y'
@@ -21,7 +21,7 @@ index da8b9d7..515dca9 100644
 +needs_sphinx = "1.2"
  
  # Ignore any .rst files in the venv/ directory.
- venvdir = os.getenv('VENVDIR', 'venv')
+ exclude_patterns = ['venv/*', 'README.rst']
 diff --git a/Doc/tools/extensions/escape4chm.py b/Doc/tools/extensions/escape4chm.py
 index e999971..7b3948e 100644
 --- a/Doc/tools/extensions/escape4chm.py
