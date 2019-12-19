@@ -8,7 +8,7 @@ Subject: tempfile-minimal
  1 file changed, 142 insertions(+), 3 deletions(-)
 
 diff --git a/Lib/tempfile.py b/Lib/tempfile.py
-index 2143224..8949299 100644
+index 24f673c..63c522f 100644
 --- a/Lib/tempfile.py
 +++ b/Lib/tempfile.py
 @@ -40,7 +40,146 @@ import functools as _functools
@@ -159,7 +159,7 @@ index 2143224..8949299 100644
  import errno as _errno
  from random import Random as _Random
  import weakref as _weakref
-@@ -792,7 +931,7 @@ class TemporaryDirectory(object):
+@@ -794,7 +933,7 @@ class TemporaryDirectory(object):
  
      @classmethod
      def _cleanup(cls, name, warn_message):
@@ -168,7 +168,7 @@ index 2143224..8949299 100644
          _warnings.warn(warn_message, ResourceWarning)
  
      def __repr__(self):
-@@ -806,4 +945,4 @@ class TemporaryDirectory(object):
+@@ -808,4 +947,4 @@ class TemporaryDirectory(object):
  
      def cleanup(self):
          if self._finalizer.detach():
