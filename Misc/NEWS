@@ -2,6 +2,253 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.6 final?
+=================================
+
+*Release date: 2019-12-18*
+
+macOS
+-----
+
+- bpo-38295: Prevent failure of test_relative_path in test_py_compile on
+  macOS Catalina.
+
+
+What's New in Python 3.7.6 release candidate 1?
+===============================================
+
+*Release date: 2019-12-11*
+
+Security
+--------
+
+- bpo-38945: Newline characters have been escaped when performing uu
+  encoding to prevent them from overflowing into to content section of the
+  encoded file. This prevents malicious or accidental modification of data
+  during the decoding process.
+
+- bpo-37228: Due to significant security concerns, the *reuse_address*
+  parameter of :meth:`asyncio.loop.create_datagram_endpoint` is no longer
+  supported. This is because of the behavior of ``SO_REUSEADDR`` in UDP. For
+  more details, see the documentation for
+  ``loop.create_datagram_endpoint()``. (Contributed by Kyle Stanley, Antoine
+  Pitrou, and Yury Selivanov in :issue:`37228`.)
+
+- bpo-38804: Fixes a ReDoS vulnerability in :mod:`http.cookiejar`. Patch by
+  Ben Caller.
+
+Core and Builtins
+-----------------
+
+- bpo-38673: In REPL mode, don't switch to PS2 if the line starts with
+  comment or whitespace. Based on work by Batuhan Taşkaya.
+
+- bpo-38535: Fixed line numbers and column offsets for AST nodes for calls
+  without arguments in decorators.
+
+- bpo-38379: When cyclic garbage collection (gc) runs finalizers that
+  resurrect unreachable objects, the current gc run ends, without collecting
+  any cyclic trash.  However, the statistics reported by ``collect()`` and
+  ``get_stats()`` claimed that all cyclic trash found was collected, and
+  that the resurrected objects were collected.   Changed the stats to report
+  that none were collected.
+
+- bpo-35409: Ignore GeneratorExit exceptions when throwing an exception into
+  the aclose coroutine of an asynchronous generator.
+
+Library
+-------
+
+- bpo-39006: Fix asyncio when the ssl module is missing: only check for
+  ssl.SSLSocket instance if the ssl module is available.
+
+- bpo-38979: Return class from ``ContextVar.__class_getitem__`` to simplify
+  subclassing.
+
+- bpo-38986: Make repr of C accelerated TaskWakeupMethWrapper the same as of
+  pure Python version.
+
+- bpo-33684: Fix ``json.tool`` failed to read a JSON file with non-ASCII
+  characters when locale encoding is not UTF-8.
+
+- bpo-26730: Fix ``SpooledTemporaryFile.rollover()`` might corrupt the file
+  when it is in text mode. Patch by Serhiy Storchaka.
+
+- bpo-37838: :meth:`typing.get_type_hints` properly handles functions
+  decorated with :meth:`functools.wraps`.
+
+- bpo-38821: Fix unhandled exceptions in :mod:`argparse` when
+  internationalizing error messages for arguments with ``nargs`` set to
+  special (non-integer) values. Patch by Federico Bond.
+
+- bpo-38820: Make Python compatible with OpenSSL 3.0.0.
+  :func:`ssl.SSLSocket.getpeercert` no longer returns IPv6 addresses with a
+  trailing new line.
+
+- bpo-38785: Prevent asyncio from crashing if parent ``__init__`` is not
+  called from a constructor of object derived from ``asyncio.Future``.
+
+- bpo-27805: Allow opening pipes and other non-seekable files in append mode
+  with :func:`open`.
+
+- bpo-38686: Added support for multiple ``qop`` values in
+  :class:`urllib.request.AbstractDigestAuthHandler`.
+
+- bpo-38334: Fixed seeking backward on an encrypted
+  :class:`zipfile.ZipExtFile`.
+
+- bpo-31202: The case the result of :func:`pathlib.WindowsPath.glob` matches
+  now the case of the pattern for literal parts.
+
+- bpo-38109: Add missing :data:`stat.S_IFDOOR`, :data:`stat.S_IFPORT`,
+  :data:`stat.S_IFWHT`, :func:`stat.S_ISDOOR`, :func:`stat.S_ISPORT`, and
+  :func:`stat.S_ISWHT` values to the Python implementation of :mod:`stat`.
+
+- bpo-38422: Clarify docstrings of pathlib suffix(es)
+
+- bpo-38405: Nested subclasses of :class:`typing.NamedTuple` are now
+  pickleable.
+
+- bpo-38332: Prevent :exc:`KeyError` thrown by :func:`_encoded_words.decode`
+  when given an encoded-word with invalid content-type encoding from
+  propagating all the way to :func:`email.message.get`.
+
+- bpo-38341: Add :exc:`smtplib.SMTPNotSupportedError` to the :mod:`smtplib`
+  exported names.
+
+- bpo-13153: OS native encoding is now used for converting between Python
+  strings and Tcl objects.  This allows to display, copy and paste to
+  clipboard emoji and other non-BMP characters.  Converting strings from Tcl
+  to Python and back now never fails (except MemoryError).
+
+- bpo-36993: Improve error reporting for corrupt zip files with bad zip64
+  extra data. Patch by Daniel Hillier.
+
+- bpo-36952: Starting with Python 3.3, importing ABCs from
+  :mod:`collections` is deprecated, and import should be done from
+  :mod:`collections.abc`. Still being able to import from :mod:`collections`
+  was marked for removal in 3.8, but has been delayed to 3.9; documentation
+  and ``DeprecationWarning`` clarified.
+
+- bpo-36820: Break cycle generated when saving an exception in socket.py,
+  codeop.py and dyld.py as they keep alive not only the exception but user
+  objects through the ``__traceback__`` attribute. Patch by Mario Corchero.
+
+- bpo-34776: Fix dataclasses to support forward references in type
+  annotations
+
+- bpo-33348: lib2to3 now recognizes expressions after ``*`` and `**` like in
+  ``f(*[] or [])``.
+
+- bpo-27657: Fix urllib.parse.urlparse() with numeric paths. A string like
+  "path:80" is no longer parsed as a path but as a scheme ("path") and a
+  path ("80").
+
+Documentation
+-------------
+
+- bpo-38351: Modernize :mod:`email` examples from %-formatting to f-strings.
+
+- bpo-38592: Add Brazilian Portuguese to the language switcher at Python
+  Documentation website.
+
+- bpo-38294: Add list of no-longer-escaped chars to re.escape documentation
+
+Tests
+-----
+
+- bpo-38547: Fix test_pty: if the process is the session leader, closing the
+  master file descriptor raises a SIGHUP signal: simply ignore SIGHUP when
+  running the tests.
+
+- bpo-38965: Fix test_faulthandler on GCC 10. Use the "volatile" keyword in
+  ``faulthandler._stack_overflow()`` to prevent tail call optimization on
+  any compiler, rather than relying on compiler specific pragma.
+
+- bpo-38669: Raise :exc:`TypeError` when passing target as a string with
+  :meth:`unittest.mock.patch.object`.
+
+- bpo-35998: Fix a race condition in test_asyncio.test_start_tls_server_1().
+  Previously, there was a race condition between the test main() function
+  which replaces the protocol and the test ServerProto protocol which sends
+  ANSWER once it gets HELLO. Now, only the test main() function is
+  responsible to send data, ServerProto no longer sends data.
+
+- bpo-37531: On timeout, regrtest no longer attempts to call
+  ``popen.communicate()`` again: it can hang until all child processes using
+  stdout and stderr pipes completes. Kill the worker process and ignores its
+  output. Change also the faulthandler timeout of the main process from 1
+  minute to 5 minutes, for Python slowest buildbots.
+
+Build
+-----
+
+- bpo-37404: :mod:`asyncio` now raises :exc:`TyperError` when calling
+  incompatible methods with an :class:`ssl.SSLSocket` socket.  Patch by Ido
+  Michael.
+
+- bpo-38809: On Windows, build scripts will now recognize and use python.exe
+  from an active virtual env.
+
+- bpo-37415: Fix stdatomic.h header check for ICC compiler: the ICC
+  implementation lacks atomic_uintptr_t type which is needed by Python.
+
+Windows
+-------
+
+- bpo-38589: Fixes HTML Help shortcut when Windows is not installed to C
+  drive
+
+IDLE
+----
+
+- bpo-38944: Excape key now closes IDLE completion windows.  Patch by Johnny
+  Najera.
+
+- bpo-38943: Fix IDLE autocomplete windows not always appearing on some
+  systems. Patch by Johnny Najera.
+
+- bpo-38862: 'Strip Trailing Whitespace' on the Format menu removes extra
+  newlines at the end of non-shell files.
+
+- bpo-26353: Stop adding newline when saving an IDLE shell window.
+
+- bpo-38636: Fix IDLE Format menu tab toggle and file indent width. These
+  functions (default shortcuts Alt-T and Alt-U) were mistakenly disabled in
+  3.7.5 and 3.8.0.
+
+- bpo-4630: Add an option to toggle IDLE's cursor blink for shell, editor,
+  and output windows.  See Settings, General, Window Preferences, Cursor
+  Blink. Patch by Zachary Spytz.
+
+- bpo-38598: Do not try to compile IDLE shell or output windows
+
+- bpo-36698: IDLE no longer fails when write non-encodable characters to
+  stderr.  It now escapes them with a backslash, as the regular Python
+  interpreter. Added the ``errors`` field to the standard streams.
+
+Tools/Demos
+-----------
+
+- bpo-38118: Update Valgrind suppression file to ignore a false alarm in
+  :c:func:`PyUnicode_Decode` when using GCC builtin strcmp().
+
+- bpo-38347: pathfix.py: Assume all files that end on '.py' are Python
+  scripts when working recursively.
+
+C API
+-----
+
+- bpo-38540: Fixed possible leak in :c:func:`PyArg_Parse` and similar
+  functions for format units ``"es#"`` and ``"et#"`` when the macro
+  :c:macro:`PY_SSIZE_T_CLEAN` is not defined.
+
+- bpo-38395: Fix a crash in :class:`weakref.proxy` objects due to incorrect
+  lifetime management when calling some associated methods that may delete
+  the last reference to object being referenced by the proxy. Patch by Pablo
+  Galindo.
+
+
 What's New in Python 3.7.5 final?
 =================================
 

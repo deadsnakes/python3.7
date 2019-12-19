@@ -186,8 +186,9 @@ class EditorWindow(object):
         text.bind("<<uncomment-region>>", fregion.uncomment_region_event)
         text.bind("<<tabify-region>>", fregion.tabify_region_event)
         text.bind("<<untabify-region>>", fregion.untabify_region_event)
-        text.bind("<<toggle-tabs>>", self.Indents.toggle_tabs_event)
-        text.bind("<<change-indentwidth>>", self.Indents.change_indentwidth_event)
+        indents = self.Indents(self)
+        text.bind("<<toggle-tabs>>", indents.toggle_tabs_event)
+        text.bind("<<change-indentwidth>>", indents.change_indentwidth_event)
         text.bind("<Left>", self.move_at_edge_if_selection(0))
         text.bind("<Right>", self.move_at_edge_if_selection(1))
         text.bind("<<del-word-left>>", self.del_word_left)
@@ -240,6 +241,12 @@ class EditorWindow(object):
         # The recommended Python indentation is four spaces.
         self.indentwidth = self.tabwidth
         self.set_notabs_indentwidth()
+
+        # Store the current value of the insertofftime now so we can restore
+        # it if needed.
+        if not hasattr(idleConf, 'blink_off_time'):
+            idleConf.blink_off_time = self.text['insertofftime']
+        self.update_cursor_blink()
 
         # When searching backwards for a reliable place to begin parsing,
         # first start num_context_lines[0] lines back, then
@@ -357,21 +364,6 @@ class EditorWindow(object):
         zero_char_width = \
             Font(text, font=text.cget('font')).measure('0')
         self.width = pixel_width // zero_char_width
-
-    def _filename_to_unicode(self, filename):
-        """Return filename as BMP unicode so displayable in Tk."""
-        # Decode bytes to unicode.
-        if isinstance(filename, bytes):
-            try:
-                filename = filename.decode(self.filesystemencoding)
-            except UnicodeDecodeError:
-                try:
-                    filename = filename.decode(self.encoding)
-                except UnicodeDecodeError:
-                    # byte-to-byte conversion
-                    filename = filename.decode('iso8859-1')
-        # Replace non-BMP char with diamond questionmark.
-        return re.sub('[\U00010000-\U0010FFFF]', '\ufffd', filename)
 
     def new_callback(self, event):
         dirname, basename = self.io.defaultfilename()
@@ -818,6 +810,16 @@ class EditorWindow(object):
             text.mark_set("insert", pos + "+1c")
         text.see(pos)
 
+    def update_cursor_blink(self):
+        "Update the cursor blink configuration."
+        cursorblink = idleConf.GetOption(
+                'main', 'EditorWindow', 'cursor-blink', type='bool')
+        if not cursorblink:
+            self.text['insertofftime'] = 0
+        else:
+            # Restore the original value
+            self.text['insertofftime'] = idleConf.blink_off_time
+
     def ResetFont(self):
         "Update the text widgets' font if it is changed"
         # Called from configdialog.py
@@ -963,10 +965,8 @@ class EditorWindow(object):
             menu.delete(0, END)  # clear, and rebuild:
             for i, file_name in enumerate(rf_list):
                 file_name = file_name.rstrip()  # zap \n
-                # make unicode string to display non-ASCII chars correctly
-                ufile_name = self._filename_to_unicode(file_name)
                 callback = instance.__recent_file_callback(file_name)
-                menu.add_command(label=ulchars[i] + " " + ufile_name,
+                menu.add_command(label=ulchars[i] + " " + file_name,
                                  command=callback,
                                  underline=0)
 
@@ -1004,16 +1004,10 @@ class EditorWindow(object):
 
     def short_title(self):
         filename = self.io.filename
-        if filename:
-            filename = os.path.basename(filename)
-        else:
-            filename = "untitled"
-        # return unicode string to display non-ASCII chars correctly
-        return self._filename_to_unicode(filename)
+        return os.path.basename(filename) if filename else "untitled"
 
     def long_title(self):
-        # return unicode string to display non-ASCII chars correctly
-        return self._filename_to_unicode(self.io.filename or "")
+        return self.io.filename or ""
 
     def center_insert_event(self, event):
         self.center()
