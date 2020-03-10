@@ -214,10 +214,10 @@ index 287ab19..00e3f94 100644
  
      def test_debug_mode(self):
 diff --git a/Lib/pydoc.py b/Lib/pydoc.py
-index d023bb3..5f7b38a 100644
+index 9c91c7b..0038987 100644
 --- a/Lib/pydoc.py
 +++ b/Lib/pydoc.py
-@@ -420,6 +420,7 @@ class Doc:
+@@ -419,6 +419,7 @@ class Doc:
                                   'marshal', 'posix', 'signal', 'sys',
                                   '_thread', 'zipimport') or
               (file.startswith(basedir) and
