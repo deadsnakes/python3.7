@@ -642,7 +642,7 @@ process and user.
    calls to :func:`unsetenv` don't update ``os.environ``, so it is actually
    preferable to delete items of ``os.environ``.
 
-   .. availability:: most flavors of Unix, Windows.
+   .. availability:: most flavors of Unix.
 
 
 .. _os-newstreams:
@@ -3603,10 +3603,8 @@ written in Python, such as a mail server's external command delivery program.
 
    See the Unix manual page
    :manpage:`times(2)` and :manpage:`times(3)` manual page on Unix or `the GetProcessTimes MSDN
-   <https://docs.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes>`
-   _ on Windows.
-   On Windows, only :attr:`user` and :attr:`system` are known; the other
-   attributes are zero.
+   <https://docs.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes>`_
+   on Windows. On Windows, only :attr:`user` and :attr:`system` are known; the other attributes are zero.
 
    .. availability:: Unix, Windows.
 
