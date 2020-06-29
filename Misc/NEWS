@@ -2,6 +2,362 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.8 final?
+=================================
+
+*Release date: 2020-06-27*
+
+Tests
+-----
+
+- bpo-41009: Fix use of ``support.require_{linux|mac|freebsd}_version()``
+  decorators as class decorator.
+
+macOS
+-----
+
+- bpo-41100: Fix configure error when building on macOS 11. Note that 3.7.8
+  was released shortly after the first developer preview of macOS 11 (Big
+  Sur); there are other known issues with building and running on the
+  developer preview. Big Sur is expected to be fully supported in a future
+  bugfix release of Python 3.8.x and with 3.9.0.
+
+
+What's New in Python 3.7.8 release candidate 1?
+===============================================
+
+*Release date: 2020-06-17*
+
+Security
+--------
+
+- bpo-39073: Disallow CR or LF in email.headerregistry.Address arguments to
+  guard against header injection attacks.
+
+- bpo-38576: Disallow control characters in hostnames in http.client,
+  addressing CVE-2019-18348. Such potentially malicious header injection
+  URLs now cause a InvalidURL to be raised.
+
+- bpo-39503: CVE-2020-8492: The
+  :class:`~urllib.request.AbstractBasicAuthHandler` class of the
+  :mod:`urllib.request` module uses an inefficient regular expression which
+  can be exploited by an attacker to cause a denial of service. Fix the
+  regex to prevent the catastrophic backtracking. Vulnerability reported by
+  Ben Caller and Matt Schwager.
+
+Core and Builtins
+-----------------
+
+- bpo-40663: Correctly generate annotations where parentheses are omitted
+  but required (e.g: ``Type[(str, int, *other))]``.
+
+- bpo-40417: Fix imp module deprecation warning when PyImport_ReloadModule
+  is called. Patch by Robert Rouhani.
+
+- bpo-20526: Fix :c:func:`PyThreadState_Clear()`. ``PyThreadState.frame`` is
+  a borrowed reference, not a strong reference: ``PyThreadState_Clear()``
+  must not call ``Py_CLEAR(tstate->frame)``.
+
+- bpo-38894: Fix a bug that was causing incomplete results when calling
+  ``pathlib.Path.glob`` in the presence of symlinks that point to files
+  where the user does not have read access. Patch by Pablo Galindo and Matt
+  Wozniski.
+
+- bpo-39871: Fix a possible :exc:`SystemError` in
+  ``math.{atan2,copysign,remainder}()`` when the first argument cannot be
+  converted to a :class:`float`. Patch by Zachary Spytz.
+
+- bpo-39520: Fix unparsing of ext slices with no items (``foo[:,]``). Patch
+  by Batuhan Taskaya.
+
+- bpo-24048: Save the live exception during import.c's ``remove_module()``.
+
+- bpo-22490: Don't leak environment variable ``__PYVENV_LAUNCHER__`` into
+  the interpreter session on macOS.
+
+Library
+-------
+
+- bpo-40448: :mod:`ensurepip` now disables the use of `pip` cache when
+  installing the bundled versions of `pip` and `setuptools`.  Patch by
+  Krzysztof Konopko.
+
+- bpo-40807: Stop codeop._maybe_compile, used by code.InteractiveInterpreter
+  (and IDLE). from from emitting each warning three times.
+
+- bpo-38488: Update ensurepip to install pip 20.1.1 and setuptools 47.1.0.
+
+- bpo-40767: :mod:`webbrowser` now properly finds the default browser in
+  pure Wayland systems by checking the WAYLAND_DISPLAY environment variable.
+  Patch contributed by Jérémy Attali.
+
+- bpo-30008: Fix :mod:`ssl` code to be compatible with OpenSSL 1.1.x builds
+  that use ``no-deprecated`` and ``--api=1.1.0``.
+
+- bpo-25872: :mod:`linecache` could crash with a :exc:`KeyError` when
+  accessed from multiple threads. Fix by Michael Graczyk.
+
+- bpo-40515: The :mod:`ssl` and :mod:`hashlib` modules now actively check
+  that OpenSSL is build with thread support. Python 3.7.0 made thread
+  support mandatory and no longer works safely with a no-thread builds.
+
+- bpo-13097: ``ctypes`` now raises an ``ArgumentError`` when a callback is
+  invoked with more than 1024 arguments.
+
+- bpo-40559: Fix possible memory leak in the C implementation of
+  :class:`asyncio.Task`.
+
+- bpo-40457: The ssl module now support OpenSSL builds without TLS 1.0 and
+  1.1 methods.
+
+- bpo-40459: :func:`platform.win32_ver` now produces correct *ptype* strings
+  instead of empty strings.
+
+- bpo-40138: Fix the Windows implementation of :func:`os.waitpid` for exit
+  code larger than ``INT_MAX >> 8``. The exit status is now interpreted as
+  an unsigned number.
+
+- bpo-39942: Set "__main__" as the default module name when "__name__" is
+  missing in :class:`typing.TypeVar`. Patch by Weipeng Hong.
+
+- bpo-40287: Fixed ``SpooledTemporaryFile.seek()`` to return the position.
+
+- bpo-40196: Fix a bug in the :mod:`symtable` module that was causing
+  incorrectly report global variables as local. Patch by Pablo Galindo.
+
+- bpo-40126: Fixed reverting multiple patches in unittest.mock. Patcher's
+  ``__exit__()`` is now never called if its ``__enter__()`` is failed.
+  Returning true from ``__exit__()`` silences now the exception.
+
+- bpo-40089: Fix threading._after_fork(): if fork was not called by a thread
+  spawned by threading.Thread, threading._after_fork() now creates a
+  _MainThread instance for _main_thread, instead of a _DummyThread instance.
+
+- bpo-39503: :class:`~urllib.request.AbstractBasicAuthHandler` of
+  :mod:`urllib.request` now parses all WWW-Authenticate HTTP headers and
+  accepts multiple challenges per header: use the realm of the first Basic
+  challenge.
+
+- bpo-40014: Fix ``os.getgrouplist()``: if ``getgrouplist()`` function fails
+  because the group list is too small, retry with a larger group list. On
+  failure, the glibc implementation of ``getgrouplist()`` sets ``ngroups``
+  to the total number of groups. For other implementations, double the group
+  list size.
+
+- bpo-40025: Raise TypeError when _generate_next_value_ is defined after
+  members. Patch by Ethan Onstott.
+
+- bpo-40016: In re docstring, clarify the relationship between inline and
+  argument compile flags.
+
+- bpo-39652: The column name found in ``sqlite3.Cursor.description`` is now
+  truncated on the first '[' only if the PARSE_COLNAMES option is set.
+
+- bpo-38662: The ``ensurepip`` module now invokes ``pip`` via the ``runpy``
+  module. Hence it is no longer tightly coupled with the internal API of the
+  bundled ``pip`` version, allowing easier updates to a newer ``pip``
+  version both internally and for distributors.
+
+- bpo-39916: More reliable use of ``os.scandir()`` in ``Path.glob()``. It no
+  longer emits a ResourceWarning when interrupted.
+
+- bpo-39850: :mod:`multiprocessing` now supports abstract socket addresses
+  (if abstract sockets are supported in the running platform). Patch by
+  Pablo Galindo.
+
+- bpo-39828: Fix :mod:`json.tool` to catch :exc:`BrokenPipeError`. Patch by
+  Dong-hee Na.
+
+- bpo-39040: Fix parsing of invalid mime headers parameters by collapsing
+  whitespace between encoded words in a bare-quote-string.
+
+- bpo-35714: :exc:`struct.error` is now raised if there is a null character
+  in a :mod:`struct` format string.
+
+- bpo-36541: lib2to3 now recognizes named assignment expressions (the walrus
+  operator, ``:=``)
+
+- bpo-29620: :func:`~unittest.TestCase.assertWarns` no longer raises a
+  ``RuntimeException`` when accessing a module's ``__warningregistry__``
+  causes importation of a new module, or when a new module is imported in
+  another thread. Patch by Kernc.
+
+- bpo-34226: Fix `cgi.parse_multipart` without content_length. Patch by
+  Roger Duran
+
+- bpo-31758: Prevent crashes when using an uninitialized
+  ``_elementtree.XMLParser`` object. Patch by Oren Milman.
+
+Documentation
+-------------
+
+- bpo-40561: Provide docstrings for webbrowser open functions.
+
+- bpo-27635: The pickle documentation incorrectly claimed that ``__new__``
+  isn't called by default when unpickling.
+
+- bpo-39879: Updated :ref:`datamodel` docs to include :func:`dict` insertion
+  order preservation. Patch by Furkan Onder and Samy Lahfa.
+
+- bpo-39677: Changed operand name of **MAKE_FUNCTION** from *argc* to
+  *flags* for module :mod:`dis`
+
+- bpo-39435: Fix an incorrect signature for :func:`pickle.loads` in the docs
+
+- bpo-38387: Document :c:macro:`PyDoc_STRVAR` macro in the C-API reference.
+
+Tests
+-----
+
+- bpo-40964: Disable remote :mod:`imaplib` tests, host cyrus.andrew.cmu.edu
+  is blocking incoming connections.
+
+- bpo-40055: distutils.tests now saves/restores warnings filters to leave
+  them unchanged. Importing tests imports docutils which imports
+  pkg_resources which adds a warnings filter.
+
+- bpo-40436: test_gdb and test.pythoninfo now check gdb command exit code.
+
+- bpo-39932: Fix multiprocessing test_heap(): a new Heap object is now
+  created for each test run.
+
+- bpo-40162: Update Travis CI configuration to OpenSSL 1.1.1f.
+
+- bpo-40146: Update OpenSSL to 1.1.1f in Azure Pipelines.
+
+- bpo-40019: test_gdb now skips tests if it detects that gdb failed to read
+  debug information because the Python binary is optimized.
+
+- bpo-27807: ``test_site.test_startup_imports()`` is now skipped if a path
+  of :data:`sys.path` contains a ``.pth`` file.
+
+- bpo-39793: Use the same domain when testing ``make_msgid``. Patch by
+  Batuhan Taskaya.
+
+- bpo-1812: Fix newline handling in doctest.testfile when loading from a
+  package whose loader has a get_data method. Patch by Peter Donis.
+
+- bpo-37957: test.regrtest now can receive a list of test patterns to ignore
+  (using the -i/--ignore argument) or a file with a list of patterns to
+  ignore (using the --ignore-file argument). Patch by Pablo Galindo.
+
+- bpo-38502: test.regrtest now uses process groups in the multiprocessing
+  mode (-jN command line option) if process groups are available: if
+  :func:`os.setsid` and :func:`os.killpg` functions are available.
+
+- bpo-37421: multiprocessing tests now stop the ForkServer instance if it's
+  running: close the "alive" file descriptor to ask the server to stop and
+  then remove its UNIX address.
+
+- bpo-37421: multiprocessing tests now explicitly call ``_run_finalizers()``
+  to immediately remove temporary directories created by tests.
+
+Build
+-----
+
+- bpo-40653: Move _dirnameW out of HAVE_SYMLINK to fix a potential compiling
+  issue.
+
+- bpo-38360: Support single-argument form of macOS -isysroot flag.
+
+- bpo-40204: Pin Sphinx version to 2.3.1 in ``Doc/Makefile``.
+
+- bpo-40158: Fix CPython MSBuild Properties in NuGet Package
+  (build/native/python.props)
+
+Windows
+-------
+
+- bpo-40164: Updates Windows OpenSSL to 1.1.1g
+
+- bpo-39631: Changes the registered MIME type for ``.py`` files on Windows
+  to ``text/x-python`` instead of ``text/plain``.
+
+- bpo-40650: Include winsock2.h in pytime.c for timeval.
+
+- bpo-39930: Ensures the required :file:`vcruntime140.dll` is included in
+  install packages.
+
+- bpo-39847: Avoid hang when computer is hibernated whilst waiting for a
+  mutex (for lock-related objects from :mod:`threading`) around 49-day
+  uptime.
+
+- bpo-38492: Remove ``pythonw.exe`` dependency on the Microsoft C++ runtime.
+
+macOS
+-----
+
+- bpo-39580: Avoid opening Finder window if running installer from the
+  command line.
+
+- bpo-40400: Update the macOS installer build scripts to build with Python
+  3.x and to build correctly on newer macOS systems with SIP.
+
+- bpo-40741: Update macOS installer to use SQLite 3.32.2.
+
+- bpo-38329: python.org macOS installers now update the Current version
+  symlink of /Library/Frameworks/Python.framework/Versions for 3.9 installs.
+  Previously, Current was only updated for Python 2.x installs. This should
+  make it easier to embed Python 3 into other macOS applications.
+
+- bpo-40164: Update macOS installer builds to use OpenSSL 1.1.1g.
+
+IDLE
+----
+
+- bpo-39885: Make context menu Cut and Copy work again when right-clicking
+  within a selection.
+
+- bpo-40723: Make test_idle pass when run after import.
+
+- bpo-27115: For 'Go to Line', use a Query box subclass with IDLE standard
+  behavior and improved error checking.
+
+- bpo-39885: Since clicking to get an IDLE context menu moves the cursor,
+  any text selection should be and now is cleared.
+
+- bpo-39852: Edit "Go to line" now clears any selection, preventing
+  accidental deletion. It also updates Ln and Col on the status bar.
+
+- bpo-38439: Add a 256×256 pixel IDLE icon to support more modern
+  environments. Created by Andrew Clover. Delete the unused macOS idle.icns
+  icon file.
+
+- bpo-38689: IDLE will no longer freeze when inspect.signature fails when
+  fetching a calltip.
+
+Tools/Demos
+-----------
+
+- bpo-40479: Update multissltest helper to test with latest OpenSSL 1.0.2,
+  1.1.0, 1.1.1, and 3.0.0-alpha.
+
+- bpo-40179: Fixed translation of ``#elif`` in Argument Clinic.
+
+- bpo-40163: Fix multissltest tool. OpenSSL has changed download URL for old
+  releases. The multissltest tool now tries to download from current and old
+  download URLs.
+
+- bpo-36184: Port python-gdb.py to FreeBSD. python-gdb.py now checks for
+  "take_gil" function name to check if a frame tries to acquire the GIL,
+  instead of checking for "pthread_cond_timedwait" which is specific to
+  Linux and can be a different condition than the GIL.
+
+- bpo-39889: Fixed ``unparse.py`` for extended slices containing a single
+  element (e.g. ``a[i:j,]``). Remove redundant tuples when index with a
+  tuple (e.g. ``a[i, j]``).
+
+C API
+-----
+
+- bpo-39884: :c:func:`_PyMethodDef_RawFastCallDict` and
+  :c:func:`_PyMethodDef_RawFastCallKeywords` now include the method name in
+  the SystemError "bad call flags" error message to ease debug.
+
+- bpo-38643: :c:func:`PyNumber_ToBase` now raises a :exc:`SystemError`
+  instead of crashing when called with invalid base.
+
+
 What's New in Python 3.7.7 final?
 =================================
 
