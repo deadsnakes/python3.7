@@ -827,14 +827,18 @@ PyImport_AddModule(const char *name)
 static void
 remove_module(PyObject *name)
 {
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch(&type, &value, &traceback);
     PyObject *modules = PyImport_GetModuleDict();
+    if (!PyMapping_HasKey(modules, name)) {
+        goto out;
+    }
     if (PyMapping_DelItem(modules, name) < 0) {
-        if (!PyMapping_HasKey(modules, name)) {
-            return;
-        }
         Py_FatalError("import:  deleting existing key in "
                       "sys.modules failed");
     }
+out:
+    PyErr_Restore(type, value, traceback);
 }
 
 
@@ -1858,23 +1862,23 @@ PyImport_ImportModuleLevel(const char *name, PyObject *globals, PyObject *locals
 PyObject *
 PyImport_ReloadModule(PyObject *m)
 {
-    _Py_IDENTIFIER(imp);
+    _Py_IDENTIFIER(importlib);
     _Py_IDENTIFIER(reload);
     PyObject *reloaded_module = NULL;
-    PyObject *imp = _PyImport_GetModuleId(&PyId_imp);
-    if (imp == NULL) {
+    PyObject *importlib = _PyImport_GetModuleId(&PyId_importlib);
+    if (importlib == NULL) {
         if (PyErr_Occurred()) {
             return NULL;
         }
 
-        imp = PyImport_ImportModule("imp");
-        if (imp == NULL) {
+        importlib = PyImport_ImportModule("importlib");
+        if (importlib == NULL) {
             return NULL;
         }
     }
 
-    reloaded_module = _PyObject_CallMethodIdObjArgs(imp, &PyId_reload, m, NULL);
-    Py_DECREF(imp);
+    reloaded_module = _PyObject_CallMethodIdObjArgs(importlib, &PyId_reload, m, NULL);
+    Py_DECREF(importlib);
     return reloaded_module;
 }
 

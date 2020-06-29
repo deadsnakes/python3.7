@@ -926,8 +926,8 @@ static PyObject *
 _elementtree_Element___getstate___impl(ElementObject *self)
 /*[clinic end generated code: output=37279aeeb6bb5b04 input=f0d16d7ec2f7adc1]*/
 {
-    Py_ssize_t i, noattrib;
-    PyObject *instancedict = NULL, *children;
+    Py_ssize_t i;
+    PyObject *children, *attrib;
 
     /* Build a list of children. */
     children = PyList_New(self->extra ? self->extra->length : 0);
@@ -939,33 +939,24 @@ _elementtree_Element___getstate___impl(ElementObject *self)
         PyList_SET_ITEM(children, i, child);
     }
 
-    /* Construct the state object. */
-    noattrib = (self->extra == NULL || self->extra->attrib == Py_None);
-    if (noattrib)
-        instancedict = Py_BuildValue("{sOsOs{}sOsO}",
-                                     PICKLED_TAG, self->tag,
-                                     PICKLED_CHILDREN, children,
-                                     PICKLED_ATTRIB,
-                                     PICKLED_TEXT, JOIN_OBJ(self->text),
-                                     PICKLED_TAIL, JOIN_OBJ(self->tail));
-    else
-        instancedict = Py_BuildValue("{sOsOsOsOsO}",
-                                     PICKLED_TAG, self->tag,
-                                     PICKLED_CHILDREN, children,
-                                     PICKLED_ATTRIB, self->extra->attrib,
-                                     PICKLED_TEXT, JOIN_OBJ(self->text),
-                                     PICKLED_TAIL, JOIN_OBJ(self->tail));
-    if (instancedict) {
-        Py_DECREF(children);
-        return instancedict;
+    if (self->extra && self->extra->attrib != Py_None) {
+        attrib = self->extra->attrib;
+        Py_INCREF(attrib);
     }
     else {
-        for (i = 0; i < PyList_GET_SIZE(children); i++)
-            Py_DECREF(PyList_GET_ITEM(children, i));
-        Py_DECREF(children);
-
-        return NULL;
+        attrib = PyDict_New();
+        if (!attrib) {
+            Py_DECREF(children);
+            return NULL;
+        }
     }
+
+    return Py_BuildValue("{sOsNsNsOsO}",
+                         PICKLED_TAG, self->tag,
+                         PICKLED_CHILDREN, children,
+                         PICKLED_ATTRIB, attrib,
+                         PICKLED_TEXT, JOIN_OBJ(self->text),
+                         PICKLED_TAIL, JOIN_OBJ(self->tail));
 }
 
 static PyObject *
@@ -3483,6 +3474,17 @@ xmlparser_dealloc(XMLParserObject* self)
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
+Py_LOCAL_INLINE(int)
+_check_xmlparser(XMLParserObject* self)
+{
+    if (self->target == NULL) {
+        PyErr_SetString(PyExc_ValueError,
+                        "XMLParser.__init__() wasn't called");
+        return 0;
+    }
+    return 1;
+}
+
 LOCAL(PyObject*)
 expat_parse(XMLParserObject* self, const char* data, int data_len, int final)
 {
@@ -3519,6 +3521,10 @@ _elementtree_XMLParser_close_impl(XMLParserObject *self)
     /* end feeding data to parser */
 
     PyObject* res;
+
+    if (!_check_xmlparser(self)) {
+        return NULL;
+    }
     res = expat_parse(self, "", 0, 1);
     if (!res)
         return NULL;
@@ -3550,6 +3556,9 @@ _elementtree_XMLParser_feed(XMLParserObject *self, PyObject *data)
 {
     /* feed data to parser */
 
+    if (!_check_xmlparser(self)) {
+        return NULL;
+    }
     if (PyUnicode_Check(data)) {
         Py_ssize_t data_len;
         const char *data_ptr = PyUnicode_AsUTF8AndSize(data, &data_len);
@@ -3597,6 +3606,9 @@ _elementtree_XMLParser__parse_whole(XMLParserObject *self, PyObject *file)
     PyObject* temp;
     PyObject* res;
 
+    if (!_check_xmlparser(self)) {
+        return NULL;
+    }
     reader = PyObject_GetAttrString(file, "read");
     if (!reader)
         return NULL;
@@ -3708,6 +3720,9 @@ _elementtree_XMLParser__setevents_impl(XMLParserObject *self,
     TreeBuilderObject *target;
     PyObject *events_append, *events_seq;
 
+    if (!_check_xmlparser(self)) {
+        return NULL;
+    }
     if (!TreeBuilder_CheckExact(self->target)) {
         PyErr_SetString(
             PyExc_TypeError,
@@ -3803,6 +3818,9 @@ xmlparser_getattro(XMLParserObject* self, PyObject* nameobj)
         else
             goto generic;
 
+        if (!res && !_check_xmlparser(self)) {
+             return NULL;
+        }
         Py_INCREF(res);
         return res;
     }
