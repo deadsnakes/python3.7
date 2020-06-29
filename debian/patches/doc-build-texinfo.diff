@@ -7,7 +7,7 @@ Subject: doc-build-texinfo
  1 file changed, 6 insertions(+)
 
 diff --git a/Doc/Makefile b/Doc/Makefile
-index 08013c0..50c8d27 100644
+index 8a5e030..9fd8759 100644
 --- a/Doc/Makefile
 +++ b/Doc/Makefile
 @@ -31,6 +31,7 @@ help:
