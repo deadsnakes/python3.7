@@ -58,6 +58,7 @@ Multi-Arch: same
 Priority: @PRIO@
 Pre-Depends: ${misc:Pre-Depends}
 Depends: lib@PVER@-minimal (= ${binary:Version}), mime-support, ${shlibs:Depends}, ${misc:Depends}
+Recommends: ca-certificates
 Breaks: @PVER@-tk (<< 3.6.4~rc1-2), libmpdec2 (<< 2.4.2)
 Description: Interactive high-level object-oriented language (standard library, version @VER@)
  Python is a high-level, interactive, object-oriented language. Its @VER@ version
