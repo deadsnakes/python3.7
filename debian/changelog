@@ -1,3 +1,9 @@
+python3.7 (3.7.10-1+focal3) focal; urgency=medium
+
+  * add -full package
+
+ -- Anthony Sottile <asottile@umich.edu>  Sun, 02 May 2021 19:44:43 -0700
+
 python3.7 (3.7.10-1+focal2) focal; urgency=medium
 
   * libpython-stdlib: recommends ca-certificates
