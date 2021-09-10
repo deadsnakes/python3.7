@@ -2,6 +2,29 @@
 Python News
 +++++++++++
 
+What's New in Python 3.7.12 final?
+==================================
+
+*Release date: 2021-09-03*
+
+Security
+--------
+
+- bpo-44394: Update the vendored copy of libexpat to 2.4.1 (from 2.2.8) to
+  get the fix for the CVE-2013-0340 "Billion Laughs" vulnerability. This
+  copy is most used on Windows and macOS.
+
+- bpo-43124: Made the internal ``putcmd`` function in :mod:`smtplib`
+  sanitize input for presence of ``\r`` and ``\n`` characters to avoid
+  (unlikely) command injection.
+
+Library
+-------
+
+- bpo-45001: Made email date parsing more robust against malformed input,
+  namely a whitespace-only ``Date:`` header. Patch by Wouter Bolsterlee.
+
+
 What's New in Python 3.7.11 final?
 ==================================
 
@@ -10,7 +33,7 @@ What's New in Python 3.7.11 final?
 Security
 --------
 
-- bpo-44022: mod:`http.client` now avoids infinitely reading potential HTTP
+- bpo-44022: :mod:`http.client` now avoids infinitely reading potential HTTP
   headers after a ``100 Continue`` status response from the server.
 
 - bpo-43882: The presence of newline or tab characters in parts of a URL
