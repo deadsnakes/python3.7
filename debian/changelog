@@ -1,3 +1,9 @@
+python3.7 (3.7.12-1+bionic2) bionic; urgency=medium
+
+  * Disable docs and symbols builds.
+
+ -- Anthony Sottile <asottile@umich.edu>  Sat, 15 Jan 2022 13:48:18 -0500
+
 python3.7 (3.7.12-1+bionic1) bionic; urgency=medium
 
   * Python 3.7.12 release.
