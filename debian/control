@@ -31,7 +31,7 @@ Depends: python3.7-minimal (= ${binary:Version}),
  python3.7-distutils,
  mime-support,
  ${shlibs:Depends}, ${misc:Depends}
-Suggests: python3.7-venv, python3.7-doc, binutils
+Suggests: python3.7-venv, binutils
 Description: Interactive high-level object-oriented language (version 3.7)
  Python is a high-level, interactive, object-oriented language. Its 3.7 version
  includes an extensive class library with lots of goodies for
@@ -168,27 +168,6 @@ Description: IDE for Python (v3.7) using Tkinter
  IDLE is an Integrated Development Environment for Python (v3.7).
  IDLE is written using Tkinter and therefore quite platform-independent.
 
-Package: python3.7-doc
-Section: doc
-Architecture: all
-Depends: libjs-jquery, libjs-underscore, ${misc:Depends}
-Suggests: python3.7
-Description: Documentation for the high-level object-oriented language Python (v3.7)
- These is the official set of documentation for the interactive high-level
- object-oriented language Python (v3.7). All documents are provided
- in HTML format. The package consists of ten documents:
- .
-   * What's New in Python3.7
-   * Tutorial
-   * Python Library Reference
-   * Macintosh Module Reference
-   * Python Language Reference
-   * Extending and Embedding Python
-   * Python/C API Reference
-   * Installing Python Modules
-   * Documenting Python
-   * Distributing Python Modules
-
 Package: python3.7-dbg
 Section: debug
 Architecture: any
@@ -296,7 +275,7 @@ Depends: python3.7 (= ${binary:Version}),
   python3.7-tk,
   ca-certificates,
   ${shlibs:Depends}, ${misc:Depends}
-Recommends: python3.7-doc, python3.7-examples,
+Recommends: python3.7-examples,
 Suggests: python3.7-dev
 Description: Python Interpreter with complete class library (version 3.7)
  Python, the high-level, interactive object oriented language,
