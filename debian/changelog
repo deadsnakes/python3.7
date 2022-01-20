@@ -1,3 +1,9 @@
+python3.7 (3.7.12-1+jammy1) jammy; urgency=medium
+
+  * Build for jammy
+
+ -- Jason Perrin <jvperrin@yelp.com>  Thu, 20 Jan 2022 00:44:47 -0800
+
 python3.7 (3.7.12-1+focal2) focal; urgency=medium
 
   * Remove symbols and docs builds.
@@ -2289,7 +2295,7 @@ python2.5 (2.5.2-3) unstable; urgency=medium
     - Fix CVE-2008-1721, integer signedness error in the zlib extension module.
     - Fix urllib2 file descriptor happens byte-at-a-time, reverting
       a fix for excessively large memory allocations when calling .read()
-      on a socket object wrapped with makefile(). 
+      on a socket object wrapped with makefile().
   * Disable some regression tests on some architectures:
     - arm: test_compiler, test_ctypes.
     - armel: test_compiler.
@@ -2663,7 +2669,7 @@ python2.4 (2.4.3-4) unstable; urgency=low
   * Fix typo in pdb(1). Closes: #365772.
   * New autoconf likes the mandir in /usr/share instead of /usr; work
     with both locations. Closes: #367618.
-	
+
  -- Matthias Klose <doko@debian.org>  Wed,  7 Jun 2006 21:37:20 +0200
 
 python2.4 (2.4.3-3) unstable; urgency=low
@@ -2833,7 +2839,7 @@ python2.4 (2.4.1-2) unstable; urgency=low
 python2.4 (2.4.1-1ubuntu2) breezy; urgency=low
 
   * Add the debug symbols for the python2.4, python2.4-minimal, python2.4-gdbm
-    and python2.4-tk packages to the python2.4-dbg package. Ubuntu 10261, 
+    and python2.4-tk packages to the python2.4-dbg package. Ubuntu 10261,
   * Add gdbinit example to doc directory.
   * For os.utime, use utimes(2), correctly working with glibc-2.3.5.
     Ubuntu 10294.
@@ -2906,7 +2912,7 @@ python2.4 (2.4dfsg-1ubuntu4) hoary; urgency=medium
     - Don't map 'utf8', 'utf-8' to 'utf', which is not a known encoding
       for glibc.
   * os.py: Avoid using items() in environ.update(). Fixes #1124513.
-  * Python/pythonrun.c: 
+  * Python/pythonrun.c:
   * Build depend on locales, generate the locales needed for the
     testsuite.
   * Add build dependency on libbluetooth1-dev, adding some bluetooth
@@ -2989,8 +2995,8 @@ python2.4 (2.4-6) unstable; urgency=low
 
 python2.4 (2.4-5) unstable; urgency=high
 
-  * Fix a flaw in SimpleXMLRPCServerthat can affect any XML-RPC servers.  
-    This affects any programs have been written that allow remote 
+  * Fix a flaw in SimpleXMLRPCServerthat can affect any XML-RPC servers.
+    This affects any programs have been written that allow remote
     untrusted users to do unrestricted traversal and can allow them to
     access or change function internals using the im_* and func_* attributes.
     References: CAN-2005-0089.
@@ -3240,7 +3246,7 @@ python2.3 (2.3.3-6) unstable; urgency=low
   * Don't build python-elisp from the python2.3 source anymore,
     get it from python-mode.sf.net as a separate source package.
   * python2.3-dev suggests libc-dev (closes: #231091).
-  * get LDSHARED and CCSHARED (like, CC, CXX, CPP, CFLAGS) from 
+  * get LDSHARED and CCSHARED (like, CC, CXX, CPP, CFLAGS) from
     the environment
   * Set CXX in installed config/Makefile (closes: #230273).
 
