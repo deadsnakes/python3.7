@@ -27,3 +27,4 @@ reproducible-buildinfo.diff
 pydoc-use-pager.diff
 temporary-changes.diff
 0036-Disable-broken-dbm.ndbm-tests.patch
+newer-libmpdec.patch
