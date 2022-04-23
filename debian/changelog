@@ -1,3 +1,9 @@
+python3.7 (3.7.13-1+bionic2) bionic; urgency=medium
+
+  * sync with debian.
+
+ -- Anthony Sottile <asottile@umich.edu>  Sat, 23 Apr 2022 13:49:36 -0700
+
 python3.7 (3.7.13-1+bionic1) bionic; urgency=medium
 
   * Python 3.7.13 release.
