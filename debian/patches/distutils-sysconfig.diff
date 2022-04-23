@@ -2,15 +2,12 @@ From: Matthias Klose <doko@debian.org>
 Date: Fri, 9 Feb 2018 14:24:32 -0800
 Subject: distutils-sysconfig
 
-# DP: Get CONFIGURE_CFLAGS, CONFIGURE_CPPFLAGS, CONFIGURE_LDFLAGS from
-# DP: the python build, when CFLAGS, CPPFLAGS, LDSHARED) are not set
-# DP: in the environment.
 ---
- Lib/distutils/sysconfig.py | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ Lib/distutils/sysconfig.py | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index 9c27cd8..6961e6f 100644
+index 9c27cd8..c4bb1a3 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
 @@ -195,9 +195,11 @@ def customize_compiler(compiler):
@@ -50,3 +47,12 @@ index 9c27cd8..6961e6f 100644
          if 'AR' in os.environ:
              ar = os.environ['AR']
          if 'ARFLAGS' in os.environ:
+@@ -238,7 +249,7 @@ def customize_compiler(compiler):
+             compiler=cc_cmd,
+             compiler_so=cc_cmd + ' ' + ccshared,
+             compiler_cxx=cxx,
+-            linker_so=ldshared,
++            linker_so=ldshared + ' ' + ccshared,
+             linker_exe=cc,
+             archiver=archiver)
+ 

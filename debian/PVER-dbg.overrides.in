@@ -3,3 +3,5 @@
 
 # pointless lintian ...
 @PVER@-dbg binary: hardening-no-fortify-functions
+
+@PVER@-dbg binary: command-with-path-in-maintainer-script

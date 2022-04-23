@@ -6,3 +6,5 @@
 
 # no, not useless
 @PVER@ binary: manpage-has-useless-whatis-entry
+
+@PVER@ binary: command-with-path-in-maintainer-script

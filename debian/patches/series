@@ -14,7 +14,6 @@ langpack-gettext.diff
 disable-sem-check.diff
 lib-argparse.diff
 ctypes-arm.diff
-lto-link-flags.diff
 multiarch.diff
 lib2to3-no-pickled-grammar.diff
 ext-no-libpython-link.diff
@@ -25,5 +24,7 @@ disable-some-tests.diff
 mangle-fstack-protector.diff
 reproducible-buildinfo.diff
 pydoc-use-pager.diff
-temporary-changes.diff
 0036-Disable-broken-dbm.ndbm-tests.patch
+build-math-object.diff
+0029-destshared-location.patch
+0033-sysconfigdata-name.patch
