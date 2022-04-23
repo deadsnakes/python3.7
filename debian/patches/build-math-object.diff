@@ -1,0 +1,33 @@
+From: Anthony Sottile <asottile@umich.edu>
+Date: Sat, 23 Apr 2022 10:45:54 -0700
+Subject: build-math-object
+
+---
+ Makefile.pre.in | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index e3cff4e..817575d 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -22,7 +22,8 @@
+ 
+ MODBUILT_NAMES=    _MODBUILT_NAMES_
+ MODDISABLED_NAMES= _MODDISABLED_NAMES_
+-MODOBJS=           _MODOBJS_
++# filter out duplicate object files (_math.o)
++MODOBJS=           $(sort _MODOBJS_)
+ MODLIBS=           _MODLIBS_
+ 
+ # === Variables set by configure
+@@ -600,8 +601,9 @@ pybuilddir.txt: $(BUILDPYTHON)
+ 	fi
+ 
+ # This is shared by the math and cmath modules
++# don't build with -fPIC when building as math and cmath as builtins
+ Modules/_math.o: Modules/_math.c Modules/_math.h
+-	$(CC) -c $(CCSHARED) $(PY_CORE_CFLAGS) -o $@ $<
++	$(CC) -c $(if $(findstring _math.o, $(MODOBJS)),,$(CCSHARED)) $(PY_CORE_CFLAGS) -o $@ $<
+ 
+ # blake2s is auto-generated from blake2b
+ $(srcdir)/Modules/_blake2/blake2s_impl.c: $(srcdir)/Modules/_blake2/blake2b_impl.c $(srcdir)/Modules/_blake2/blake2b2s.py

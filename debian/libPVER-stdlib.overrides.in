@@ -13,3 +13,7 @@ lib@PVER@-stdlib binary: python-script-but-no-python-dep
 
 # lintian omission, multiarch string is encoded in the filename
 lib@PVER@-stdlib binary: arch-dependent-file-not-in-arch-specific-directory
+
+# yes, some extensions don't have references to any external lib
+lib@PVER@-stdlib binary: shared-lib-without-dependency-information
+lib@PVER@-stdlib binary: library-not-linked-against-libc

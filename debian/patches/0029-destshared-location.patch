@@ -1,0 +1,26 @@
+From: Anthony Sottile <asottile@umich.edu>
+Date: Sat, 23 Apr 2022 11:04:30 -0700
+Subject: destshared-location
+
+Description: Keep the lib-dynload dir in the same place when configuring with
+ --libdir=/usr/bin/$(DEB_HOST_MULTIARCH)
+ FIXME: Expand?
+
+Forwarded: no
+---
+ Makefile.pre.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 817575d..8d2cc17 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -160,7 +160,7 @@ EXT_SUFFIX=	@EXT_SUFFIX@
+ LDSHARED=	@LDSHARED@ $(PY_LDFLAGS)
+ BLDSHARED=	@BLDSHARED@ $(PY_CORE_LDFLAGS)
+ LDCXXSHARED=	@LDCXXSHARED@
+-DESTSHARED=	$(BINLIBDEST)/lib-dynload
++DESTSHARED=	$(LIBDEST)/lib-dynload
+ 
+ # Executable suffix (.exe on Windows and Mac OS X)
+ EXE=		@EXEEXT@

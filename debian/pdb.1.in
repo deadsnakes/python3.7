@@ -13,4 +13,4 @@ help is available via the help command.
 .SH SEE ALSO
 python@VER@(1). Chapter "The Python Debugger" of the Python Library
 Reference. Available in the python@VER@-doc package at
-/usr/share/doc/python@VER@/html/library/module-pdb.html.
+/usr/share/doc/python@VER@/html/library/pdb.html.

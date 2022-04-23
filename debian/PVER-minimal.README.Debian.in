@@ -69,6 +69,7 @@ are:
   bisect		module
   builtins		builtin
   calendar		module
+  cmath			extension
   codecs		module
   collections		package
   compileall		module

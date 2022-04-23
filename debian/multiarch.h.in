@@ -7,6 +7,8 @@
 #  include <i386-linux-gnu/@subdir@/@header@>
 # elif defined(__aarch64__) && defined(__AARCH64EL__)
 #  include <aarch64-linux-gnu/@subdir@/@header@>
+# elif defined(__arc__)
+#  include <arc-linux-gnu/@subdir@/@header@>
 # elif defined(__alpha__)
 #  include <alpha-linux-gnu/@subdir@/@header@>
 # elif defined(__ARM_EABI__) && defined(__ARM_PCS_VFP)
@@ -81,6 +83,12 @@
 #  include <sparc64-linux-gnu/@subdir@/@header@>
 # elif defined(__sparc__)
 #  include <sparc-linux-gnu/@subdir@/@header@>
+# elif defined(__riscv)
+#  if __riscv_xlen == 64
+#    include <riscv64-linux-gnu/@subdir@/@header@>
+#  else
+#    include <riscv32-linux-gnu/@subdir@/@header@>
+#  endif
 # else
 #   error unknown multiarch location for @header@
 # endif
