@@ -1168,6 +1168,7 @@ endif
 	mkdir -p $(d)/usr/lib/python3/dist-packages
 	(cd $(d) && tar cf - .) | (cd $(d_base) && tar xpf -)
 	rm -f $(d_base)/usr/bin/python
+	rm -f $(d_base)/usr/bin/pyvenv
 
 	: # Install menu icon
 	dh_installdirs -p$(p_base) usr/share/pixmaps
