@@ -1,3 +1,9 @@
+python3.7 (3.7.14-1+focal1) focal; urgency=medium
+
+  * Python 3.7.14 release.
+
+ -- Anthony Sottile (deadsnakes) <asottile+deadsnakes@umich.edu>  Thu, 08 Sep 2022 00:06:29 +0000
+
 python3.7 (3.7.13-1+focal3) focal; urgency=medium
 
   * remove accidentally added pyvenv binary.
