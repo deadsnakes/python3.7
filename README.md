@@ -2,7 +2,6 @@ python3.7
 =========
 
 builds are currently supported for:
-- bionic
 - focal
 - jammy
 
