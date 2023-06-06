@@ -1,4 +1,4 @@
-This is Python version 3.7.16
+This is Python version 3.7.17
 =============================
 
 .. image:: https://travis-ci.org/python/cpython.svg?branch=3.7
@@ -13,7 +13,7 @@ This is Python version 3.7.16
    :alt: CPython code coverage on Codecov
    :target: https://codecov.io/gh/python/cpython/branch/3.7
 
-Copyright (c) 2001-2022 Python Software Foundation.  All rights reserved.
+Copyright © 2001-2023 Python Software Foundation.  All rights reserved.
 
 See the end of this file for further copyright and license information.
 
@@ -242,14 +242,14 @@ See :pep:`537` for Python 3.7 release details.
 Copyright and License Information
 ---------------------------------
 
-Copyright (c) 2001-2022 Python Software Foundation.  All rights reserved.
+Copyright © 2001-2023 Python Software Foundation.  All rights reserved.
 
-Copyright (c) 2000 BeOpen.com.  All rights reserved.
+Copyright © 2000 BeOpen.com.  All rights reserved.
 
-Copyright (c) 1995-2001 Corporation for National Research Initiatives.  All
+Copyright © 1995-2001 Corporation for National Research Initiatives.  All
 rights reserved.
 
-Copyright (c) 1991-1995 Stichting Mathematisch Centrum.  All rights reserved.
+Copyright © 1991-1995 Stichting Mathematisch Centrum.  All rights reserved.
 
 See the file "LICENSE" for information on the history of this software, terms &
 conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
