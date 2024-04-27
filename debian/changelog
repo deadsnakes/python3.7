@@ -1,3 +1,9 @@
+python3.7 (3.7.17-1+noble2) noble; urgency=medium
+
+  * adjust sysconfig substitution flags to avoid quotes.
+
+ -- Anthony Sottile <asottile@umich.edu>  Sat, 27 Apr 2024 17:22:13 -0400
+
 python3.7 (3.7.17-1+noble1) noble; urgency=medium
 
   * Repackage for ubuntu noble.
