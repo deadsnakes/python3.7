@@ -1,3 +1,9 @@
+# archived
+
+moved to [py3.7](https://github.com/deadsnakes/py3.7)
+
+___
+
 python3.7
 =========
 
